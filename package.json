@@ -8,7 +8,7 @@
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:instalcorp-frontend": "node dist/instalcorp-frontend/server/server.mjs",
-    "prepare": "husky install .husky"
+    "prepare": "husky"
   },
   "lint-staged": {
     "*.{ts,scss,html}": [
