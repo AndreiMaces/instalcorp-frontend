@@ -4,7 +4,8 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build:dev": "ng build",
+    "build:prod": "ng build --configuration production --output-path docs  --base-href /instalcorp-frontend",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "serve:ssr:instalcorp-frontend": "node dist/instalcorp-frontend/server/server.mjs",
