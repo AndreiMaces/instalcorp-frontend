@@ -44,8 +44,6 @@
           },
           "configurations": {
             "production": {
-              "prerender": false,
-              "ssr": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -64,8 +62,6 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "prerender": false,
-              "ssr": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
