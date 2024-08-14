@@ -1,0 +1,12 @@
+<div class="flex flex-col">
+  <div class="p-5 border-b">
+    <p class="text-3xl !m-0">Creează proiect</p>
+  </div>
+  <div class="p-5">
+    <app-project-type-form></app-project-type-form>
+  </div>
+  <div class="p-5 border-t flex justify-end gap-5">
+    <button mat-flat-button>Salvează</button>
+    <button mat-flat-button color="warn" (click)="openDenyConfirmationDialog()">Anulează</button>
+  </div>
+</div>

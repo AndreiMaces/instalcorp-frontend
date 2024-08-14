@@ -10,6 +10,11 @@ const routes: Routes = [
     component: DashboardComponent,
     children: [
       {
+        path: '',
+        redirectTo: 'calendar',
+        pathMatch: 'full',
+      },
+      {
         path: 'calendar',
         component: CalendarViewComponent,
       },

@@ -1,0 +1,25 @@
+<mat-expansion-panel [style.background-color]="projectType.color ?? 'white'">
+  <mat-expansion-panel-header>
+    <mat-panel-title>
+      <div class="flex items-center justify-between gap-3 w-full">
+        <span> {{ projectType.title }} </span>
+        <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
+          <mat-icon>more_vert</mat-icon>
+        </button>
+        <mat-menu #menu="matMenu">
+          <button mat-menu-item>
+            <mat-icon>edit</mat-icon>
+            <span>Edit</span>
+          </button>
+          <button mat-menu-item>
+            <mat-icon>delete</mat-icon>
+            <span>Delete</span>
+          </button>
+        </mat-menu>
+      </div>
+    </mat-panel-title>
+  </mat-expansion-panel-header>
+  <div class="p-5">
+    <p>{{ projectType?.description }}</p>
+  </div>
+</mat-expansion-panel>
