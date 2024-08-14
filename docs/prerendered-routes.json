@@ -1,7 +1,0 @@
-{
-  "routes": [
-    "/dashboard",
-    "/dashboard/calendar",
-    "/dashboard/project-types"
-  ]
-}
