@@ -21,4 +21,4 @@ jobs:
 
       - run: npm install
       - run: npm run build
-      - run: npm run serve:ssr:instalcorp-frontend
+      - run: systemctl restart dev.instalcorp-planner-frontend.macesandrei.com
