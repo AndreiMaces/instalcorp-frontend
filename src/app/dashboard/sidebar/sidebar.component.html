@@ -1,0 +1,28 @@
+<div class="px-3 py-5">
+  <div class="flex flex-col gap-5 justify-center items-center">
+    <div class="w-[80px] h-[80px] bg-[#ccc] rounded-full"></div>
+    <div class="flex flex-col justify-center items-center">
+      <p class="text-2xl !m-0">John Doe</p>
+      <p class="text-md">johndoe&#x40;gmail.com</p>
+    </div>
+  </div>
+</div>
+
+<div class="flex flex-col py-5">
+  <a
+    routerLink="calendar"
+    (click)="toggleSidebar()"
+    class="p-3 flex items-center border-b hover:bg-[#eee] transition-all cursor-pointer"
+    matRipple
+  >
+    Calendar
+  </a>
+  <a
+    routerLink="project-types"
+    (click)="toggleSidebar()"
+    class="p-3 flex items-center border-b hover:bg-[#eee] transition-all cursor-pointer"
+    matRipple
+  >
+    Projects
+  </a>
+</div>
