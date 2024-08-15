@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { ProjectTypeFormComponent } from '../project-type-form/project-type-form.component';
+import { ProjectTypeFormComponent } from '../shared/components/project-type-form/project-type-form.component';
 import { MatButton } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { IIssueType } from '../../../core/models/IIssueType';
 import { IssueTypeControllerService } from '../../../core/api/controllers/issue-type-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';

@@ -1,6 +1,6 @@
 import { Component, Inject } from '@angular/core';
 import { MatButton } from '@angular/material/button';
-import { ProjectTypeFormComponent } from '../project-type-form/project-type-form.component';
+import { ProjectTypeFormComponent } from '../../../dashboard/project-types/shared/components/project-type-form/project-type-form.component';
 import { MAT_DIALOG_DATA, MatDialogRef } from '@angular/material/dialog';
 
 export interface IConfirmationDialogData {

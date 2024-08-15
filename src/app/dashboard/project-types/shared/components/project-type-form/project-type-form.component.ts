@@ -1,10 +1,10 @@
-import { Component, output } from '@angular/core';
+import { Component, Input, OnInit, output } from '@angular/core';
 import { ProjectTypeFormFactory } from './ProjectTypeFormFactory';
-import { IIssueType } from '../../../core/models/IIssueType';
+import { IIssueType } from '../../../../../core/models/IIssueType';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
-import { ValidationHelperService } from '../../../core/helpers/validation-helper.service';
+import { ValidationHelperService } from '../../../../../core/helpers/validation-helper.service';
 import { NgIf } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButton } from '@angular/material/button';
@@ -16,12 +16,23 @@ import { MatButton } from '@angular/material/button';
   templateUrl: './project-type-form.component.html',
   styleUrl: './project-type-form.component.scss',
 })
-export class ProjectTypeFormComponent {
+export class ProjectTypeFormComponent implements OnInit {
   projectTypeForm = ProjectTypeFormFactory.create();
+  @Input() projectType: IIssueType;
   _submit = output<Partial<IIssueType>>();
   close = output<void>();
 
   constructor(private snackBarService: MatSnackBar) {}
+
+  ngOnInit(): void {
+    if (this.projectType) {
+      this.prefillForm();
+    }
+  }
+
+  prefillForm(): void {
+    this.projectTypeForm.patchValue(this.projectType);
+  }
 
   onSubmit() {
     this.projectTypeForm.markAllAsTouched();

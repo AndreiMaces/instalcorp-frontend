@@ -7,7 +7,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateProjectTypeDialogComponent } from '../../shared/components/create-project-issue-dialog/create-project-type-dialog.component';
+import { CreateProjectTypeDialogComponent } from './create-project-type-dialog/create-project-type-dialog.component';
 
 @Component({
   selector: 'app-project-types',

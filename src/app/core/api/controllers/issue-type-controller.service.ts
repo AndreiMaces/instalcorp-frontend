@@ -18,4 +18,8 @@ export class IssueTypeControllerService {
   createIssueType(issueType: Partial<IIssueType>): Observable<IIssueType> {
     return this.apiService.post<IIssueType>(this._baseURL, issueType);
   }
+
+  updateIssueType(issueType: IIssueType): Observable<IIssueType> {
+    return this.apiService.put<IIssueType>(`${this._baseURL}/${issueType.id}`, issueType);
+  }
 }
