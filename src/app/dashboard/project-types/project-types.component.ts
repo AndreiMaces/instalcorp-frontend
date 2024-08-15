@@ -59,4 +59,16 @@ export class ProjectTypesComponent implements OnInit {
         if (result) this.getIssueTypes();
       });
   }
+
+  removeIssueType(issueTypeId: number): void {
+    this.isLoading = true;
+    this.issueTypeController.deleteIssueType(issueTypeId).subscribe({
+      next: () => {
+        this.getIssueTypes();
+      },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
 }

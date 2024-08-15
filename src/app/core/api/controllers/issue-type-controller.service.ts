@@ -22,4 +22,8 @@ export class IssueTypeControllerService {
   updateIssueType(issueType: IIssueType): Observable<IIssueType> {
     return this.apiService.put<IIssueType>(`${this._baseURL}/${issueType.id}`, issueType);
   }
+
+  deleteIssueType(issueTypeId: number): Observable<void> {
+    return this.apiService.delete<void>(`${this._baseURL}/${issueTypeId}`);
+  }
 }

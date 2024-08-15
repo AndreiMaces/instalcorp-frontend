@@ -12,6 +12,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProjectTypeDialogComponent } from './edit-project-type-dialog/edit-project-type-dialog.component';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-project-type',
@@ -35,6 +36,7 @@ import { EditProjectTypeDialogComponent } from './edit-project-type-dialog/edit-
 export class ProjectTypeComponent {
   @Input() projectType: IIssueType;
   _edit = output();
+  _delete = output<number>();
 
   constructor(private dialog: MatDialog) {}
 
@@ -49,6 +51,22 @@ export class ProjectTypeComponent {
       .afterClosed()
       .subscribe((result) => {
         if (result) this._edit.emit();
+      });
+  }
+
+  openDeleteProjectTypeDialog(): void {
+    this.dialog
+      .open(ConfirmationDialogComponent, {
+        maxWidth: '100%',
+        width: '800px',
+        disableClose: true,
+        data: {
+          message: `Sunteți sigur că doriți să ștergeți tipul de proiect "${this.projectType.title}"?`,
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this._delete.emit(this.projectType.id);
       });
   }
 }
