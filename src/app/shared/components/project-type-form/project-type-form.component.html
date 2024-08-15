@@ -1,1 +1,31 @@
-<p>project-type-form works!</p>
+<form [formGroup]="projectTypeForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-3">
+  <div class="flex gap-3">
+    <mat-form-field class="w-full flex-grow">
+      <mat-label>Titlu</mat-label>
+      <input matInput [formControl]="projectTypeForm.controls.title" />
+      <mat-error *ngIf="ValidationHelperService.isInvalid(projectTypeForm.controls.title)"
+        >{{ ValidationHelperService.getErrorMessage(projectTypeForm.controls.title) }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Culoare</mat-label>
+      <input matInput [formControl]="projectTypeForm.controls.color" type="color" />
+      <mat-error *ngIf="ValidationHelperService.isInvalid(projectTypeForm.controls.color)"
+        >{{ ValidationHelperService.getErrorMessage(projectTypeForm.controls.color) }}
+      </mat-error>
+    </mat-form-field>
+  </div>
+
+  <mat-form-field class="w-full">
+    <mat-label>Descriere</mat-label>
+    <textarea matInput [formControl]="projectTypeForm.controls.description" class="!resize-none" rows="10"></textarea>
+    <mat-error *ngIf="ValidationHelperService.isInvalid(projectTypeForm.controls.description)"
+      >{{ ValidationHelperService.getErrorMessage(projectTypeForm.controls.description) }}
+    </mat-error>
+  </mat-form-field>
+
+  <div class="p-5 border-t flex justify-end gap-5">
+    <button mat-flat-button>Salvează</button>
+    <button mat-flat-button color="warn" (click)="close.emit()" type="button">Anulează</button>
+  </div>
+</form>

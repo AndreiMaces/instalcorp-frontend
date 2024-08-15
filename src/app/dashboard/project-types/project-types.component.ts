@@ -47,10 +47,16 @@ export class ProjectTypesComponent implements OnInit {
   }
 
   openCreateProjectTypeDialog(): void {
-    this.dialog.open(CreateProjectTypeDialogComponent, {
-      maxWidth: '100%',
-      width: '800px',
-      disableClose: true,
-    });
+    this.dialog
+      .open(CreateProjectTypeDialogComponent, {
+        maxWidth: '100%',
+        width: '800px',
+        maxHeight: '90vh',
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this.getIssueTypes();
+      });
   }
 }

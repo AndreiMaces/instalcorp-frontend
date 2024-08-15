@@ -14,4 +14,8 @@ export class IssueTypeControllerService {
   getIssueTypes(): Observable<IIssueType[]> {
     return this.apiService.get<IIssueType[]>(this._baseURL);
   }
+
+  createIssueType(issueType: Partial<IIssueType>): Observable<IIssueType> {
+    return this.apiService.post<IIssueType>(this._baseURL, issueType);
+  }
 }
