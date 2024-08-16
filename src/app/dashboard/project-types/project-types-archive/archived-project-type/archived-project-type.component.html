@@ -1,13 +1,7 @@
-<mat-expansion-panel [style.background-color]="projectType.color ?? 'white'">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <div class="flex items-center justify-between gap-3 w-full">
-        <span> {{ projectType.title }} </span>
-        <button mat-button (click)="$event.stopPropagation(); openRestoreProjectTypeDialog()">Restaurare</button>
-      </div>
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-  <div class="p-5">
-    <p>{{ projectType?.description }}</p>
-  </div>
-</mat-expansion-panel>
+<div
+  class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl"
+  [style.background-color]="projectType.color ?? 'white'"
+>
+  <span> {{ projectType.title }} </span>
+  <button mat-button (click)="$event.stopPropagation(); $event.preventDefault(); openRestoreProjectTypeDialog()">Restaurare</button>
+</div>

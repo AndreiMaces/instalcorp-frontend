@@ -1,25 +1,20 @@
-<mat-expansion-panel [style.background-color]="projectType.color ?? 'white'">
-  <mat-expansion-panel-header>
-    <mat-panel-title>
-      <div class="flex items-center justify-between gap-3 w-full">
-        <span> {{ projectType.title }} </span>
-        <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation()">
-          <mat-icon>more_vert</mat-icon>
-        </button>
-        <mat-menu #menu="matMenu">
-          <button mat-menu-item (click)="openEditProjectTypeDialog()">
-            <mat-icon>edit</mat-icon>
-            <span>Editează</span>
-          </button>
-          <button mat-menu-item (click)="openDeleteProjectTypeDialog()">
-            <mat-icon>delete</mat-icon>
-            <span>Șterge</span>
-          </button>
-        </mat-menu>
-      </div>
-    </mat-panel-title>
-  </mat-expansion-panel-header>
-  <div class="p-5">
-    <p>{{ projectType?.description }}</p>
-  </div>
-</mat-expansion-panel>
+<a
+  [routerLink]="'/dashboard/project-types/' + projectType.id"
+  class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl hover:brightness-[80%] transition-all cursor-pointer"
+  [style.background-color]="projectType.color ?? 'white'"
+>
+  <span> {{ projectType.title }} </span>
+  <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation(); $event.preventDefault()">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openEditProjectTypeDialog()">
+      <mat-icon>edit</mat-icon>
+      <span>Editează</span>
+    </button>
+    <button mat-menu-item (click)="openDeleteProjectTypeDialog()">
+      <mat-icon>delete</mat-icon>
+      <span>Șterge</span>
+    </button>
+  </mat-menu>
+</a>

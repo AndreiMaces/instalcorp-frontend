@@ -13,6 +13,7 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { EditProjectTypeDialogComponent } from './edit-project-type-dialog/edit-project-type-dialog.component';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-project-type',
@@ -29,6 +30,7 @@ import { ConfirmationDialogComponent } from '../../../shared/components/confirma
     MatMenuTrigger,
     MatMenu,
     MatMenuItem,
+    RouterLink,
   ],
   templateUrl: './project-type.component.html',
   styleUrl: './project-type.component.scss',
