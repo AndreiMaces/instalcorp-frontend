@@ -15,6 +15,10 @@ export class IssueTypeControllerService {
     return this.apiService.get<IIssueType[]>(this._baseURL);
   }
 
+  getIssueTypesArchive(): Observable<IIssueType[]> {
+    return this.apiService.get<IIssueType[]>(`${this._baseURL}/archive`);
+  }
+
   createIssueType(issueType: Partial<IIssueType>): Observable<IIssueType> {
     return this.apiService.post<IIssueType>(this._baseURL, issueType);
   }
@@ -25,5 +29,9 @@ export class IssueTypeControllerService {
 
   deleteIssueType(issueTypeId: number): Observable<void> {
     return this.apiService.delete<void>(`${this._baseURL}/${issueTypeId}`);
+  }
+
+  restoreIssueType(issueTypeId: number): Observable<void> {
+    return this.apiService.put<void>(`${this._baseURL}/${issueTypeId}/restore`);
   }
 }

@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { CalendarViewComponent } from './calendar-view/calendar-view.component';
 import { DashboardComponent } from './dashboard.component';
-import { ProjectTypesComponent } from './project-types/project-types.component';
 
 const routes: Routes = [
   {
@@ -20,7 +19,7 @@ const routes: Routes = [
       },
       {
         path: 'project-types',
-        component: ProjectTypesComponent,
+        loadChildren: () => import('./project-types/project-types.module').then((m) => m.ProjectTypesModule),
       },
     ],
   },

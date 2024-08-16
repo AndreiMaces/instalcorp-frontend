@@ -4,15 +4,27 @@ import { IIssueType } from '../../core/models/IIssueType';
 import { ProjectTypeComponent } from './project-type/project-type.component';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { MatButton } from '@angular/material/button';
+import { MatAnchor, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateProjectTypeDialogComponent } from './create-project-type-dialog/create-project-type-dialog.component';
+import { RouterLink } from '@angular/router';
+import { ArchivedProjectTypeComponent } from './project-types-archive/archived-project-type/archived-project-type.component';
 
 @Component({
   selector: 'app-project-types',
   standalone: true,
-  imports: [ProjectTypeComponent, NgForOf, NgIf, MatProgressSpinner, MatButton, MatIcon],
+  imports: [
+    ProjectTypeComponent,
+    NgForOf,
+    NgIf,
+    MatProgressSpinner,
+    MatButton,
+    MatIcon,
+    RouterLink,
+    MatAnchor,
+    ArchivedProjectTypeComponent,
+  ],
   host: {
     class: 'flex-grow',
   },
