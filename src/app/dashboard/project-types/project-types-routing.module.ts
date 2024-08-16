@@ -12,11 +12,25 @@ const routes: Routes = [
   },
   {
     path: 'archive',
+    data: { breadcrumb: 'Arhivă' },
     component: ProjectTypesArchiveComponent,
   },
   {
-    path: ':id',
-    component: ProjectTypePageComponent,
+    path: ':id/:name',
+    data: { breadcrumb: 'Project Type' },
+    children: [
+      {
+        path: '',
+        component: ProjectTypePageComponent,
+      },
+      {
+        path: ':issueId/:issueName',
+        data: {
+          breadcrumb: 'Issue',
+        },
+        loadChildren: () => import('./issues/issues.module').then((m) => m.IssuesModule),
+      },
+    ],
   },
 ];
 

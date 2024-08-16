@@ -1,18 +1,18 @@
 <a
-  [routerLink]="'/dashboard/project-types/' + projectType.id + '/' + projectType.title"
+  [routerLink]="issue?.id + '/' + issue?.name"
   class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl hover:brightness-[80%] transition-all cursor-pointer"
-  [style.background-color]="projectType.color ?? 'white'"
+  [style.background-color]="issue?.color ?? 'white'"
 >
-  <span> {{ projectType.title }} </span>
+  <span> {{ issue?.name }} </span>
   <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation(); $event.preventDefault()">
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
-    <button mat-menu-item (click)="openEditProjectTypeDialog()">
+    <button mat-menu-item (click)="openEditIssueDialog()">
       <mat-icon>edit</mat-icon>
       <span>Editează</span>
     </button>
-    <button mat-menu-item (click)="openDeleteProjectTypeDialog()">
+    <button mat-menu-item (click)="openDeleteIssueDialog()">
       <mat-icon>delete</mat-icon>
       <span>Șterge</span>
     </button>

@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateProjectTypeDialogComponent } from './create-project-type-dialog/create-project-type-dialog.component';
 import { RouterLink } from '@angular/router';
 import { ArchivedProjectTypeComponent } from './project-types-archive/archived-project-type/archived-project-type.component';
+import { BradcrumbsMenuComponent } from '../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
 
 @Component({
   selector: 'app-project-types',
@@ -24,6 +25,7 @@ import { ArchivedProjectTypeComponent } from './project-types-archive/archived-p
     RouterLink,
     MatAnchor,
     ArchivedProjectTypeComponent,
+    BradcrumbsMenuComponent,
   ],
   host: {
     class: 'flex-grow',

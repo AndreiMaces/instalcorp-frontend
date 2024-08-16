@@ -9,6 +9,7 @@ import { IssueTypeControllerService } from '../../../core/api/controllers/issue-
 import { MatDialog } from '@angular/material/dialog';
 import { ArchivedProjectTypeComponent } from './archived-project-type/archived-project-type.component';
 import { RouterLink } from '@angular/router';
+import { BradcrumbsMenuComponent } from '../../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
 
 @Component({
   selector: 'app-project-types-archive',
@@ -23,6 +24,7 @@ import { RouterLink } from '@angular/router';
     ArchivedProjectTypeComponent,
     MatAnchor,
     RouterLink,
+    BradcrumbsMenuComponent,
   ],
   host: {
     class: 'flex-grow',

@@ -15,6 +15,10 @@ export class IssueTypeControllerService {
     return this.apiService.get<IIssueType[]>(this._baseURL);
   }
 
+  getIssueType(issueTypeId: number): Observable<IIssueType> {
+    return this.apiService.get<IIssueType>(`${this._baseURL}/${issueTypeId}`);
+  }
+
   getIssueTypesArchive(): Observable<IIssueType[]> {
     return this.apiService.get<IIssueType[]>(`${this._baseURL}/archive`);
   }

@@ -8,6 +8,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
+    data: { breadcrumb: 'Dashboard' },
     loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
 ];
