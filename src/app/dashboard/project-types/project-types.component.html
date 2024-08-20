@@ -18,14 +18,17 @@
         <div *ngIf="issueTypes.length === 0" class="flex justify-center items-center h-full">
           <p class="text-gray-500 text-2xl">Nu există tipuri de proiecte.</p>
         </div>
-        <div *ngIf="issueTypes.length > 0" class="flex flex-col gap-5">
+        <div cdkDropList *ngIf="issueTypes.length > 0" (cdkDropListDropped)="drop($event)" class="issue-list flex flex-col gap-5">
           <app-project-type
+            cdkDrag
+            class="project-type"
             *ngFor="let projectType of issueTypes"
             [projectType]="projectType"
             (_edit)="getIssueTypes()"
             (_delete)="removeIssueType($event)"
           ></app-project-type>
         </div>
+
       </div>
       <div class="w-full h-full flex items-center justify-center" *ngIf="isLoading">
         <mat-spinner [diameter]="80"></mat-spinner>

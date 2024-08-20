@@ -11,6 +11,7 @@ import { CreateProjectTypeDialogComponent } from './create-project-type-dialog/c
 import { RouterLink } from '@angular/router';
 import { ArchivedProjectTypeComponent } from './project-types-archive/archived-project-type/archived-project-type.component';
 import { BradcrumbsMenuComponent } from '../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-project-types',
@@ -26,6 +27,8 @@ import { BradcrumbsMenuComponent } from '../../shared/components/bradcrumbs-menu
     MatAnchor,
     ArchivedProjectTypeComponent,
     BradcrumbsMenuComponent,
+    CdkDropList,
+    CdkDrag
   ],
   host: {
     class: 'flex-grow',
@@ -80,6 +83,16 @@ export class ProjectTypesComponent implements OnInit {
       next: () => {
         this.getIssueTypes();
       },
+      error: (error) => {
+        console.error(error);
+      },
+    });
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.issueTypes, event.previousIndex, event.currentIndex);
+    this.issueTypeController.updateIssueTypeOrder(this.issueTypes).subscribe({
+      next: () => {},
       error: (error) => {
         console.error(error);
       },

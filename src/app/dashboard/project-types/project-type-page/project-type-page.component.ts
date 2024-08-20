@@ -9,6 +9,7 @@ import { IssueTypeControllerService } from '../../../core/api/controllers/issue-
 import { IIssueType } from '../../../core/models/IIssueType';
 import { BradcrumbsMenuComponent } from '../../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
 import { ProjectTypeIssueComponent } from './project-type-issue/project-type-issue.component';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
 
 @Component({
   selector: 'app-project-type-page',
@@ -24,6 +25,8 @@ import { ProjectTypeIssueComponent } from './project-type-issue/project-type-iss
     RouterLink,
     BradcrumbsMenuComponent,
     ProjectTypeIssueComponent,
+    CdkDropList,
+    CdkDrag
   ],
   host: {
     class: 'flex-grow',
@@ -59,4 +62,8 @@ export class ProjectTypePageComponent {
   }
 
   openCreateIssueDialog(): void {}
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.projectType?.issues, event.previousIndex, event.currentIndex);
+  }
 }
