@@ -37,13 +37,13 @@
             ],
             "scripts": [],
             "server": "src/main.server.ts",
-            "prerender": false,
-            "ssr": false
+            "prerender": true,
+            "ssr": {
+              "entry": "server.ts"
+            }
           },
           "configurations": {
             "production": {
-              "ssr": false,
-              "prerender": false,
               "budgets": [
                 {
                   "type": "initial",
@@ -62,8 +62,6 @@
               "optimization": false,
               "extractLicenses": false,
               "sourceMap": true,
-              "ssr": false,
-              "prerender": false,
               "fileReplacements": [
                 {
                   "replace": "src/environments/environment.ts",
