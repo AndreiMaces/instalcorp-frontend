@@ -32,6 +32,7 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk
   ],
   host: {
     class: 'flex-grow',
+    ngSkipHydration: 'true',
   },
   templateUrl: './project-types.component.html',
   styleUrl: './project-types.component.scss',
