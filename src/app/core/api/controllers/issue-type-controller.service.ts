@@ -38,4 +38,8 @@ export class IssueTypeControllerService {
   restoreIssueType(issueTypeId: number): Observable<void> {
     return this.apiService.put<void>(`${this._baseURL}/${issueTypeId}/restore`);
   }
+
+  updateIssueTypeOrder(issueTypes: IIssueType[]): Observable<void> {
+    return this.apiService.put<void>(`${this._baseURL}/reorder`, issueTypes);
+  }
 }
