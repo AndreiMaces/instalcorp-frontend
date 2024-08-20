@@ -1,4 +1,5 @@
 import { Routes } from '@angular/router';
+import { BadGatewayComponent } from "./shared/components/bad-gateway/bad-gateway.component";
 
 export const routes: Routes = [
   {
@@ -11,4 +12,8 @@ export const routes: Routes = [
     data: { breadcrumb: 'Dashboard' },
     loadChildren: () => import('./dashboard/dashboard.module').then((m) => m.DashboardModule),
   },
+  {
+    path:'maintenance',
+    component: BadGatewayComponent,
+  }
 ];
