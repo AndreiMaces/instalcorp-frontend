@@ -44,6 +44,10 @@ export class IssueTypeControllerService {
     return this.apiService.put<void>(`${this._baseURL}/reorder`, issueTypes);
   }
 
+  updateIssuesOrder(issueType: IIssueType): Observable<void> {
+    return this.apiService.put<void>(`${this._baseURL}/${issueType.id}/reorder`, issueType);
+  }
+
   createProject(issueTypeId: number, newIssue: Partial<IIssue>): Observable<IIssue> {
     return this.apiService.post<IIssue>(`${this._baseURL}/${issueTypeId}/issue`, newIssue);
   }

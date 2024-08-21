@@ -102,5 +102,11 @@ export class ProjectTypePageComponent {
 
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.projectType?.issues, event.previousIndex, event.currentIndex);
+    this.issueTypeController.updateIssuesOrder(this.projectType).subscribe({
+      next: () => {},
+      error: (error) => {
+        console.error(error);
+      },
+    });
   }
 }
