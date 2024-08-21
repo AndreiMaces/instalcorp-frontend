@@ -1,4 +1,12 @@
-<form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-3">
+<form [formGroup]="projectForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-3" *ngIf="!isLoading">
+  <mat-form-field appearance="outline">
+    <mat-label>Tip proiect</mat-label>
+    <mat-select [formControl]="projectForm.controls.typeId">
+      <mat-option *ngFor="let issueType of issueTypes" [value]="issueType.id">
+        {{ issueType.title }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
   <div class="flex gap-3">
     <mat-form-field appearance="outline">
       <mat-label>Status</mat-label>
@@ -55,3 +63,6 @@
     <button mat-flat-button color="warn" (click)="close.emit()" type="button">Anulează</button>
   </div>
 </form>
+<div class="w-full h-[400px] flex justify-center items-center" *ngIf="isLoading">
+  <mat-spinner diameter="80"></mat-spinner>
+</div>

@@ -51,4 +51,8 @@ export class IssueTypeControllerService {
   createProject(issueTypeId: number, newIssue: Partial<IIssue>): Observable<IIssue> {
     return this.apiService.post<IIssue>(`${this._baseURL}/${issueTypeId}/issue`, newIssue);
   }
+
+  getIssueTypesDropdown(): Observable<Partial<IIssueType>[]> {
+    return this.apiService.get<Partial<IIssueType>[]>(`${this._baseURL}/dropdown`);
+  }
 }

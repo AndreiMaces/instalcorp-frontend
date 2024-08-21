@@ -3,7 +3,12 @@
     <p class="text-3xl !m-0">Creează proiect</p>
   </div>
   <div class="p-5">
-    <app-project-form (close)="openDenyConfirmationDialog()" (_submit)="createProject($event)" *ngIf="!isLoading"></app-project-form>
+    <app-project-form
+      [project]="project"
+      (close)="openDenyConfirmationDialog()"
+      (_submit)="createProject($event)"
+      *ngIf="!isLoading"
+    ></app-project-form>
     <div *ngIf="isLoading" class="h-[400px] w-full flex justify-center items-center">
       <mat-spinner diameter="80"></mat-spinner>
     </div>

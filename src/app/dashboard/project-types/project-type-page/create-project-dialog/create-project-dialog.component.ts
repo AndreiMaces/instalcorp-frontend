@@ -3,11 +3,12 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgIf } from '@angular/common';
 import { ProjectTypeFormComponent } from '../../shared/components/project-type-form/project-type-form.component';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { IssueTypeControllerService } from '../../../../core/api/controllers/issue-type-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { IIssueType } from '../../../../core/models/IIssueType';
 import { ProjectFormComponent } from '../project-form/project-form.component';
+import { IIssue } from '../../../../core/models/IIssue';
+import { IssueControllerService } from '../../../../core/api/controllers/issue-controller.service';
 
 @Component({
   selector: 'app-create-project-dialog',
@@ -18,14 +19,25 @@ import { ProjectFormComponent } from '../project-form/project-form.component';
 })
 export class CreateProjectDialogComponent {
   isLoading = false;
+  project: Partial<IIssue>;
 
   constructor(
-    private issueTypeController: IssueTypeControllerService,
+    private issueController: IssueControllerService,
     private snackBarService: MatSnackBar,
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
     @Inject(MAT_DIALOG_DATA) private data: { issueType: IIssueType },
   ) {}
+
+  ngOnInit(): void {
+    this.initType();
+  }
+
+  initType(): void {
+    this.project = {
+      typeId: this?.data?.issueType?.id,
+    };
+  }
 
   openDenyConfirmationDialog(): void {
     this.dialog
@@ -43,13 +55,12 @@ export class CreateProjectDialogComponent {
       });
   }
 
-  createProject(newIssue: Partial<IIssueType>): void {
-    console.log(newIssue);
+  createProject(newIssue: Partial<IIssue>): void {
     this.isLoading = true;
-    this.issueTypeController.createProject(this.data.issueType.id, newIssue).subscribe({
-      next: () => {
+    this.issueController.createIssue(newIssue).subscribe({
+      next: (res) => {
         this.isLoading = false;
-        this.dialogRef.close(true);
+        this.dialogRef.close(res);
       },
       error: () => {
         this.isLoading = false;

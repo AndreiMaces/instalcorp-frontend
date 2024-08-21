@@ -8,10 +8,12 @@ import { MatAnchor, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateProjectTypeDialogComponent } from './create-project-type-dialog/create-project-type-dialog.component';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { ArchivedProjectTypeComponent } from './project-types-archive/archived-project-type/archived-project-type.component';
 import { BradcrumbsMenuComponent } from '../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { CreateProjectDialogComponent } from './project-type-page/create-project-dialog/create-project-dialog.component';
+import { IIssue } from '../../core/models/IIssue';
 
 @Component({
   selector: 'app-project-types',
@@ -43,6 +45,7 @@ export class ProjectTypesComponent implements OnInit {
   constructor(
     private issueTypeController: IssueTypeControllerService,
     private dialog: MatDialog,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -74,6 +77,21 @@ export class ProjectTypesComponent implements OnInit {
       .afterClosed()
       .subscribe((result) => {
         if (result) this.getIssueTypes();
+      });
+  }
+
+  openCreateIssueDialog(): void {
+    this.dialog
+      .open(CreateProjectDialogComponent, {
+        width: '1200px',
+        maxWidth: '100%',
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((res: Partial<IIssue>) => {
+        if (res) {
+          this.router.navigateByUrl(`/dashboard/project-types/${res.type.id}/${res.type.title}/${res.id}/${res.title}`);
+        }
       });
   }
 

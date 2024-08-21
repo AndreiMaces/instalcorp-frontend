@@ -12,6 +12,7 @@ export interface IIssue {
   endDate?: Date;
   status: number;
   type?: IIssueType;
+  typeId?: number;
   isDeleted: boolean;
 }
 

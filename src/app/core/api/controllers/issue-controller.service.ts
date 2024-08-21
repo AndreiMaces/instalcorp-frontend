@@ -18,4 +18,8 @@ export class IssueControllerService {
   editIssue(issueId: number, newIssue: Partial<IIssue>): Observable<IIssue> {
     return this.apiService.put(`${this._baseURL}/${issueId}`, newIssue);
   }
+
+  createIssue(newIssue: Partial<IIssue>): Observable<IIssue> {
+    return this.apiService.post<IIssue>(`${this._baseURL}`, newIssue);
+  }
 }

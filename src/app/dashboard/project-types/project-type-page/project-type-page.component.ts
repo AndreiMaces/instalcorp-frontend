@@ -59,6 +59,16 @@ export class ProjectTypePageComponent {
     this.issueTypeController.getIssueType(this.route.snapshot.params['id']).subscribe({
       next: (projectType) => {
         this.projectType = projectType;
+        this.projectType.issues.map((issue) => {
+          return {
+            ...issue,
+            typeId: this.projectType.id,
+            type: {
+              id: this.projectType.id,
+              title: this.projectType.title,
+            },
+          };
+        });
         this.isLoading = false;
       },
       error: (error) => {
