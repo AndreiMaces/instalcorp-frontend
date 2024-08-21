@@ -9,7 +9,10 @@ import { IssueTypeControllerService } from '../../../core/api/controllers/issue-
 import { IIssueType } from '../../../core/models/IIssueType';
 import { BradcrumbsMenuComponent } from '../../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
 import { ProjectTypeIssueComponent } from './project-type-issue/project-type-issue.component';
-import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk/drag-drop";
+import { MatDialog } from '@angular/material/dialog';
+import { CreateProjectDialogComponent } from './create-project-dialog/create-project-dialog.component';
+import { IssueControllerService } from '../../../core/api/controllers/issue-controller.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-project-type-page',
@@ -25,8 +28,6 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from "@angular/cdk
     RouterLink,
     BradcrumbsMenuComponent,
     ProjectTypeIssueComponent,
-    CdkDropList,
-    CdkDrag
   ],
   host: {
     class: 'flex-grow',
@@ -41,6 +42,9 @@ export class ProjectTypePageComponent {
   constructor(
     private issueTypeController: IssueTypeControllerService,
     private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private issueController: IssueControllerService,
+    private snackBarService: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
@@ -61,9 +65,35 @@ export class ProjectTypePageComponent {
     });
   }
 
-  openCreateIssueDialog(): void {}
+  openCreateIssueDialog(): void {
+    this.dialog
+      .open(CreateProjectDialogComponent, {
+        data: {
+          issueType: this.projectType,
+        },
+        width: '1200px',
+        maxWidth: '100%',
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.getProjectType();
+        }
+      });
+  }
 
-  drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.projectType?.issues, event.previousIndex, event.currentIndex);
+  removeIssue(issueId: number): void {
+    this.isLoading = true;
+    this.issueController.removeIssue(issueId).subscribe({
+      next: () => {
+        this.getProjectType();
+      },
+      error: (error) => {
+        this.snackBarService.open(error.error.error, 'Close', {
+          duration: 3000,
+        });
+      },
+    });
   }
 }

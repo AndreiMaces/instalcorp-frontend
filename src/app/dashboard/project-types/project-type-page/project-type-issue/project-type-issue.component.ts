@@ -1,9 +1,15 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { IIssue } from '../../../../core/models/IIssue';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { RouterLink } from '@angular/router';
+import { MatDialog } from '@angular/material/dialog';
+import {
+  ConfirmationDialogComponent,
+  IConfirmationDialogData,
+} from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-dialog.component';
 
 @Component({
   selector: 'app-project-type-issue',
@@ -14,8 +20,26 @@ import { RouterLink } from '@angular/router';
 })
 export class ProjectTypeIssueComponent {
   @Input() issue: IIssue;
+  _delete = output<number>();
+  _edit = output();
 
-  openEditIssueDialog(): void {}
+  constructor(private dialog: MatDialog) {}
 
-  openDeleteIssueDialog(): void {}
+  openEditIssueDialog(): void {
+    this.dialog.open(EditProjectDialogComponent);
+  }
+
+  openDeleteIssueDialog(): void {
+    this.dialog
+      .open(ConfirmationDialogComponent, {
+        data: {
+          message: `Sunteți sigur că doriți să ștergeți proiectul '${this.issue.title}'?`,
+        } as IConfirmationDialogData,
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) this._delete.emit(this.issue.id);
+      });
+  }
 }

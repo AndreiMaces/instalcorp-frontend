@@ -3,31 +3,40 @@
     <div>
       <app-bradcrumbs-menu></app-bradcrumbs-menu>
     </div>
-    <div class="flex flex-col gap-5 flex-grow">
-      <div class="flex justify-between items-center">
-        <div class="flex justify-center items-center gap-5">
-          <h1 class="text-3xl font-bold !m-0">{{ projectType?.title }}</h1>
+    <div class="flex-grow">
+      <div class="flex flex-col gap-5" *ngIf="!isLoading">
+        <div class="flex justify-between items-center">
+          <div class="flex justify-center items-center gap-5">
+            <h1 class="text-3xl font-bold !m-0">{{ projectType?.title }}</h1>
+          </div>
+          <div class="flex gap-5 items-center">
+            <div class="w-[40px] h-[40px] rounded-full shadow" [style.background-color]="projectType?.color ?? 'white'"></div>
+            <a routerLink="/dashboard/project-types" mat-flat-button class="!bg-gray-400">Arhivă</a>
+            <button mat-flat-button (click)="openCreateIssueDialog()" color="primary">
+              Creează proiect
+              <mat-icon class="ml-2">add</mat-icon>
+            </button>
+          </div>
         </div>
-        <div class="flex gap-5 items-center">
-          <div class="w-[40px] h-[40px] rounded-full shadow" [style.background-color]="projectType?.color ?? 'white'"></div>
-
-          <a routerLink="/dashboard/project-types" mat-flat-button class="!bg-gray-400">Arhivă</a>
-          <button mat-flat-button (click)="openCreateIssueDialog()" color="primary">
-            Creează proiect
-            <mat-icon class="ml-2">add</mat-icon>
-          </button>
+        <div>
+          <p>{{ projectType?.description }}</p>
+        </div>
+        <div class="flex flex-col gap-5 h-full" *ngIf="!isLoading">
+          <div *ngIf="projectType?.issues?.length === 0" class="flex justify-center items-center h-full">
+            <p class="text-gray-500 text-2xl">Nu există proiecte.</p>
+          </div>
+          <div *ngIf="projectType?.issues?.length > 0" class="flex flex-col gap-5">
+            <app-project-type-issue
+              *ngFor="let issue of projectType?.issues"
+              [issue]="issue"
+              (_delete)="removeIssue($event)"
+              (_edit)="getProjectType()"
+            ></app-project-type-issue>
+          </div>
         </div>
       </div>
-      <div>
-        <p>{{ projectType?.description }}</p>
-      </div>
-      <div class="flex flex-col gap-5 h-full" *ngIf="!isLoading">
-        <div *ngIf="projectType?.issues?.length === 0" class="flex justify-center items-center h-full">
-          <p class="text-gray-500 text-2xl">Nu există proiecte.</p>
-        </div>
-        <div cdkDropList (cdkDropListDropped)="drop($event)" *ngIf="projectType?.issues?.length > 0" class="flex flex-col gap-5">
-          <app-project-type-issue cdkDrag *ngFor="let issue of projectType?.issues" [issue]="issue"></app-project-type-issue>
-        </div>
+      <div class="w-full h-full flex justify-center items-center" *ngIf="isLoading">
+        <mat-spinner diameter="80"></mat-spinner>
       </div>
     </div>
   </div>

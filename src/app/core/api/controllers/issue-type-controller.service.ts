@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
 import { IIssueType } from '../../models/IIssueType';
+import { IIssue } from '../../models/IIssue';
 
 @Injectable({
   providedIn: 'root',
@@ -41,5 +42,9 @@ export class IssueTypeControllerService {
 
   updateIssueTypeOrder(issueTypes: IIssueType[]): Observable<void> {
     return this.apiService.put<void>(`${this._baseURL}/reorder`, issueTypes);
+  }
+
+  createProject(issueTypeId: number, newIssue: Partial<IIssue>): Observable<IIssue> {
+    return this.apiService.post<IIssue>(`${this._baseURL}/${issueTypeId}/issue`, newIssue);
   }
 }
