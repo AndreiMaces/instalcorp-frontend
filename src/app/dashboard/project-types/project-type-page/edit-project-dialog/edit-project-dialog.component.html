@@ -1,1 +1,16 @@
-<p>edit-project-dialog works!</p>
+<div class="flex flex-col">
+  <div class="p-5 border-b">
+    <p class="text-3xl !m-0">Editează proiect</p>
+  </div>
+  <div class="p-5">
+    <app-project-form
+      (close)="openDenyConfirmationDialog()"
+      (_submit)="editProject($event)"
+      *ngIf="!isLoading"
+      [project]="data.issue"
+    ></app-project-form>
+    <div *ngIf="isLoading" class="h-[400px] w-full flex justify-center items-center">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+  </div>
+</div>

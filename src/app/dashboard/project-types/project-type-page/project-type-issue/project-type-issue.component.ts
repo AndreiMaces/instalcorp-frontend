@@ -26,7 +26,19 @@ export class ProjectTypeIssueComponent {
   constructor(private dialog: MatDialog) {}
 
   openEditIssueDialog(): void {
-    this.dialog.open(EditProjectDialogComponent);
+    this.dialog
+      .open(EditProjectDialogComponent, {
+        data: {
+          issue: this.issue,
+        },
+        width: '1200px',
+        maxWidth: '100%',
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) this._edit.emit();
+      });
   }
 
   openDeleteIssueDialog(): void {

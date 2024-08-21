@@ -14,4 +14,8 @@ export class IssueControllerService {
   removeIssue(issueId: number): Observable<IIssue> {
     return this.apiService.delete<IIssue>(`${this._baseURL}/${issueId}`);
   }
+
+  editIssue(issueId: number, newIssue: Partial<IIssue>): Observable<IIssue> {
+    return this.apiService.put(`${this._baseURL}/${issueId}`, newIssue);
+  }
 }

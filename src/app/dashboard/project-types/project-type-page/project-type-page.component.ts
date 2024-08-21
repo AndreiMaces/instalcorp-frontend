@@ -13,6 +13,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { CreateProjectDialogComponent } from './create-project-dialog/create-project-dialog.component';
 import { IssueControllerService } from '../../../core/api/controllers/issue-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-project-type-page',
@@ -28,6 +29,8 @@ import { MatSnackBar } from '@angular/material/snack-bar';
     RouterLink,
     BradcrumbsMenuComponent,
     ProjectTypeIssueComponent,
+    CdkDropList,
+    CdkDrag,
   ],
   host: {
     class: 'flex-grow',
@@ -95,5 +98,9 @@ export class ProjectTypePageComponent {
         });
       },
     });
+  }
+
+  drop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.projectType?.issues, event.previousIndex, event.currentIndex);
   }
 }

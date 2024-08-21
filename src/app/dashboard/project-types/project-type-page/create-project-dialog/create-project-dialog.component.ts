@@ -53,7 +53,7 @@ export class CreateProjectDialogComponent {
       },
       error: () => {
         this.isLoading = false;
-        this.snackBarService.open('A apărut o eroare la crearea tipului de proiect.', 'Close', {
+        this.snackBarService.open('A apărut o eroare la crearea proiectului.', 'Close', {
           duration: 3000,
         });
       },

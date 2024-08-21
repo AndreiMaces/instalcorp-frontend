@@ -1,4 +1,4 @@
-import { Component, output } from '@angular/core';
+import { Component, Input, output } from '@angular/core';
 import { ProjectFormFactory } from './ProjectFormFactory';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
@@ -43,15 +43,28 @@ import { MatIcon } from '@angular/material/icon';
 export class ProjectFormComponent {
   _submit = output<Partial<IIssueType>>();
   close = output();
-
   projectForm = ProjectFormFactory.create();
+  @Input() project: Partial<IIssueType>;
 
   constructor(private snackBarService: MatSnackBar) {}
+
+  ngOnInit(): void {
+    if (this.project) {
+      this.prefillForm();
+    }
+  }
+
+  prefillForm(): void {
+    this.projectForm.patchValue(this.project);
+  }
 
   onSubmit() {
     this.projectForm.markAllAsTouched();
     if (this.projectForm.valid) {
-      this._submit.emit(this.projectForm.value);
+      this._submit.emit({
+        name: 'Project',
+        ...this.projectForm.value,
+      });
     } else {
       this.snackBarService.open('Informațiile introduse sunt incorecte', 'Close', {
         duration: 3000,
