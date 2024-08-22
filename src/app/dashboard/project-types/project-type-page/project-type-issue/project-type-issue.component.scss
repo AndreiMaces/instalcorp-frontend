@@ -1,0 +1,10 @@
+:root {
+  --red: 200;
+  --green: 60;
+  --blue: 255;
+}
+
+.change-color {
+  --perceived-lightness: calc(var(--sum) / 255);
+  color: hsl(0, 0%, calc((var(--perceived-lightness) - 0.5) * -10000000%));
+}

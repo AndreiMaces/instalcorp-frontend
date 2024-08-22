@@ -1,0 +1,25 @@
+<div *ngIf="status === EProjectStatus.NOT_STARTED">
+  <div class="py-3 w-[100px] bg-gray-500 text-gray-50 shadow rounded-3xl flex justify-center items-center text-xs">
+    <span>Neînceput</span>
+  </div>
+</div>
+<div *ngIf="status === EProjectStatus.RECURRING">
+  <div class="py-3 w-[100px] bg-yellow-500 text-yellow-50 shadow rounded-3xl flex justify-center items-center text-xs">
+    <span>În revenire</span>
+  </div>
+</div>
+<div *ngIf="status === EProjectStatus.FINISHED">
+  <div class="py-3 w-[100px] bg-green-500 text-green-50 shadow rounded-3xl flex justify-center items-center text-xs">
+    <span>Terminat</span>
+  </div>
+</div>
+<div *ngIf="status === EProjectStatus.CLOSED">
+  <div class="py-3 w-[100px] bg-red-500 text-red-50 shadow rounded-3xl flex justify-center items-center text-xs">
+    <span>Închis</span>
+  </div>
+</div>
+<div *ngIf="status === EProjectStatus.IN_PROGRESS">
+  <div class="py-3 w-[100px] bg-blue-500 text-blue-50 shadow rounded-3xl flex justify-center items-center text-xs">
+    <span>În progres</span>
+  </div>
+</div>

@@ -10,11 +10,13 @@ import {
   IConfirmationDialogData,
 } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-dialog.component';
+import { IssueStatusComponent } from './issue-status/issue-status.component';
+import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
 
 @Component({
   selector: 'app-project-type-issue',
   standalone: true,
-  imports: [MatIcon, MatIconButton, MatMenu, MatMenuItem, RouterLink, MatMenuTrigger],
+  imports: [MatIcon, MatIconButton, MatMenu, MatMenuItem, RouterLink, MatMenuTrigger, IssueStatusComponent],
   templateUrl: './project-type-issue.component.html',
   styleUrl: './project-type-issue.component.scss',
 })
@@ -69,4 +71,6 @@ export class ProjectTypeIssueComponent {
         if (res) this._delete.emit(this.issue.id);
       });
   }
+
+  protected readonly ColorHelperService = ColorHelperService;
 }
