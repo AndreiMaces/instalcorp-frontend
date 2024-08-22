@@ -22,4 +22,8 @@ export class IssueControllerService {
   createIssue(newIssue: Partial<IIssue>): Observable<IIssue> {
     return this.apiService.post<IIssue>(`${this._baseURL}`, newIssue);
   }
+
+  cloneIssue(issueId: number): Observable<IIssue> {
+    return this.apiService.post<IIssue>(`${this._baseURL}/${issueId}/duplicate`);
+  }
 }

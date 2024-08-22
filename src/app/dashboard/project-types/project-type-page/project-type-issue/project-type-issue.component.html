@@ -8,6 +8,10 @@
     <mat-icon>more_vert</mat-icon>
   </button>
   <mat-menu #menu="matMenu">
+    <button mat-menu-item (click)="openDuplicateDialog()">
+      <mat-icon>content_copy</mat-icon>
+      <span>Creează copie</span>
+    </button>
     <button mat-menu-item (click)="openEditIssueDialog()">
       <mat-icon>edit</mat-icon>
       <span>Editează</span>

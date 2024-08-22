@@ -110,6 +110,20 @@ export class ProjectTypePageComponent {
     });
   }
 
+  cloneIssue(issueId: number): void {
+    this.isLoading = true;
+    this.issueController.cloneIssue(issueId).subscribe({
+      next: () => {
+        this.getProjectType();
+      },
+      error: (error) => {
+        this.snackBarService.open(error.error.error, 'Close', {
+          duration: 3000,
+        });
+      },
+    });
+  }
+
   drop(event: CdkDragDrop<string[]>) {
     moveItemInArray(this.projectType?.issues, event.previousIndex, event.currentIndex);
     this.issueTypeController.updateIssuesOrder(this.projectType).subscribe({

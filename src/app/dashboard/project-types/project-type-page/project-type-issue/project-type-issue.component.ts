@@ -21,9 +21,24 @@ import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-
 export class ProjectTypeIssueComponent {
   @Input() issue: IIssue;
   _delete = output<number>();
+  _clone = output<number>();
   _edit = output();
 
   constructor(private dialog: MatDialog) {}
+
+  openDuplicateDialog(): void {
+    this.dialog
+      .open(ConfirmationDialogComponent, {
+        data: {
+          message: `Sunteți sigur că doriți să creați o copie a proiectului '${this.issue.title}'?`,
+        } as IConfirmationDialogData,
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) this._clone.emit(this.issue.id);
+      });
+  }
 
   openEditIssueDialog(): void {
     this.dialog
