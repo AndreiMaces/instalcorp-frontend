@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
 import { IIssueType } from '../../models/IIssueType';
-import { IIssue } from '../../models/IIssue';
 
 @Injectable({
   providedIn: 'root',
@@ -48,8 +47,8 @@ export class IssueTypeControllerService {
     return this.apiService.put<void>(`${this._baseURL}/${issueType.id}/reorder`, issueType);
   }
 
-  createProject(issueTypeId: number, newIssue: Partial<IIssue>): Observable<IIssue> {
-    return this.apiService.post<IIssue>(`${this._baseURL}/${issueTypeId}/issue`, newIssue);
+  getArchive(issueTypeId: number): Observable<IIssueType> {
+    return this.apiService.get<IIssueType>(`${this._baseURL}/${issueTypeId}/issue/archive`);
   }
 
   getIssueTypesDropdown(): Observable<Partial<IIssueType>[]> {

@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProjectTypesComponent } from './project-types.component';
 import { ProjectTypesArchiveComponent } from './project-types-archive/project-types-archive.component';
 import { ProjectTypePageComponent } from './project-type-page/project-type-page.component';
+import { ProjectTypePageArchiveComponent } from './project-type-page-archive/project-type-page-archive.component';
 
 const routes: Routes = [
   {
@@ -22,6 +23,10 @@ const routes: Routes = [
       {
         path: '',
         component: ProjectTypePageComponent,
+      },
+      {
+        path: 'archive',
+        component: ProjectTypePageArchiveComponent,
       },
       {
         path: ':issueId/:issueName',

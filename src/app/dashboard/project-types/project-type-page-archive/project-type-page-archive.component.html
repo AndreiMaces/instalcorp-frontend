@@ -7,20 +7,13 @@
       <div class="flex flex-col gap-5" *ngIf="!isLoading">
         <div class="flex justify-between items-center">
           <div class="flex justify-center items-center gap-5">
-            <h1 class="text-3xl font-bold !m-0">{{ projectType?.title }}</h1>
+            <h1 class="text-3xl font-bold !m-0">{{ projectType?.title }} (Arhivă)</h1>
           </div>
           <div class="flex gap-5 items-center">
             <div class="w-[40px] h-[40px] rounded-full shadow" [style.background-color]="projectType?.color ?? 'white'"></div>
-            <a
-              [routerLink]="'/dashboard/project-types/' + projectType.id + '/' + projectType.title + '/archive'"
-              mat-flat-button
-              class="!bg-gray-400"
-              >Arhivă</a
+            <a [routerLink]="'/dashboard/project-types/' + projectType.id + '/' + projectType.title" mat-flat-button class="!bg-gray-400"
+              >Mergeți la tipul de proiect</a
             >
-            <button mat-flat-button (click)="openCreateIssueDialog()" color="primary">
-              Creează proiect
-              <mat-icon class="ml-2">add</mat-icon>
-            </button>
           </div>
         </div>
         <div>
@@ -30,15 +23,12 @@
           <div *ngIf="projectType?.issues?.length === 0" class="flex justify-center items-center h-full">
             <p class="text-gray-500 text-2xl">Nu există proiecte.</p>
           </div>
-          <div cdkDropList (cdkDropListDropped)="drop($event)" *ngIf="projectType?.issues?.length > 0" class="flex flex-col gap-5">
-            <app-project-type-issue
-              cdkDrag
+          <div *ngIf="projectType?.issues?.length > 0" class="flex flex-col gap-5">
+            <app-archived-project
               *ngFor="let issue of projectType?.issues"
               [issue]="issue"
-              (_delete)="removeIssue($event)"
-              (_edit)="getProjectType()"
-              (_clone)="cloneIssue($event)"
-            ></app-project-type-issue>
+              (_restore)="restoreProject($event)"
+            ></app-archived-project>
           </div>
         </div>
       </div>

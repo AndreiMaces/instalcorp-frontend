@@ -1,0 +1,4 @@
+<div class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl" [style.background-color]="issue.color ?? 'white'">
+  <span> {{ issue.title }} </span>
+  <button mat-button (click)="$event.stopPropagation(); $event.preventDefault(); openRestoreIssueDialog()">Restaurare</button>
+</div>

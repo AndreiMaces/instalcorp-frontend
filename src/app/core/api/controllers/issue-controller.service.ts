@@ -26,4 +26,8 @@ export class IssueControllerService {
   cloneIssue(issueId: number): Observable<IIssue> {
     return this.apiService.post<IIssue>(`${this._baseURL}/${issueId}/duplicate`);
   }
+
+  restoreIssue(issueId: number): Observable<IIssue> {
+    return this.apiService.put<IIssue>(`${this._baseURL}/${issueId}/restore`);
+  }
 }
