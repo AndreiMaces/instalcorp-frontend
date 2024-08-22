@@ -49,6 +49,7 @@ export class ProjectTypeComponent {
           issueType: this.projectType,
         },
         width: '800px',
+        maxHeight: '90vh',
       })
       .afterClosed()
       .subscribe((result) => {
@@ -61,6 +62,7 @@ export class ProjectTypeComponent {
       .open(ConfirmationDialogComponent, {
         maxWidth: '100%',
         width: '800px',
+        maxHeight: '90vh',
         disableClose: true,
         data: {
           message: `Sunteți sigur că doriți să ștergeți tipul de proiect "${this.projectType.title}"?`,

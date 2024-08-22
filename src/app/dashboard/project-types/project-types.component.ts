@@ -85,6 +85,7 @@ export class ProjectTypesComponent implements OnInit {
       .open(CreateProjectDialogComponent, {
         width: '1200px',
         maxWidth: '100%',
+        maxHeight: '90vh',
         disableClose: true,
       })
       .afterClosed()
