@@ -52,10 +52,10 @@ export class EditProjectDialogComponent {
         this.dialogRef.close(true);
       },
       error: () => {
-        this.isLoading = false;
         this.snackBarService.open('A apărut o eroare la editarea proiectului.', 'Close', {
           duration: 3000,
         });
+        this.isLoading = false;
       },
     });
   }

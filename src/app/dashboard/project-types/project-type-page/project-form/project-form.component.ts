@@ -85,7 +85,17 @@ export class ProjectFormComponent {
   }
 
   prefillForm(): void {
-    this.projectForm.patchValue(this.project);
+    this.projectForm.patchValue({
+      title: this.project.title ?? '',
+      description: this.project.description ?? '',
+      color: this.project.color ?? '#ffffff',
+      startHour: this.project.startHour ?? new Date(),
+      endHour: this.project.endHour ?? new Date(),
+      startDate: this.project.startDate ?? new Date(),
+      endDate: this.project.endDate ?? new Date(),
+      status: this.project.status ?? 0,
+      typeId: this.project.typeId ?? this.issueTypes[0].id,
+    });
   }
 
   onSubmit() {

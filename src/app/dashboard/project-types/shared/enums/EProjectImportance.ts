@@ -2,5 +2,7 @@ export enum EProjectImportance {
   UNKOWN,
   VERY_LOW,
   LOW,
-  MEDIU,
+  MEDIUM,
+  HIGH,
+  VERY_HIGH,
 }

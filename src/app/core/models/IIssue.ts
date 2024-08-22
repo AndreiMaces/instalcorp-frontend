@@ -1,4 +1,5 @@
 import { IIssueType } from './IIssueType';
+import { EProjectImportance } from '../../dashboard/project-types/shared/enums/EProjectImportance';
 
 export interface IIssue {
   id: number;
@@ -13,6 +14,7 @@ export interface IIssue {
   status: number;
   type?: IIssueType;
   typeId?: number;
+  importance: EProjectImportance;
   isDeleted: boolean;
 }
 

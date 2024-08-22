@@ -30,6 +30,9 @@ import { ArchivedProjectComponent } from './archived-project/archived-project.co
     RouterLink,
     ArchivedProjectComponent,
   ],
+  host: {
+    class: 'flex-grow',
+  },
   templateUrl: './project-type-page-archive.component.html',
   styleUrl: './project-type-page-archive.component.scss',
 })

@@ -14,6 +14,9 @@ import { CreateProjectDialogComponent } from './create-project-dialog/create-pro
 import { IssueControllerService } from '../../../core/api/controllers/issue-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
+import { MatFormField, MatLabel } from '@angular/material/form-field';
+import { MatOption, MatSelect } from '@angular/material/select';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-project-type-page',
@@ -31,6 +34,11 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
     ProjectTypeIssueComponent,
     CdkDropList,
     CdkDrag,
+    MatFormField,
+    MatLabel,
+    MatSelect,
+    ReactiveFormsModule,
+    MatOption,
   ],
   host: {
     class: 'flex-grow',
@@ -41,6 +49,10 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 export class ProjectTypePageComponent {
   projectType: IIssueType;
   isLoading = false;
+  isLoadingIssues = false;
+  sortForm = new FormGroup({
+    sortingCriteria: new FormControl<string>('order', [Validators.required]),
+  });
 
   constructor(
     private issueTypeController: IssueTypeControllerService,
@@ -52,30 +64,39 @@ export class ProjectTypePageComponent {
 
   ngOnInit(): void {
     this.getProjectType();
+    this.subscribeToSortingCriteriaChange();
+  }
+
+  subscribeToSortingCriteriaChange(): void {
+    this.sortForm.controls.sortingCriteria.valueChanges.subscribe((res) => {
+      this.getProjectTypeIssues(res);
+    });
   }
 
   getProjectType(): void {
     this.isLoading = true;
-    this.issueTypeController.getIssueType(this.route.snapshot.params['id']).subscribe({
-      next: (projectType) => {
-        this.projectType = projectType;
-        this.projectType.issues.map((issue) => {
-          return {
-            ...issue,
-            typeId: this.projectType.id,
-            type: {
-              id: this.projectType.id,
-              title: this.projectType.title,
-            },
-          };
-        });
-        this.isLoading = false;
-      },
-      error: (error) => {
-        console.error(error);
-        this.isLoading = false;
-      },
-    });
+    this.issueTypeController
+      .getIssueType(this.route.snapshot.params['id'], { sortingCriteria: this.sortForm.controls.sortingCriteria.value })
+      .subscribe({
+        next: (projectType) => {
+          this.projectType = projectType;
+          this.projectType.issues.map((issue) => {
+            return {
+              ...issue,
+              typeId: this.projectType.id,
+              type: {
+                id: this.projectType.id,
+                title: this.projectType.title,
+              },
+            };
+          });
+          this.isLoading = false;
+        },
+        error: (error) => {
+          console.error(error);
+          this.isLoading = false;
+        },
+      });
   }
 
   openCreateIssueDialog(): void {
@@ -122,6 +143,36 @@ export class ProjectTypePageComponent {
         });
       },
     });
+  }
+
+  getProjectTypeIssues(sortingCriteria: string): void {
+    this.isLoadingIssues = true;
+    this.issueTypeController.getIssueType(this.route.snapshot.params['id'], { sortingCriteria }).subscribe({
+      next: (projectType) => {
+        this.projectType.issues = projectType.issues;
+        this.projectType.issues.map((issue) => {
+          return {
+            ...issue,
+            typeId: this.projectType.id,
+            type: {
+              id: this.projectType.id,
+              title: this.projectType.title,
+            },
+          };
+        });
+        this.isLoadingIssues = false;
+      },
+      error: () => {
+        this.snackBarService.open('A apărut o eroare la sortarea proiectelor.', 'Close', {
+          duration: 3000,
+        });
+        this.isLoadingIssues = false;
+      },
+    });
+  }
+
+  onSortChange(): void {
+    this.getProjectType();
   }
 
   drop(event: CdkDragDrop<string[]>) {
