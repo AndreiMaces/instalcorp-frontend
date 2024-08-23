@@ -11,6 +11,10 @@ export class IssueControllerService {
 
   constructor(private apiService: ApiService) {}
 
+  getIssue(issueId: number): Observable<IIssue> {
+    return this.apiService.get<IIssue>(`${this._baseURL}/${issueId}`)
+  }
+
   removeIssue(issueId: number): Observable<IIssue> {
     return this.apiService.delete<IIssue>(`${this._baseURL}/${issueId}`);
   }
