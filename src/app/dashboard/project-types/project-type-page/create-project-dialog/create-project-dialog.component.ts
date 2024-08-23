@@ -35,6 +35,7 @@ export class CreateProjectDialogComponent {
 
   initType(): void {
     this.project = {
+      color: this.data?.issueType.color,
       typeId: this?.data?.issueType?.id,
     };
   }
