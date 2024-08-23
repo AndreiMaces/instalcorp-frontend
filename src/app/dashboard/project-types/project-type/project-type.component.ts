@@ -1,4 +1,4 @@
-import { Component, Input, output } from '@angular/core';
+import { Component, Input, output, ViewChild } from "@angular/core";
 import { IIssueType } from '../../../core/models/IIssueType';
 import {
   MatExpansionPanel,
@@ -15,6 +15,7 @@ import { EditProjectTypeDialogComponent } from './edit-project-type-dialog/edit-
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { RouterLink } from '@angular/router';
 import { ColorHelperService } from '../../../core/helpers/color-helper.service';
+import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
 
 @Component({
   selector: 'app-project-type',
@@ -32,12 +33,16 @@ import { ColorHelperService } from '../../../core/helpers/color-helper.service';
     MatMenu,
     MatMenuItem,
     RouterLink,
+    CdkContextMenuTrigger,
+    CdkMenu,
+    CdkMenuItem
   ],
   templateUrl: './project-type.component.html',
   styleUrl: './project-type.component.scss',
 })
 export class ProjectTypeComponent {
   @Input() projectType: IIssueType;
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger
   _edit = output();
   _delete = output<number>();
 
@@ -76,4 +81,10 @@ export class ProjectTypeComponent {
   }
 
   protected readonly ColorHelperService = ColorHelperService;
+
+  onRightClick(event: MouseEvent) {
+    this.trigger.openMenu();
+    event.stopPropagation();
+    event.preventDefault();
+  }
 }

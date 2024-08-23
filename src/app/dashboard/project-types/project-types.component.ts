@@ -14,6 +14,7 @@ import { BradcrumbsMenuComponent } from '../../shared/components/bradcrumbs-menu
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CreateProjectDialogComponent } from './project-type-page/create-project-dialog/create-project-dialog.component';
 import { IIssue } from '../../core/models/IIssue';
+import { MatMenu, MatMenuTrigger } from "@angular/material/menu";
 
 @Component({
   selector: 'app-project-types',
@@ -31,6 +32,8 @@ import { IIssue } from '../../core/models/IIssue';
     BradcrumbsMenuComponent,
     CdkDropList,
     CdkDrag,
+    MatMenuTrigger,
+    MatMenu
   ],
   host: {
     class: 'flex-grow',

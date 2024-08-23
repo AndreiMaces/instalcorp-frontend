@@ -1,4 +1,5 @@
 <a
+  [cdkContextMenuTriggerFor]="context_menu"
   [routerLink]="'/dashboard/project-types/' + projectType.id + '/' + projectType.title"
   class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl hover:brightness-[80%] transition-all cursor-pointer"
   [style.background-color]="projectType.color ?? 'white'"
@@ -17,4 +18,17 @@
       <span>Șterge</span>
     </button>
   </mat-menu>
+
+  <ng-template #context_menu>
+    <div class="bg-white rounded-[.5rem] overflow-hidden" cdkMenu>
+      <button mat-menu-item cdkMenuItem (click)="openEditProjectTypeDialog()">
+        <mat-icon>edit</mat-icon>
+        <span>Editează</span>
+      </button>
+      <button mat-menu-item cdkMenuItem (click)="openDeleteProjectTypeDialog()">
+        <mat-icon>delete</mat-icon>
+        <span>Șterge</span>
+      </button>
+    </div>
+  </ng-template>
 </a>
