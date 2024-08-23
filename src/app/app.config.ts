@@ -7,6 +7,7 @@ import { provideAnimationsAsync } from '@angular/platform-browser/animations/asy
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
 import { badGatewayInterceptor } from "./core/interceptors/bad-gateway-interceptor";
+import { notFoundInterceptor } from "./core/interceptors/not-found.interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -14,7 +15,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([badGatewayInterceptor])),
+    provideHttpClient(withInterceptors([badGatewayInterceptor,notFoundInterceptor])),
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' }, },
   ],
 };

@@ -1,5 +1,6 @@
 import { Routes } from '@angular/router';
 import { BadGatewayComponent } from "./shared/components/bad-gateway/bad-gateway.component";
+import { NotFoundPageComponent } from "./shared/components/not-found-page/not-found-page.component";
 
 export const routes: Routes = [
   {
@@ -15,5 +16,13 @@ export const routes: Routes = [
   {
     path:'maintenance',
     component: BadGatewayComponent,
+  },
+  {
+    path: 'not-found',
+    component: NotFoundPageComponent,
+  },
+  {
+    path: '**',
+    component: NotFoundPageComponent,
   }
 ];
