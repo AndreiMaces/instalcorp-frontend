@@ -1,13 +1,13 @@
 <a
   [routerLink]="issue?.id + '/' + issue?.title"
   class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl hover:brightness-[80%] transition-all cursor-pointer"
-  [style]="'background-image: linear-gradient(to left, white 20% ,' + issue?.color + ');'"
+  [style]="'background-image: linear-gradient(to right, white 40% ,' + issue?.color + ' 0%);'"
 >
-  <div class="w-full flex items-center justify-between gap-5">
-    <span [style.color]="ColorHelperService.invertedColor(issue?.color)">
+  <div class="w-full flex items-center gap-5 lg:max-w-[35%]">
+    <app-issue-status [status]="issue.status"></app-issue-status>
+    <span class="truncate">
       {{ issue?.title }}
     </span>
-    <app-issue-status [status]="issue.status"></app-issue-status>
   </div>
 
   <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation(); $event.preventDefault()">
