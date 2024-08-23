@@ -3,7 +3,7 @@
   class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl hover:brightness-[80%] transition-all cursor-pointer"
   [style.background-color]="projectType.color ?? 'white'"
 >
-  <span> {{ projectType.title }} </span>
+  <span [style.color]="ColorHelperService.invertedColor(projectType.color)"> {{ projectType.title }} </span>
   <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation(); $event.preventDefault()">
     <mat-icon>more_vert</mat-icon>
   </button>

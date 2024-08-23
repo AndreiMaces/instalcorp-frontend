@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditProjectTypeDialogComponent } from './edit-project-type-dialog/edit-project-type-dialog.component';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { RouterLink } from '@angular/router';
+import { ColorHelperService } from '../../../core/helpers/color-helper.service';
 
 @Component({
   selector: 'app-project-type',
@@ -73,4 +74,6 @@ export class ProjectTypeComponent {
         if (result) this._delete.emit(this.projectType.id);
       });
   }
+
+  protected readonly ColorHelperService = ColorHelperService;
 }
