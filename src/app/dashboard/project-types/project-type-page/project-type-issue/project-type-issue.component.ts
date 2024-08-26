@@ -12,12 +12,24 @@ import {
 import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-dialog.component';
 import { IssueStatusComponent } from './issue-status/issue-status.component';
 import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
-import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
+import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
+import { HandleEmployeesComponent } from '../handle-employees-dialog/handle-employees.component';
 
 @Component({
   selector: 'app-project-type-issue',
   standalone: true,
-  imports: [MatIcon, MatIconButton, MatMenu, MatMenuItem, RouterLink, MatMenuTrigger, IssueStatusComponent, CdkMenu, CdkMenuItem, CdkContextMenuTrigger],
+  imports: [
+    MatIcon,
+    MatIconButton,
+    MatMenu,
+    MatMenuItem,
+    RouterLink,
+    MatMenuTrigger,
+    IssueStatusComponent,
+    CdkMenu,
+    CdkMenuItem,
+    CdkContextMenuTrigger,
+  ],
   templateUrl: './project-type-issue.component.html',
   styleUrl: './project-type-issue.component.scss',
 })
@@ -51,6 +63,7 @@ export class ProjectTypeIssueComponent {
         },
         width: '1200px',
         maxWidth: '100%',
+        maxHeight: '80vh',
         disableClose: true,
       })
       .afterClosed()
@@ -71,6 +84,18 @@ export class ProjectTypeIssueComponent {
       .subscribe((res) => {
         if (res) this._delete.emit(this.issue.id);
       });
+  }
+
+  openHandleEmployeesDialog(): void {
+    this.dialog.open(HandleEmployeesComponent, {
+      data: {
+        issue: this.issue,
+      },
+      disableClose: true,
+      maxWidth: '100%',
+      maxHeight: '80vh',
+      width: '1000px',
+    });
   }
 
   protected readonly ColorHelperService = ColorHelperService;

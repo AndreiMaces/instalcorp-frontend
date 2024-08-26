@@ -58,6 +58,7 @@
       >{{ ValidationHelperService.getErrorMessage(projectForm.controls.description) }}
     </mat-error>
   </mat-form-field>
+  <app-employee-issue-form [issue]="project" *ngIf="!!project?.id"></app-employee-issue-form>
   <div class="p-5 border-t flex justify-end gap-5">
     <button mat-flat-button>Salvează</button>
     <button mat-flat-button color="warn" (click)="close.emit()" type="button">Anulează</button>

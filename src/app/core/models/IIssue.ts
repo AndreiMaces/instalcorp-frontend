@@ -1,5 +1,6 @@
 import { IIssueType } from './IIssueType';
 import { EProjectImportance } from '../../dashboard/project-types/shared/enums/EProjectImportance';
+import { IEmployeeIssue } from './IEmployeeIssue';
 
 export interface IIssue {
   id: number;
@@ -15,21 +16,6 @@ export interface IIssue {
   type?: IIssueType;
   typeId?: number;
   importance: EProjectImportance;
+  employeeIssues?: IEmployeeIssue[];
   isDeleted: boolean;
 }
-
-/*
-*  id Int @id @default(autoincrement())
-  name String
-  title String
-  description String?
-  color String?
-  startHour DateTime? @db.Time()
-  endHour DateTime? @db.Time()
-  startDate DateTime?
-  endDate DateTime?
-  status Int
-  type IssueType @relation(fields: [typeId], references: [id])
-  typeId Int
-  isDeleted Boolean @default(false)
-* */

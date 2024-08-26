@@ -28,6 +28,10 @@ export class EditProjectDialogComponent {
     @Inject(MAT_DIALOG_DATA) public data: { issue: IIssue },
   ) {}
 
+  ngOnInit(): void {
+    this.getProject();
+  }
+
   openDenyConfirmationDialog(): void {
     this.dialog
       .open(ConfirmationDialogComponent, {
@@ -42,6 +46,22 @@ export class EditProjectDialogComponent {
       .subscribe((result) => {
         if (result) this.dialog.closeAll();
       });
+  }
+
+  getProject(): void {
+    this.isLoading = true;
+    this.issueController.getIssue(this.data.issue.id).subscribe({
+      next: (issue) => {
+        this.data.issue = issue;
+        this.isLoading = false;
+      },
+      error: () => {
+        this.snackBarService.open('A apărut o eroare la preluarea proiectului.', 'Close', {
+          duration: 3000,
+        });
+        this.isLoading = false;
+      },
+    });
   }
 
   editProject(newIssue: Partial<IIssueType>): void {
