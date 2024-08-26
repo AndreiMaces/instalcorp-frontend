@@ -29,7 +29,6 @@ export class ProjectFormFactory {
       status: new FormControl<EProjectStatus>(EProjectStatus.NOT_STARTED),
       typeId: new FormControl<number>(null, [Validators.required]),
       importance: new FormControl<number>(0, [Validators.required]),
-      employeeIssues: new FormArray<FormGroup<IEmployeeIssueForm>>([]),
     });
   }
 }
