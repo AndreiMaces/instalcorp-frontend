@@ -12,8 +12,8 @@ import {
 import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-dialog.component';
 import { IssueStatusComponent } from './issue-status/issue-status.component';
 import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
-import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
-import { IssueImportanceComponent } from "./issue-importance/issue-importance.component";
+import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
+import { IssueImportanceComponent } from './issue-importance/issue-importance.component';
 import { HandleEmployeesComponent } from '../handle-employees-dialog/handle-employees.component';
 
 @Component({
@@ -30,6 +30,7 @@ import { HandleEmployeesComponent } from '../handle-employees-dialog/handle-empl
     CdkMenu,
     CdkMenuItem,
     CdkContextMenuTrigger,
+    IssueImportanceComponent,
   ],
   templateUrl: './project-type-issue.component.html',
   styleUrl: './project-type-issue.component.scss',
