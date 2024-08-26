@@ -4,7 +4,7 @@ import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgForOf, NgIf } from '@angular/common';
 import { ProjectTypeComponent } from '../project-type/project-type.component';
-import { ActivatedRoute, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from "@angular/router";
 import { IssueTypeControllerService } from '../../../core/api/controllers/issue-type-controller.service';
 import { IIssueType } from '../../../core/models/IIssueType';
 import { BradcrumbsMenuComponent } from '../../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
@@ -23,6 +23,9 @@ import { CreateProjectTypeDialogComponent } from "../create-project-type-dialog/
 import {
   EditProjectTypeDialogComponent
 } from "../project-type/edit-project-type-dialog/edit-project-type-dialog.component";
+import {
+  ConfirmationDialogComponent
+} from "../../../shared/components/confirmation-dialog/confirmation-dialog.component";
 
 @Component({
   selector: 'app-project-type-page',
@@ -70,6 +73,7 @@ export class ProjectTypePageComponent {
     private dialog: MatDialog,
     private issueController: IssueControllerService,
     private snackBarService: MatSnackBar,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -151,6 +155,36 @@ export class ProjectTypePageComponent {
       description: this.projectType.description,
       id: this.projectType.id,
     }
+  }
+
+  deleteIssueType(): void {
+    this.dialog
+      .open(ConfirmationDialogComponent, {
+        data: {
+          message: `Sunteți sigur că doriți să ștergeți tipul de proiect "${this.projectType.title}"?`,
+        },
+        width: '800px',
+        maxWidth: '100%',
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) {
+          this.isLoading = true;
+          this.issueTypeController.deleteIssueType(this.projectType.id).subscribe({
+            next: () => {
+              this.isLoading = false;
+              this.router.navigate(['/dashboard/project-types']);
+            },
+            error: (error) => {
+              this.snackBarService.open(error.error.error, 'Close', {
+                duration: 3000,
+              });
+              this.isLoading = false;
+            },
+          });
+        }
+      });
   }
 
   removeIssue(issueId: number): void {
