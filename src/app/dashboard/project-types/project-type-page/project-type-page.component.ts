@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { MatAnchor, MatButton } from '@angular/material/button';
+import { MatAnchor, MatButton, MatIconButton } from "@angular/material/button";
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgForOf, NgIf } from '@angular/common';
@@ -17,6 +17,12 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
+import { ProjectTypeFormComponent } from "../shared/components/project-type-form/project-type-form.component";
+import { CreateProjectTypeDialogComponent } from "../create-project-type-dialog/create-project-type-dialog.component";
+import {
+  EditProjectTypeDialogComponent
+} from "../project-type/edit-project-type-dialog/edit-project-type-dialog.component";
 
 @Component({
   selector: 'app-project-type-page',
@@ -39,6 +45,10 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
     MatSelect,
     ReactiveFormsModule,
     MatOption,
+    MatMenu,
+    MatMenuItem,
+    MatIconButton,
+    MatMenuTrigger
   ],
   host: {
     class: 'flex-grow',
@@ -115,6 +125,32 @@ export class ProjectTypePageComponent {
           this.getProjectType();
         }
       });
+  }
+
+  openEditIssueTypeDialog(): void {
+    this.dialog.open(EditProjectTypeDialogComponent, {
+      data: {
+        issueType: this.createEditPayload(),
+      },
+      width: '1200px',
+      maxWidth: '100%',
+      disableClose: true,
+    })
+    .afterClosed()
+    .subscribe((res) => {
+      if (res) {
+        this.getProjectType();
+      }
+    });
+  }
+
+  createEditPayload(): IIssueType {
+    return {
+      title: this.projectType.title,
+      color: this.projectType.color,
+      description: this.projectType.description,
+      id: this.projectType.id,
+    }
   }
 
   removeIssue(issueId: number): void {
