@@ -20,6 +20,6 @@ export class EmployeeControllerService {
   }
 
   createEmployee(newEmployee: Partial<IEmployee>): Observable<IEmployee> {
-    return this.apiService.post<IEmployee>(`${this._baseURL}`);
+    return this.apiService.post<IEmployee>(`${this._baseURL}`, newEmployee);
   }
 }

@@ -17,6 +17,8 @@ import { IssueTypeControllerService } from '../../../../core/api/controllers/iss
 import { MatDialog } from '@angular/material/dialog';
 import { IIssue } from '../../../../core/models/IIssue';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { IEmployee } from '../../../../core/models/IEmployee';
+import { EmployeeIssueFormComponent } from './employee-issue-form/employee-issue-form.component';
 
 @Component({
   selector: 'app-project-form',
@@ -42,6 +44,7 @@ import { MatProgressSpinner } from '@angular/material/progress-spinner';
     MatIcon,
     NgForOf,
     MatProgressSpinner,
+    EmployeeIssueFormComponent,
   ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss',
@@ -52,6 +55,7 @@ export class ProjectFormComponent {
   projectForm = ProjectFormFactory.create();
   @Input() project: Partial<IIssue>;
   issueTypes: Partial<IIssueType>[];
+  employees: Partial<IEmployee>[];
   isLoading = false;
 
   constructor(

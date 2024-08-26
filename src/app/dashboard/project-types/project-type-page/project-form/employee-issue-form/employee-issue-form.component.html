@@ -1,0 +1,43 @@
+<div class="flex flex-col gap-5">
+  <div *ngIf="!isLoading" class="flex flex-col gap-5">
+    <div class="w-full rounded-2xl border-b px-5 py-3" *ngFor="let employeeIssueForm of employeeIssuesForm.controls">
+      <div class="flex gap-5">
+        <span> {{ employeeIssueForm.value.employee.firstName }} {{ employeeIssueForm.value.employee.lastName }} </span>
+        <span> {{ employeeIssueForm.value.startDate | date }} - {{ employeeIssueForm.value.endDate | date }} </span>
+      </div>
+    </div>
+    <form [formGroup]="createForm" class="w-full rounded-2xl border-b px-5 py-3" (ngSubmit)="createEmployee()">
+      <div class="flex gap-5">
+        <mat-form-field appearance="outline">
+          <mat-select [formControl]="createForm.controls.employee">
+            <mat-option *ngFor="let employee of employees" [value]="employee">
+              {{ employee.firstName }} {{ employee.lastName }}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="ValidationHelperService.isInvalid(createForm.controls.employee)">
+            {{ ValidationHelperService.getErrorMessage(createForm.controls.employee) }}
+          </mat-error>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Introduceți o perioadă de timp</mat-label>
+          <mat-date-range-input [rangePicker]="picker">
+            <input matStartDate placeholder="Data început" [formControl]="createForm.controls.startDate" />
+            <input matEndDate placeholder="Data sfârșit" [formControl]="createForm.controls.endDate" />
+          </mat-date-range-input>
+          <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+          <mat-date-range-picker #picker></mat-date-range-picker>
+          <mat-error *ngIf="ValidationHelperService.isInvalid(createForm.controls.startDate)">
+            {{ ValidationHelperService.getErrorMessage(createForm.controls.startDate) }}
+          </mat-error>
+          <mat-error *ngIf="ValidationHelperService.isInvalid(createForm.controls.endDate)">
+            {{ ValidationHelperService.getErrorMessage(createForm.controls.endDate) }}
+          </mat-error>
+        </mat-form-field>
+      </div>
+      <button mat-flat-button color="primary">Adaugă angajat</button>
+    </form>
+  </div>
+  <div *ngIf="isLoading" class="w-full h-[200px] flex justify-center items-center">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+</div>
