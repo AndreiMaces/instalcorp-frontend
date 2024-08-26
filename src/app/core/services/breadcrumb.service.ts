@@ -40,6 +40,10 @@ export class BreadcrumbService {
         label = child.snapshot.params['name'];
       }
 
+      if (label === 'Employee' && child.snapshot.params['name']) {
+        label = child.snapshot.params['name'];
+      }
+
       if (label === 'Issue' && child.snapshot.params['issueName']) {
         label = child.snapshot.params['issueName'];
       }

@@ -23,6 +23,13 @@ const routes: Routes = [
         data: { breadcrumb: 'Tipuri de proiecte' },
         loadChildren: () => import('./project-types/project-types.module').then((m) => m.ProjectTypesModule),
       },
+      {
+        path: 'employees',
+        data: {
+          breadcrumb: 'Angajați',
+        },
+        loadChildren: () => import('./employees/employees.module').then((m) => m.EmployeesModule),
+      },
     ],
   },
 ];

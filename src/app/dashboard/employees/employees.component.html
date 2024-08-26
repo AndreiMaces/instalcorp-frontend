@@ -1,0 +1,14 @@
+<div class="w-full h-full p-5">
+  <div class="flex flex-col gap-5 h-full max-w-[1200px] mx-auto">
+    <div>
+      <app-bradcrumbs-menu></app-bradcrumbs-menu>
+    </div>
+    <h3>Angajați</h3>
+    <div *ngIf="isLoading" class="flex justify-center items-center w-full h-full">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+    <div *ngIf="!isLoading" class="flex flex-wrap gap-5 flex-grow">
+      <app-employee *ngFor="let employee of employees" [employee]="employee"></app-employee>
+    </div>
+  </div>
+</div>

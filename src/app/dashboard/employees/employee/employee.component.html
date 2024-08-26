@@ -1,0 +1,12 @@
+<a routerLink="{{ employee.id }}/{{ employee.lastName + ' ' + employee.firstName }}">
+  <mat-card class="w-[200px] h-[200px] flex flex-col hover:brightness-75">
+    <mat-card-header>
+      <p class="text-xl">{{ employee.firstName }} {{ employee.lastName }}</p>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="py-3">
+        <p>Număr de telefon: {{ employee.phone ?? "Nu este înregistrat" }}</p>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</a>

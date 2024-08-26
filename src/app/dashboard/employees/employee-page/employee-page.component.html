@@ -1,0 +1,26 @@
+<div class="w-full h-full p-5">
+  <div class="flex flex-col gap-5 h-full max-w-[1200px] mx-auto">
+    <div>
+      <app-bradcrumbs-menu></app-bradcrumbs-menu>
+    </div>
+    <div *ngIf="isLoading" class="flex justify-center items-center w-full h-full">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+    <div *ngIf="!isLoading" class="flex flex-col gap-5 flex-grow">
+      <h3>{{ employee?.lastName }} {{ employee?.firstName }}</h3>
+      <p>Număr de telefon: {{ employee.phone ?? "Nu este înregistrat" }}</p>
+      <div class="flex flex-col gap-5">
+        <div *ngFor="let employeeIssue of employee?.employeeIssues">
+          <div
+            class="flex items-center gap-3 w-full px-5 py-2 shadow rounded-2xl"
+            [style.color]="ColorHelperService.invertedColor(employeeIssue.issue.color ?? 'white')"
+            [style.background-color]="employeeIssue.issue.color ?? 'white'"
+          >
+            <span> {{ employeeIssue.issue.title }} </span>
+            <span>{{ employeeIssue.startDate | date }} - {{ employeeIssue.endDate | date }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
