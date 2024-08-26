@@ -12,11 +12,12 @@ import {
 import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-dialog.component';
 import { IssueStatusComponent } from './issue-status/issue-status.component';
 import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
+import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
 
 @Component({
   selector: 'app-project-type-issue',
   standalone: true,
-  imports: [MatIcon, MatIconButton, MatMenu, MatMenuItem, RouterLink, MatMenuTrigger, IssueStatusComponent],
+  imports: [MatIcon, MatIconButton, MatMenu, MatMenuItem, RouterLink, MatMenuTrigger, IssueStatusComponent, CdkMenu, CdkMenuItem, CdkContextMenuTrigger],
   templateUrl: './project-type-issue.component.html',
   styleUrl: './project-type-issue.component.scss',
 })
