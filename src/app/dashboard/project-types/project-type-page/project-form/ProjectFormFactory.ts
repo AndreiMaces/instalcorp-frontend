@@ -11,6 +11,7 @@ export interface ProjectForm {
   endDate: FormControl<Date>;
   status: FormControl<EProjectStatus>;
   typeId: FormControl<number>;
+  importance: FormControl<number>;
 }
 
 export class ProjectFormFactory {
@@ -25,6 +26,7 @@ export class ProjectFormFactory {
       endDate: new FormControl<Date>(new Date()),
       status: new FormControl<EProjectStatus>(EProjectStatus.NOT_STARTED),
       typeId: new FormControl<number>(null, [Validators.required]),
+      importance: new FormControl<number>(0, [Validators.required]),
     });
   }
 }

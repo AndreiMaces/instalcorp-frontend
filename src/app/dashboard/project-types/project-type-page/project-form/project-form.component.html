@@ -51,6 +51,23 @@
       </mat-error>
     </mat-form-field>
   </div>
+
+  <mat-form-field class="w-full">
+    <mat-label>Importanță</mat-label>
+    <mat-select [formControl]="projectForm.controls.importance" required>
+      <mat-option [value]="0">Necunoscut</mat-option>
+      <mat-option [value]="1">Foarte Mică</mat-option>
+      <mat-option [value]="2">Mică</mat-option>
+      <mat-option [value]="3">Medie</mat-option>
+      <mat-option [value]="4">Mare</mat-option>
+      <mat-option [value]="5">Foarte Mare</mat-option>
+    </mat-select>
+    <mat-error *ngIf="ValidationHelperService.isInvalid(projectForm.controls.importance)"
+    >{{ ValidationHelperService.getErrorMessage(projectForm.controls.importance) }}
+    </mat-error>
+  </mat-form-field>
+
+
   <mat-form-field class="w-full">
     <mat-label>Descriere</mat-label>
     <textarea matInput [formControl]="projectForm.controls.description" class="!resize-none" rows="10"></textarea>

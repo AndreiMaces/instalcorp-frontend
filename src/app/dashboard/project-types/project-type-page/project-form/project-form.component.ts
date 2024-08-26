@@ -95,6 +95,7 @@ export class ProjectFormComponent {
       endDate: this.project.endDate ?? new Date(),
       status: this.project.status ?? 0,
       typeId: this.project.typeId ?? this.issueTypes[0].id,
+      importance: this.project.importance ?? 0,
     });
   }
 

@@ -5,6 +5,7 @@
   [style]="'background-image: linear-gradient(to right, white 40% ,' + issue?.color + ' 0%);'"
 >
   <div class="w-full flex items-center gap-5 lg:max-w-[35%]">
+    <app-issue-importance [importance]="issue.importance"></app-issue-importance>
     <app-issue-status [status]="issue.status"></app-issue-status>
     <span class="truncate">
       {{ issue?.title }}

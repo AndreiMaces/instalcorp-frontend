@@ -14,11 +14,14 @@ import { MatOption } from "@angular/material/core";
 import { MatSelect } from "@angular/material/select";
 import { ProjectTypeIssueComponent } from "../../project-type-page/project-type-issue/project-type-issue.component";
 import { ReactiveFormsModule } from "@angular/forms";
+import {
+  IssueImportanceComponent
+} from "../../project-type-page/project-type-issue/issue-importance/issue-importance.component";
 
 @Component({
   selector: 'app-issue-page',
   standalone: true,
-  imports: [BradcrumbsMenuComponent, MatAnchor, MatButton, MatIcon, MatProgressSpinner, NgForOf, NgIf, ProjectTypeComponent, RouterLink, CdkDrag, CdkDropList, MatFormField, MatLabel, MatOption, MatSelect, ProjectTypeIssueComponent, ReactiveFormsModule],
+  imports: [BradcrumbsMenuComponent, MatAnchor, MatButton, MatIcon, MatProgressSpinner, NgForOf, NgIf, ProjectTypeComponent, RouterLink, CdkDrag, CdkDropList, MatFormField, MatLabel, MatOption, MatSelect, ProjectTypeIssueComponent, ReactiveFormsModule, IssueImportanceComponent],
   templateUrl: './issue-page.component.html',
   styleUrl: './issue-page.component.scss',
 })
