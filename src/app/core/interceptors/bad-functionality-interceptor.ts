@@ -3,13 +3,19 @@ import { catchError, Observable, of } from 'rxjs';
 import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 
-export function badGatewayInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
+export function badFunctionalityInterceptor(req: HttpRequest<unknown>, next: HttpHandlerFn): Observable<HttpEvent<unknown>> {
   const router = inject(Router);
 
   return next(req).pipe(
     catchError((error) => {
+      console.log('error', error);
       if (error.status === 0) {
         router.navigateByUrl('maintenance', {
+          skipLocationChange: true,
+        });
+      }
+      if (error.status === 404) {
+        router.navigateByUrl('not-found', {
           skipLocationChange: true,
         });
       }

@@ -6,8 +6,7 @@ import { provideClientHydration } from '@angular/platform-browser';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { provideHttpClient, withInterceptors } from "@angular/common/http";
 import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
-import { badGatewayInterceptor } from "./core/interceptors/bad-gateway-interceptor";
-import { notFoundInterceptor } from "./core/interceptors/not-found.interceptor";
+import { badFunctionalityInterceptor } from "./core/interceptors/bad-functionality-interceptor";
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -15,7 +14,7 @@ export const appConfig: ApplicationConfig = {
     provideRouter(routes),
     provideClientHydration(),
     provideAnimationsAsync(),
-    provideHttpClient(withInterceptors([badGatewayInterceptor,notFoundInterceptor])),
+    provideHttpClient(withInterceptors([badFunctionalityInterceptor])),
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'outline' }, },
   ],
 };
