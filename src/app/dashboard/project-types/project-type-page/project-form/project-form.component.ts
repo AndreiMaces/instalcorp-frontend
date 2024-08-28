@@ -1,6 +1,6 @@
 import { Component, Input, output } from '@angular/core';
 import { ProjectFormFactory } from './ProjectFormFactory';
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MatButton } from '@angular/material/button';
 import { MatError, MatFormField, MatFormFieldModule, MatHint, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -19,6 +19,8 @@ import { IIssue } from '../../../../core/models/IIssue';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { IEmployee } from '../../../../core/models/IEmployee';
 import { EmployeeIssueFormComponent } from './employee-issue-form/employee-issue-form.component';
+import { UploadMediaSingleComponent } from '../../../../shared/components/upload-media-single/upload-media-single.component';
+import { UploadMediaMultipleComponent } from '../../../../shared/components/upload-media-multiple/upload-media-multiple.component';
 
 @Component({
   selector: 'app-project-form',
@@ -45,6 +47,8 @@ import { EmployeeIssueFormComponent } from './employee-issue-form/employee-issue
     NgForOf,
     MatProgressSpinner,
     EmployeeIssueFormComponent,
+    UploadMediaSingleComponent,
+    UploadMediaMultipleComponent,
   ],
   templateUrl: './project-form.component.html',
   styleUrl: './project-form.component.scss',
@@ -101,6 +105,7 @@ export class ProjectFormComponent {
       typeId: this.project.typeId ?? this.issueTypes[0].id,
       importance: this.project.importance ?? 0,
     });
+    this.project.media.forEach((url) => this.projectForm.controls.media.push(new FormControl(url)));
   }
 
   onSubmit() {

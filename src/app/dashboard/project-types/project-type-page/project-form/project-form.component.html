@@ -63,10 +63,9 @@
       <mat-option [value]="5">Foarte Mare</mat-option>
     </mat-select>
     <mat-error *ngIf="ValidationHelperService.isInvalid(projectForm.controls.importance)"
-    >{{ ValidationHelperService.getErrorMessage(projectForm.controls.importance) }}
+      >{{ ValidationHelperService.getErrorMessage(projectForm.controls.importance) }}
     </mat-error>
   </mat-form-field>
-
 
   <mat-form-field class="w-full">
     <mat-label>Descriere</mat-label>
@@ -75,7 +74,14 @@
       >{{ ValidationHelperService.getErrorMessage(projectForm.controls.description) }}
     </mat-error>
   </mat-form-field>
-  <app-employee-issue-form [issue]="project" *ngIf="!!project?.id"></app-employee-issue-form>
+  <div class="flex flex-col gap-5">
+    <h3 class="font-bold border-b !m-0 py-3">Fișiere</h3>
+    <app-upload-media-multiple [_formArray]="projectForm.controls.media"></app-upload-media-multiple>
+  </div>
+  <div class="flex flex-col gap-5">
+    <h3 class="border-b !m-0 font-bold py-3">Intervale de lucru ale angajaților</h3>
+    <app-employee-issue-form [issue]="project" *ngIf="!!project?.id"></app-employee-issue-form>
+  </div>
   <div class="p-5 border-t flex justify-end gap-5">
     <button mat-flat-button>Salvează</button>
     <button mat-flat-button color="warn" (click)="close.emit()" type="button">Anulează</button>

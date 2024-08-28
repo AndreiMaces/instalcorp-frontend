@@ -16,6 +16,7 @@ import { ProjectTypeIssueComponent } from '../../project-type-page/project-type-
 import { ReactiveFormsModule } from '@angular/forms';
 import { IssueImportanceComponent } from '../../project-type-page/project-type-issue/issue-importance/issue-importance.component';
 import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
+import { EmployeesTableComponent } from '../../../../shared/components/employees-table/employees-table.component';
 
 @Component({
   selector: 'app-issue-page',
@@ -40,9 +41,13 @@ import { ColorHelperService } from '../../../../core/helpers/color-helper.servic
     ReactiveFormsModule,
     IssueImportanceComponent,
     DatePipe,
+    EmployeesTableComponent,
   ],
   templateUrl: './issue-page.component.html',
   styleUrl: './issue-page.component.scss',
+  host: {
+    class: 'flex-grow',
+  },
 })
 export class IssuePageComponent implements OnInit {
   issue: IIssue;

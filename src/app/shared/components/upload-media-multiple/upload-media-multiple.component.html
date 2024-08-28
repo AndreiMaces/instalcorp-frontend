@@ -1,0 +1,22 @@
+<div class="w-full min-h-[200px] border rounded-xl flex flex-col">
+  <div class="p-5 border-b flex items-center">
+    <input type="file" #fileInput (change)="onFileSelected($event)" [style.display]="'none'" multiple />
+    <button type="button" mat-flat-button color="primary" (click)="fileInput.click()">
+      {{ _formArray.value.length > 0 ? "Încarcă alt fișier" : "Încarcă fișier" }}
+    </button>
+  </div>
+  <div class="flex-grow w-full flex justify-center items-center h-[200px]" *ngIf="isLoading">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+  <div *ngIf="!isLoading" class="flex-grow flex">
+    <div class="flex flex-col items-center justify-center flex-grow" *ngIf="_formArray.value.length === 0">Nu există fișiere încărcate</div>
+    <div class="flex flex-col items-center justify-center flex-grow" *ngIf="_formArray.value.length > 0">
+      <div *ngFor="let control of _formArray.controls; let i = index" class="flex w-full justify-between items-center px-5 py-2 border-b">
+        <a [href]="'//' + control.value" target="_blank" class="text-blue-600 hover:text-blue-900 underline">{{ control.value }}</a>
+        <button type="button" mat-icon-button color="warn" (click)="_formArray.removeAt(i)">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

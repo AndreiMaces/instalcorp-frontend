@@ -1,0 +1,37 @@
+<div class="flex flex-col">
+  <div class="-m-1.5 overflow-x-auto">
+    <div class="p-1.5 min-w-full inline-block align-middle">
+      <div class="overflow-hidden">
+        <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+          <thead>
+            <tr>
+              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Nume</th>
+              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Prenume</th>
+              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Telefon</th>
+              <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                Interval de timp
+              </th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+            <tr *ngFor="let employeeIssue of employeeIssues">
+              <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+                {{ employeeIssue.employee.firstName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm">
+                {{ employeeIssue.employee.lastName }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm">
+                {{ employeeIssue.employee.phone }}
+              </td>
+              <td class="px-6 py-4 whitespace-nowrap text-sm">
+                {{ employeeIssue.startDate | date: "dd.MM.yyyy" }}
+                - {{ employeeIssue.endDate | date: "dd.MM.yyyy" }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

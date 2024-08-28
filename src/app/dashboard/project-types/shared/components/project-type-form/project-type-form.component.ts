@@ -8,11 +8,12 @@ import { ValidationHelperService } from '../../../../../core/helpers/validation-
 import { NgIf } from '@angular/common';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatButton } from '@angular/material/button';
+import { UploadMediaSingleComponent } from '../../../../../shared/components/upload-media-single/upload-media-single.component';
 
 @Component({
   selector: 'app-project-type-form',
   standalone: true,
-  imports: [ReactiveFormsModule, MatFormField, MatInput, MatError, MatLabel, NgIf, MatButton],
+  imports: [ReactiveFormsModule, MatFormField, MatInput, MatError, MatLabel, NgIf, MatButton, UploadMediaSingleComponent],
   templateUrl: './project-type-form.component.html',
   styleUrl: './project-type-form.component.scss',
 })

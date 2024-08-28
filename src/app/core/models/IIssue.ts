@@ -17,5 +17,6 @@ export interface IIssue {
   typeId?: number;
   importance: EProjectImportance;
   employeeIssues?: IEmployeeIssue[];
+  media: string[];
   isDeleted: boolean;
 }

@@ -21,17 +21,27 @@
         <div>
           <p>{{ issue.description }}</p>
         </div>
-        <div class="flex flex-col gap-5">
-          <div class="flex flex-col gap-3">
+        <div class="flex flex-col flex-grow gap-5">
+          <div class="flex flex-col gap-3 flex-grow">
+            <div class="flex justify-between items-center w-full gap-5 border-b py-3">
+              <h3 class="text-xl font-bold !m-0">Fișiere</h3>
+            </div>
+            <div *ngIf="issue?.media?.length === 0" class="flex-grow flex items-center justify-center">
+              <p>Nu există fișiere.</p>
+            </div>
+            <div *ngFor="let url of issue.media" class="flex flex-col gap-5">
+              <a [href]="'//' + url" target="_blank" class="text-blue-600 hover:text-blue-900 underline">{{ url }}</a>
+            </div>
+          </div>
+
+          <div class="flex flex-col flex-grow gap-3">
             <div class="flex justify-between items-center w-full gap-5 border-b py-3">
               <h3 class="text-xl font-bold !m-0">Intervale de lucru ale angajaților</h3>
             </div>
-            <div *ngFor="let employeeIssue of issue.employeeIssues">
-              <div class="flex items-center gap-3 w-full px-5 py-2 shadow rounded-2xl">
-                <span> {{ employeeIssue.employee.firstName }} {{ employeeIssue.employee.lastName }} </span>
-                <span>{{ employeeIssue.startDate | date }} - {{ employeeIssue.endDate | date }}</span>
-              </div>
+            <div *ngIf="issue?.employeeIssues?.length === 0" class="flex-grow flex items-center justify-center">
+              <p>Nu există intervale de lucru ale angajaților.</p>
             </div>
+            <app-employees-table *ngIf="issue?.employeeIssues?.length > 0" [employeeIssues]="issue.employeeIssues"></app-employees-table>
           </div>
         </div>
       </div>

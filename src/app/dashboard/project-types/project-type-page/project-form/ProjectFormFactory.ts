@@ -14,6 +14,7 @@ export interface ProjectForm {
   typeId: FormControl<number>;
   employeeIssues?: FormArray<FormGroup<IEmployeeIssueForm>>;
   importance: FormControl<number>;
+  media: FormArray<FormControl<string>>;
 }
 
 export class ProjectFormFactory {
@@ -29,6 +30,7 @@ export class ProjectFormFactory {
       status: new FormControl<EProjectStatus>(EProjectStatus.NOT_STARTED),
       typeId: new FormControl<number>(null, [Validators.required]),
       importance: new FormControl<number>(0, [Validators.required]),
+      media: new FormArray<FormControl<string>>([]),
     });
   }
 }
