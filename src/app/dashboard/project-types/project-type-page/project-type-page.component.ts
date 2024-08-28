@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
-import { MatAnchor, MatButton, MatIconButton } from "@angular/material/button";
+import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
-import { NgForOf, NgIf } from '@angular/common';
+import { JsonPipe, NgForOf, NgIf } from '@angular/common';
 import { ProjectTypeComponent } from '../project-type/project-type.component';
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { IssueTypeControllerService } from '../../../core/api/controllers/issue-type-controller.service';
 import { IIssueType } from '../../../core/models/IIssueType';
 import { BradcrumbsMenuComponent } from '../../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
@@ -17,15 +17,9 @@ import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
-import { ProjectTypeFormComponent } from "../shared/components/project-type-form/project-type-form.component";
-import { CreateProjectTypeDialogComponent } from "../create-project-type-dialog/create-project-type-dialog.component";
-import {
-  EditProjectTypeDialogComponent
-} from "../project-type/edit-project-type-dialog/edit-project-type-dialog.component";
-import {
-  ConfirmationDialogComponent
-} from "../../../shared/components/confirmation-dialog/confirmation-dialog.component";
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { EditProjectTypeDialogComponent } from '../project-type/edit-project-type-dialog/edit-project-type-dialog.component';
+import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-project-type-page',
@@ -51,7 +45,8 @@ import {
     MatMenu,
     MatMenuItem,
     MatIconButton,
-    MatMenuTrigger
+    MatMenuTrigger,
+    JsonPipe,
   ],
   host: {
     class: 'flex-grow',
@@ -132,20 +127,21 @@ export class ProjectTypePageComponent {
   }
 
   openEditIssueTypeDialog(): void {
-    this.dialog.open(EditProjectTypeDialogComponent, {
-      data: {
-        issueType: this.createEditPayload(),
-      },
-      width: '1200px',
-      maxWidth: '100%',
-      disableClose: true,
-    })
-    .afterClosed()
-    .subscribe((res) => {
-      if (res) {
-        this.getProjectType();
-      }
-    });
+    this.dialog
+      .open(EditProjectTypeDialogComponent, {
+        data: {
+          issueType: this.createEditPayload(),
+        },
+        width: '1200px',
+        maxWidth: '100%',
+        disableClose: true,
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.getProjectType();
+        }
+      });
   }
 
   createEditPayload(): IIssueType {
@@ -154,7 +150,7 @@ export class ProjectTypePageComponent {
       color: this.projectType.color,
       description: this.projectType.description,
       id: this.projectType.id,
-    }
+    };
   }
 
   deleteIssueType(): void {

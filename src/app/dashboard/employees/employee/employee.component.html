@@ -1,12 +1,28 @@
-<a routerLink="{{ employee.id }}/{{ employee.lastName + ' ' + employee.firstName }}">
-  <mat-card class="w-[200px] h-[200px] flex flex-col hover:brightness-75">
-    <mat-card-header>
-      <p class="text-xl">{{ employee.firstName }} {{ employee.lastName }}</p>
-    </mat-card-header>
-    <mat-card-content>
-      <div class="py-3">
-        <p>Număr de telefon: {{ employee.phone ?? "Nu este înregistrat" }}</p>
-      </div>
-    </mat-card-content>
-  </mat-card>
-</a>
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+  {{ employee.firstName }}
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+  {{ employee.lastName }}
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+  {{ employee.phone ?? "-" }}
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex items-center justify-end gap-5">
+  <button mat-icon-button [matMenuTriggerFor]="appMenu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #appMenu="matMenu">
+    <a [routerLink]="['/dashboard/employees', employee.id, employee.firstName + ' ' + employee.lastName]" mat-menu-item
+      ><span>Vizualizează</span>
+      <mat-icon>open_in_new</mat-icon>
+    </a>
+    <button mat-menu-item (click)="openEditDialog()">
+      <mat-icon>edit</mat-icon>
+      <span>Editează</span>
+    </button>
+    <button mat-menu-item (click)="openDeleteDialog()">
+      <mat-icon>delete</mat-icon>
+      <span>Șterge</span>
+    </button>
+  </mat-menu>
+</td>

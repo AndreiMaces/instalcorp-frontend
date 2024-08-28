@@ -1,0 +1,27 @@
+<form [formGroup]="employeeForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-3">
+  <mat-form-field>
+    <mat-label>Nume</mat-label>
+    <input type="text" matInput [formControl]="employeeForm.controls.firstName" />
+    <mat-error *ngIf="ValidationHelperService.isInvalid(employeeForm.controls.firstName)"
+      >{{ ValidationHelperService.getErrorMessage(employeeForm.controls.firstName) }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Prenume</mat-label>
+    <input type="text" matInput [formControl]="employeeForm.controls.lastName" />
+    <mat-error *ngIf="ValidationHelperService.isInvalid(employeeForm.controls.lastName)"
+      >{{ ValidationHelperService.getErrorMessage(employeeForm.controls.lastName) }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-label>Telefon</mat-label>
+    <input type="text" matInput [formControl]="employeeForm.controls.phone" />
+    <mat-error *ngIf="ValidationHelperService.isInvalid(employeeForm.controls.phone)"
+      >{{ ValidationHelperService.getErrorMessage(employeeForm.controls.phone) }}
+    </mat-error>
+  </mat-form-field>
+  <div class="p-5 border-t flex justify-end gap-5">
+    <button mat-flat-button>Salvează</button>
+    <button mat-flat-button color="warn" (click)="close.emit()" type="button">Anulează</button>
+  </div>
+</form>

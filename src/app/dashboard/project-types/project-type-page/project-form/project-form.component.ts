@@ -105,7 +105,7 @@ export class ProjectFormComponent {
       typeId: this.project.typeId ?? this.issueTypes[0].id,
       importance: this.project.importance ?? 0,
     });
-    this.project.media.forEach((url) => this.projectForm.controls.media.push(new FormControl(url)));
+    this?.project?.media?.forEach((url) => this.projectForm.controls.media.push(new FormControl(url)));
   }
 
   onSubmit() {

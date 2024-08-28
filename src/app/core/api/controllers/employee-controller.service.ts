@@ -22,4 +22,12 @@ export class EmployeeControllerService {
   createEmployee(newEmployee: Partial<IEmployee>): Observable<IEmployee> {
     return this.apiService.post<IEmployee>(`${this._baseURL}`, newEmployee);
   }
+
+  updateEmployee(employeeId: number, newEmployee: Partial<IEmployee>): Observable<IEmployee> {
+    return this.apiService.put<IEmployee>(`${this._baseURL}/${employeeId}`, newEmployee);
+  }
+
+  removeEmployee(employeeId: number): Observable<void> {
+    return this.apiService.delete<void>(`${this._baseURL}/${employeeId}`);
+  }
 }

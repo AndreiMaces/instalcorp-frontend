@@ -3,12 +3,49 @@
     <div>
       <app-bradcrumbs-menu></app-bradcrumbs-menu>
     </div>
-    <h3>Angajați</h3>
+    <div class="flex justify-between items-center py-3 border-b">
+      <h2 class="text-xl font-bold !m-0">Angajați</h2>
+      <div class="flex gap-5 items-center">
+        <a routerLink="archive" mat-flat-button class="!bg-gray-400">Arhivă</a>
+        <button mat-flat-button (click)="openCreateEmployeeDialog()" color="primary">
+          Adaugă angajat
+          <mat-icon class="ml-2">add</mat-icon>
+        </button>
+      </div>
+    </div>
     <div *ngIf="isLoading" class="flex justify-center items-center w-full h-full">
       <mat-spinner diameter="80"></mat-spinner>
     </div>
     <div *ngIf="!isLoading" class="flex flex-wrap gap-5 flex-grow">
-      <app-employee *ngFor="let employee of employees" [employee]="employee"></app-employee>
+      <div class="-m-1.5 overflow-x-auto flex-grow w-full">
+        <div class="p-1.5 min-w-full inline-block align-middle">
+          <div class="overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+              <thead>
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Nume</th>
+                  <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                    Prenume
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                    Telefon
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500"></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                <tr
+                  *ngFor="let employee of employees"
+                  app-employee
+                  [employee]="employee"
+                  (_edit)="getEmployees()"
+                  (_delete)="deleteEmployee($event)"
+                ></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

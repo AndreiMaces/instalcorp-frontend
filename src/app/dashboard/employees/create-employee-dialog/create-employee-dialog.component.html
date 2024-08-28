@@ -1,0 +1,11 @@
+<div class="flex flex-col">
+  <div class="p-5 border-b">
+    <p class="text-3xl !m-0">Adaugă angajat</p>
+  </div>
+  <div class="p-5">
+    <app-employee-form (close)="openDenyConfirmationDialog()" (_submit)="createEmployee($event)" *ngIf="!isLoading"></app-employee-form>
+    <div *ngIf="isLoading" class="h-[400px] w-full flex justify-center items-center">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+  </div>
+</div>
