@@ -21,7 +21,20 @@
         <div>
           <p>{{ issue.description }}</p>
         </div>
-
+        <div class="flex flex-col gap-5">
+          <div class="flex flex-col gap-3">
+            <div class="flex justify-between items-center w-full gap-5 border-b py-3">
+              <h3 class="text-xl font-bold !m-0">Intervale de lucru ale angajaților</h3>
+            </div>
+            <div *ngFor="let employeeIssue of issue.employeeIssues">
+              <div class="flex items-center gap-3 w-full px-5 py-2 shadow rounded-2xl">
+                <span> {{ employeeIssue.employee.firstName }} {{ employeeIssue.employee.lastName }} </span>
+                <span>{{ employeeIssue.startDate | date }} - {{ employeeIssue.endDate | date }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div class="w-full h-full flex justify-center items-center" *ngIf="isLoading">
         <mat-spinner diameter="80"></mat-spinner>
       </div>
