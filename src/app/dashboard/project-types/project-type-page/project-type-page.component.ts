@@ -99,7 +99,6 @@ export class ProjectTypePageComponent {
 
   subscribeToRouteChange(): void {
     this.route.queryParams.subscribe(() => {
-      console.log('ce');
       this.getProjectTypeIssues();
     });
   }
@@ -136,6 +135,7 @@ export class ProjectTypePageComponent {
         },
         width: '1200px',
         maxWidth: '100%',
+        maxHeight: '90vh',
         disableClose: true,
       })
       .afterClosed()
