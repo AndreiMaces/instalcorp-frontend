@@ -15,7 +15,13 @@ export class IssueTypeControllerService {
     return this.apiService.get<IIssueType[]>(this._baseURL);
   }
 
-  getIssueType(issueTypeId: number, payload: { sortingCriteria: string }): Observable<IIssueType> {
+  getIssueType(
+    issueTypeId: number,
+    payload: {
+      sortingCriteria: string;
+      sortingOrder: string;
+    },
+  ): Observable<IIssueType> {
     return this.apiService.get<IIssueType>(`${this._baseURL}/${issueTypeId}`, payload);
   }
 

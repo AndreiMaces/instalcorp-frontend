@@ -20,6 +20,7 @@ import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angula
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { EditProjectTypeDialogComponent } from '../project-type/edit-project-type-dialog/edit-project-type-dialog.component';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
   selector: 'app-project-type-page',
@@ -47,6 +48,7 @@ import { ConfirmationDialogComponent } from '../../../shared/components/confirma
     MatIconButton,
     MatMenuTrigger,
     JsonPipe,
+    MatSlideToggle,
   ],
   host: {
     class: 'flex-grow',
@@ -60,6 +62,7 @@ export class ProjectTypePageComponent {
   isLoadingIssues = false;
   sortForm = new FormGroup({
     sortingCriteria: new FormControl<string>('order', [Validators.required]),
+    sortingOrder: new FormControl<string>('desc', [Validators.required]),
   });
 
   constructor(
@@ -73,39 +76,56 @@ export class ProjectTypePageComponent {
 
   ngOnInit(): void {
     this.getProjectType();
-    this.subscribeToSortingCriteriaChange();
+    this.subscribeToFormValueChange();
+    this.subscribeToRouteChange();
+    this.prefillForm();
   }
 
-  subscribeToSortingCriteriaChange(): void {
-    this.sortForm.controls.sortingCriteria.valueChanges.subscribe((res) => {
-      this.getProjectTypeIssues(res);
+  prefillForm(): void {
+    this.sortForm.patchValue(this.route.snapshot.queryParams);
+  }
+
+  subscribeToFormValueChange(): void {
+    this.sortForm.valueChanges.subscribe(() => {
+      this.updateQueryParams();
+    });
+  }
+
+  updateQueryParams(): void {
+    this.router.navigate([], {
+      queryParams: this.createGetProjectTypeIssuesPayload(),
+    });
+  }
+
+  subscribeToRouteChange(): void {
+    this.route.queryParams.subscribe(() => {
+      console.log('ce');
+      this.getProjectTypeIssues();
     });
   }
 
   getProjectType(): void {
     this.isLoading = true;
-    this.issueTypeController
-      .getIssueType(this.route.snapshot.params['id'], { sortingCriteria: this.sortForm.controls.sortingCriteria.value })
-      .subscribe({
-        next: (projectType) => {
-          this.projectType = projectType;
-          this.projectType.issues.map((issue) => {
-            return {
-              ...issue,
-              typeId: this.projectType.id,
-              type: {
-                id: this.projectType.id,
-                title: this.projectType.title,
-              },
-            };
-          });
-          this.isLoading = false;
-        },
-        error: (error) => {
-          console.error(error);
-          this.isLoading = false;
-        },
-      });
+    this.issueTypeController.getIssueType(this.route.snapshot.params['id'], this.createGetProjectTypeIssuesPayload()).subscribe({
+      next: (projectType) => {
+        this.projectType = projectType;
+        this.projectType.issues.map((issue) => {
+          return {
+            ...issue,
+            typeId: this.projectType.id,
+            type: {
+              id: this.projectType.id,
+              title: this.projectType.title,
+            },
+          };
+        });
+        this.isLoading = false;
+      },
+      error: (error) => {
+        console.error(error);
+        this.isLoading = false;
+      },
+    });
   }
 
   openCreateIssueDialog(): void {
@@ -211,9 +231,9 @@ export class ProjectTypePageComponent {
     });
   }
 
-  getProjectTypeIssues(sortingCriteria: string): void {
+  getProjectTypeIssues(): void {
     this.isLoadingIssues = true;
-    this.issueTypeController.getIssueType(this.route.snapshot.params['id'], { sortingCriteria }).subscribe({
+    this.issueTypeController.getIssueType(this.route.snapshot.params['id'], this.createGetProjectTypeIssuesPayload()).subscribe({
       next: (projectType) => {
         this.projectType.issues = projectType.issues;
         this.projectType.issues.map((issue) => {
@@ -235,6 +255,13 @@ export class ProjectTypePageComponent {
         this.isLoadingIssues = false;
       },
     });
+  }
+
+  createGetProjectTypeIssuesPayload(): { sortingCriteria: string; sortingOrder: string } {
+    return {
+      sortingCriteria: this.sortForm.controls.sortingCriteria.value,
+      sortingOrder: this.sortForm.controls.sortingOrder.value,
+    };
   }
 
   onSortChange(): void {

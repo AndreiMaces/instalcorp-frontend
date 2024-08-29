@@ -30,7 +30,7 @@
         <div class="flex flex-col gap-5 h-full" *ngIf="!isLoading">
           <div class="flex justify-between items-center w-full gap-5 border-b py-3">
             <h3 class="text-xl font-bold !m-0">Proiecte</h3>
-            <form *ngIf="projectType?.issues?.length > 0" [formGroup]="sortForm" (ngSubmit)="onSortChange()">
+            <form *ngIf="projectType?.issues?.length > 0" [formGroup]="sortForm" (ngSubmit)="onSortChange()" class="flex gap-5">
               <mat-form-field subscriptSizing="dynamic">
                 <mat-label>Sortare</mat-label>
                 <mat-select [formControl]="sortForm.controls.sortingCriteria">
@@ -38,6 +38,15 @@
                   <mat-option [value]="'endDate'">Data final</mat-option>
                   <mat-option [value]="'startDate'">Data început</mat-option>
                   <mat-option [value]="'id'">Data creare</mat-option>
+                  <mat-option [value]="'importance'">Importanță</mat-option>
+                  <mat-option [value]="'status'">Status</mat-option>
+                </mat-select>
+              </mat-form-field>
+              <mat-form-field subscriptSizing="dynamic">
+                <mat-label>Direcție de sortare</mat-label>
+                <mat-select [formControl]="sortForm.controls.sortingOrder">
+                  <mat-option [value]="'desc'">Descendent</mat-option>
+                  <mat-option [value]="'asc'">Ascendent</mat-option>
                 </mat-select>
               </mat-form-field>
             </form>
