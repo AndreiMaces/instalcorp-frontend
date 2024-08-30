@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
 import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { NgForOf } from '@angular/common';
+import { ResizeableProjectComponent } from './resizeable-project/resizeable-project.component';
 
 @Component({
   selector: 'app-week',
   standalone: true,
-  imports: [CdkDrag, CdkDropList, CdkDropListGroup, NgForOf],
+  imports: [CdkDrag, CdkDropList, CdkDropListGroup, NgForOf, ResizeableProjectComponent],
   templateUrl: './week.component.html',
   styleUrl: './week.component.scss',
 })

@@ -7,19 +7,20 @@
     <div>Joi</div>
     <div>Vineri</div>
   </div>
-  <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6" cdkDropListGroup>
-    <div>Marius</div>
-    <div
-      cdkDropList
-      [id]="'list' + i"
-      #todoList="cdkDropList"
-      [cdkDropListData]="day"
-      [cdkDropListConnectedTo]="i !== days.length - 1 ? ['list' + (i + 1)] : []"
-      (cdkDropListDropped)="drop($event)"
-      *ngFor="let day of days; let i = index"
-    >
-      <div class="w-full bg-blue-600 text-white border pl-3 py-1 rounded-2xl cursor-move" cdkDrag *ngFor="let project of day">
-        {{ project.name }}
+  <div cdkDropListGroup>
+    <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6" *ngFor="let day of days; let i = index">
+      <div>Marius</div>
+      <div class="col-span-5">
+        <div
+          cdkDropList
+          [id]="'list' + i"
+          #todoList="cdkDropList"
+          [cdkDropListData]="day"
+          [cdkDropListConnectedTo]="i !== days.length - 1 ? ['list' + (i + 1)] : []"
+          (cdkDropListDropped)="drop($event)"
+        >
+          <app-resizeable-project cdkDrag [project]="project" *ngFor="let project of day"></app-resizeable-project>
+        </div>
       </div>
     </div>
   </div>
