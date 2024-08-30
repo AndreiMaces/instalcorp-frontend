@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { CalendarViewComponent } from './calendar-view/calendar-view.component';
 import { DashboardComponent } from './dashboard.component';
 import { MainComponent } from './main/main.component';
 
@@ -16,7 +15,7 @@ const routes: Routes = [
       {
         path: 'calendar',
         data: { breadcrumb: 'Calendar' },
-        component: CalendarViewComponent,
+        loadChildren: () => import('./calendar-view/calendar-view.module').then((m) => m.CalendarViewModule),
       },
       {
         path: 'project-types',
