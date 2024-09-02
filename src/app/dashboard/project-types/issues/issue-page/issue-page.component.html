@@ -12,9 +12,8 @@
           <div class="flex gap-5 items-center">
             <app-issue-importance [importance]="issue.importance"></app-issue-importance>
             <div class="w-[40px] h-[40px] rounded-full shadow" [style.background-color]="issue.color ?? 'white'"></div>
-            <button mat-flat-button color="primary">
-              Editează
-              <mat-icon class="ml-2">add</mat-icon>
+            <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation(); $event.preventDefault()">
+              <mat-icon>more_vert</mat-icon>
             </button>
           </div>
         </div>
@@ -51,3 +50,24 @@
     </div>
   </div>
 </div>
+
+<mat-menu #menu="matMenu">
+  <div class=" rounded-[.5rem] overflow-hidden" cdkMenu>
+    <button mat-menu-item cdkMenuItem (click)="openDuplicateDialog()">
+      <mat-icon>content_copy</mat-icon>
+      <span>Creează copie</span>
+    </button>
+    <button mat-menu-item cdkMenuItem (click)="openEditIssueDialog()">
+      <mat-icon>edit</mat-icon>
+      <span>Editează</span>
+    </button>
+    <button mat-menu-item (click)="openHandleEmployeesDialog()">
+      <mat-icon>groups</mat-icon>
+      <span>Gestionează angajați</span>
+    </button>
+    <button mat-menu-item cdkMenuItem (click)="openDeleteIssueDialog()">
+      <mat-icon>delete</mat-icon>
+      <span>Șterge</span>
+    </button>
+  </div>
+</mat-menu>
