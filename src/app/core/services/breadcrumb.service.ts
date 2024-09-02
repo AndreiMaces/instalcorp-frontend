@@ -30,22 +30,22 @@ export class BreadcrumbService {
     }
 
     for (const child of children) {
-      const routeURL: string = child.snapshot.url.map((segment) => segment.path).join('/');
+      const routeURL: string = child?.snapshot?.url?.map((segment) => segment.path).join('/');
       if (routeURL !== '') {
         url += `/${routeURL}`;
       }
 
-      let label = child.snapshot.data['breadcrumb'];
-      if (label === 'Project Type' && child.snapshot.params['name']) {
-        label = child.snapshot.params['name'];
+      let label = child?.snapshot?.data['breadcrumb'];
+      if (label === 'Project Type' && child?.snapshot?.params['name']) {
+        label = child?.snapshot?.params['name'];
       }
 
-      if (label === 'Employee' && child.snapshot.params['name']) {
-        label = child.snapshot.params['name'];
+      if (label === 'Employee' && child?.snapshot?.params['name']) {
+        label = child?.snapshot?.params['name'];
       }
 
-      if (label === 'Issue' && child.snapshot.params['issueName']) {
-        label = child.snapshot.params['issueName'];
+      if (label === 'Issue' && child?.snapshot?.params['issueName']) {
+        label = child?.snapshot?.params['issueName'];
       }
       if (!breadcrumbs.find((breadcrumb) => breadcrumb.label === label)) {
         breadcrumbs.push({ label: label, url: url });

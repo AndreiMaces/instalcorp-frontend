@@ -1,17 +1,30 @@
-import { Component } from '@angular/core';
-import { CdkDrag, CdkDragDrop, CdkDropList, CdkDropListGroup, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { ChangeDetectorRef, Component } from '@angular/core';
+import {
+  CdkDrag,
+  CdkDragDrop,
+  CdkDropList,
+  CdkDropListGroup,
+  DragDropModule,
+  moveItemInArray,
+  transferArrayItem,
+} from '@angular/cdk/drag-drop';
 import { NgForOf } from '@angular/common';
 import { ResizeableProjectComponent } from './resizeable-project/resizeable-project.component';
+
+export interface IDay {
+  name: string;
+  id: number;
+}
 
 @Component({
   selector: 'app-week',
   standalone: true,
-  imports: [CdkDrag, CdkDropList, CdkDropListGroup, NgForOf, ResizeableProjectComponent],
+  imports: [CdkDrag, CdkDropList, CdkDropListGroup, NgForOf, ResizeableProjectComponent, DragDropModule],
   templateUrl: './week.component.html',
   styleUrl: './week.component.scss',
 })
 export class WeekComponent {
-  days: { name: string; id: number }[][] = [
+  days: any[][] = [
     [
       {
         name: 'Get to work',
@@ -64,11 +77,19 @@ export class WeekComponent {
     ],
   ];
 
-  drop(event: CdkDragDrop<{ name: string; id: number }[]>) {
+  constructor(private cd: ChangeDetectorRef) {}
+
+  drop(event: CdkDragDrop<any[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
     }
+    console.log(this.days);
+  }
+
+  getLinkedLists(index: number): string[] {
+    const value = this?.days?.map((day, i) => 'list' + i);
+    return value;
   }
 }

@@ -5,15 +5,11 @@ import { CalendarViewComponent } from './calendar-view.component';
 const routes: Routes = [
   {
     path: '',
+    data: { breadcrumb: 'Calendar' },
     component: CalendarViewComponent,
     children: [
       {
         path: '',
-        redirectTo: 'employees',
-        pathMatch: 'full',
-      },
-      {
-        path: 'employees',
         data: {
           breadcrumb: 'Angajați',
         },

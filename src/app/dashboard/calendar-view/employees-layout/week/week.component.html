@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full">
+<div class="flex flex-col w-full h-full">
   <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6">
     <div></div>
     <div>Luni</div>
@@ -7,19 +7,27 @@
     <div>Joi</div>
     <div>Vineri</div>
   </div>
-  <div cdkDropListGroup>
-    <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6" *ngFor="let day of days; let i = index">
+  <div class="h-full">
+    <div class="[&>div]:border w-full grid grid-cols-6" *ngFor="let day of days; let i = index">
       <div>Marius</div>
-      <div class="col-span-5">
+      <div class="col-span-5 relative">
         <div
           cdkDropList
           [id]="'list' + i"
-          #todoList="cdkDropList"
           [cdkDropListData]="day"
-          [cdkDropListConnectedTo]="i !== days.length - 1 ? ['list' + (i + 1)] : []"
+          [cdkDropListConnectedTo]="getLinkedLists(i)"
           (cdkDropListDropped)="drop($event)"
+          class="!z-20 py-8 flex flex-col !min-h-[30px]"
         >
-          <app-resizeable-project cdkDrag [project]="project" *ngFor="let project of day"></app-resizeable-project>
+          <div class="grid grid-cols-5 [&>*]:border-r [&>*]:p-2 absolute inset-0 [&>*]:justify-self-end text-xs text-rose-500">
+            <div></div>
+            <div>* Sărbătoare</div>
+            <div></div>
+            <div></div>
+            <div></div>
+          </div>
+
+          <app-resizeable-project [project]="project" *ngFor="let project of day"></app-resizeable-project>
         </div>
       </div>
     </div>

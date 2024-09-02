@@ -1,3 +1,19 @@
-<div class="w-full bg-blue-600 text-white border pl-3 py-1 rounded-2xl cursor-move" cdkDrag *ngFor="let project of day">
-  {{ project.name }}
+<div class="w-full h-[24px] relative" cdkDrag [cdkDragDisabled]="isDragDisabled" #container>
+  <div class="relative w-full h-full">
+    <div
+      class="rectangle absolute box-border bg-blue-600 text-white pl-3 rounded-md text-sm"
+      [ngStyle]="project.style"
+      mwlResizable
+      [enableGhostResize]="true"
+      (resizeStart)="isDragDisabled = true"
+      [validateResize]="validate"
+      (resizeEnd)="onResizeEnd($event)"
+    >
+      <span>
+        {{ project.name }}
+      </span>
+      <div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
+      <div class="resize-handle-right" mwlResizeHandle [resizeEdges]="{ right: true }"></div>
+    </div>
+  </div>
 </div>
