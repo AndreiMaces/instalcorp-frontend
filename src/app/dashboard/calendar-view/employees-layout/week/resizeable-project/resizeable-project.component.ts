@@ -14,17 +14,17 @@ import { DateHelperService } from '../../../../../core/helpers/date-helper.servi
 })
 export class ResizeableProjectComponent implements OnInit {
   @Input({
-    transform: (value: IEmployeeProject): IEmployeeProject & { style: any } => {
+    transform: (value: IEmployeeProject): IEmployeeProject & { style: { left: string; width: string } } => {
       return {
         ...value,
         style: {
           left: '0px',
           width: '200px',
         },
-      } as unknown as IEmployeeProject & { style: any };
+      } as unknown as IEmployeeProject & { style: { left: string; width: string } };
     },
   })
-  employeeProject: IEmployeeProject & { style: any };
+  employeeProject: IEmployeeProject & { style: { left: string; width: string } };
   @ViewChild('container') div: ElementRef;
   isDragDisabled = false;
   maxSpace = 998;
@@ -58,23 +58,6 @@ export class ResizeableProjectComponent implements OnInit {
     return width;
   }
 
-  clampedWidth(width: number): number {
-    width = width < 200 ? 200 : Math.trunc(width / 200 + 1) * 200;
-    if (width > this.maxSpace) width = this.maxSpace;
-    return width;
-  }
-
-  clampedLeft(left: number, width: number): number {
-    left = left - (window.innerWidth - this.div.nativeElement.clientWidth) / 2 - 91;
-    left = left < 200 ? 0 : Math.trunc(left / 200) * 200;
-
-    if (left + width > this.maxSpace) {
-      left = this.maxSpace - width;
-    }
-
-    return left;
-  }
-
   onResizeEnd(event: ResizeEvent): void {
     event.rectangle.width = event.rectangle.width < 200 ? 200 : Math.trunc(event.rectangle.width / 200 + 1) * 200;
     if (event.rectangle.width > this.maxSpace) event.rectangle.width = this.maxSpace;
@@ -98,13 +81,11 @@ export class ResizeableProjectComponent implements OnInit {
     this.employeeProject.style = {
       left: `${event.rectangle.left}px`,
       width: `${event.rectangle.width}px`,
-      height: `${event.rectangle.height}px`,
     };
     this.isDragDisabled = false;
   }
 
   get canStretchLeft(): boolean {
-    // @ts-ignore
     return parseInt(this.employeeProject.style.left) !== 0;
   }
 }
