@@ -1,13 +1,13 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { IProject } from '../../../../core/models/IProject';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgIf } from '@angular/common';
 import { ProjectTypeFormComponent } from '../../shared/components/project-type-form/project-type-form.component';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatButton } from '@angular/material/button';
-import { ProjectControllerService } from '../../../../core/api/controllers/project-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { EmployeeProjectFormComponent } from '../project-form/employee-project-form/employee-project-form.component';
+import { ProjectControllerService } from '../../../../core/api/controllers/project-controller.service';
+import { IProject } from '../../../../core/models/IProject';
 
 @Component({
   selector: 'app-handle-employees-dialog',

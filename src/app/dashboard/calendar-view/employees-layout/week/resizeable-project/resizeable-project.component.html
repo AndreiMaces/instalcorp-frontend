@@ -1,16 +1,16 @@
 <div class="w-full h-[24px] relative" cdkDrag [cdkDragDisabled]="isDragDisabled" #container>
   <div class="relative w-full h-full">
     <div
-      class="rectangle absolute box-border bg-blue-600 text-white pl-3 rounded-md text-sm"
-      [ngStyle]="project.style"
+      class="rectangle absolute box-border text-white pl-3 rounded-md text-sm"
+      [style.background-color]="employeeProject.project.color"
+      [ngStyle]="employeeProject.style"
       mwlResizable
       [enableGhostResize]="true"
       (resizeStart)="isDragDisabled = true"
-      [validateResize]="validate"
       (resizeEnd)="onResizeEnd($event)"
     >
-      <span>
-        {{ project.name }}
+      <span class="line-clamp-1">
+        {{ employeeProject.project.title }}
       </span>
       <div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
       <div class="resize-handle-right" mwlResizeHandle [resizeEdges]="{ right: true }"></div>

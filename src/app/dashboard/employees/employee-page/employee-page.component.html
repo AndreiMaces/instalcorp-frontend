@@ -10,7 +10,7 @@
       <h3>{{ employee?.lastName }} {{ employee?.firstName }}</h3>
       <p>Număr de telefon: {{ employee.phone ?? "Nu este înregistrat" }}</p>
       <div class="flex flex-col gap-5">
-        <div *ngFor="let employeeIssue of employee?.employeeIssues">
+        <div *ngFor="let employeeIssue of employee?.employeeProjects">
           <div
             class="flex items-center gap-3 w-full px-5 py-2 shadow rounded-2xl"
             [style.color]="ColorHelperService.invertedColor(employeeIssue.project.color ?? 'white')"

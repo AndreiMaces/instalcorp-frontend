@@ -1,33 +1,40 @@
 <div class="flex flex-col w-full h-full">
-  <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6">
-    <div></div>
-    <div>Luni</div>
-    <div>Marți</div>
-    <div>Miercuri</div>
-    <div>Joi</div>
-    <div>Vineri</div>
-  </div>
-  <div class="h-full">
-    <div class="[&>div]:border w-full grid grid-cols-6" *ngFor="let day of days; let i = index">
-      <div>Marius</div>
-      <div class="col-span-5 relative">
-        <div
-          cdkDropList
-          [id]="'list' + i"
-          [cdkDropListData]="day"
-          [cdkDropListConnectedTo]="getLinkedLists(i)"
-          (cdkDropListDropped)="drop($event)"
-          class="!z-20 py-8 flex flex-col !min-h-[30px]"
-        >
-          <div class="grid grid-cols-5 [&>*]:border-r [&>*]:p-2 absolute inset-0 [&>*]:justify-self-end text-xs text-rose-500">
-            <div></div>
-            <div>* Sărbătoare</div>
-            <div></div>
-            <div></div>
-            <div></div>
-          </div>
+  <div>
+    <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6 [&>div]:flex [&>div]:justify-center [&>div]:items-center">
+      <div></div>
+      <div>Luni</div>
+      <div>Marți</div>
+      <div>Miercuri</div>
+      <div>Joi</div>
+      <div>Vineri</div>
+    </div>
+    <div class="h-full">
+      <div class="[&>div]:border w-full grid grid-cols-6" *ngFor="let employee of employees; let i = index">
+        <div class="flex justify-center items-center">
+          <span> {{ employee.firstName }} {{ employee.lastName }} </span>
+        </div>
+        <div class="col-span-5 relative">
+          <div
+            cdkDropList
+            [id]="'list' + i"
+            [cdkDropListData]="employee.employeeProjects"
+            [cdkDropListConnectedTo]="getLinkedLists()"
+            (cdkDropListDropped)="drop($event)"
+            class="!z-20 py-8 flex flex-col !min-h-[30px]"
+          >
+            <div class="grid grid-cols-5 [&>*]:border-r [&>*]:p-2 absolute inset-0 [&>*]:justify-self-end text-xs text-slate-400">
+              <div>{{ getWeekDayDate(1) }}</div>
+              <div>{{ getWeekDayDate(2) }}</div>
+              <div>{{ getWeekDayDate(3) }}</div>
+              <div>{{ getWeekDayDate(4) }}</div>
+              <div>{{ getWeekDayDate(5) }}</div>
+            </div>
 
-          <app-resizeable-project [project]="project" *ngFor="let project of day"></app-resizeable-project>
+            <app-resizeable-project
+              [employeeProject]="employeeProject"
+              *ngFor="let employeeProject of employee.employeeProjects"
+            ></app-resizeable-project>
+          </div>
         </div>
       </div>
     </div>

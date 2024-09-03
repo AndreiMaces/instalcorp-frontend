@@ -5,5 +5,5 @@ export interface IEmployee {
   firstName: string;
   lastName: string;
   phone?: string;
-  employeeIssues?: IEmployeeProject[];
+  employeeProjects?: IEmployeeProject[];
 }
