@@ -10,14 +10,14 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { IEmployee } from '../../../../../core/models/IEmployee';
 import { ValidationHelperService } from '../../../../../core/helpers/validation-helper.service';
 import { MatDatepickerToggle, MatDateRangeInput, MatDateRangePicker, MatEndDate, MatStartDate } from '@angular/material/datepicker';
-import { IEmployeeIssue } from '../../../../../core/models/IEmployeeIssue';
-import { IIssue } from '../../../../../core/models/IIssue';
-import { EmployeeIssueControllerService } from '../../../../../core/api/controllers/employee-issue-controller.service';
+import { IEmployeeProject } from '../../../../../core/models/IEmployeeProject';
+import { IProject } from '../../../../../core/models/IProject';
+import { EmployeeProjectControllerService } from '../../../../../core/api/controllers/employee-project-controller.service';
 import { EmployeeControllerService } from '../../../../../core/api/controllers/employee-controller.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
-  selector: 'app-employee-issue-form',
+  selector: 'app-employee-project-form',
   standalone: true,
   imports: [
     NgForOf,
@@ -39,32 +39,32 @@ import { provideNativeDateAdapter } from '@angular/material/core';
     MatStartDate,
     MatSuffix,
   ],
-  templateUrl: './employee-issue-form.component.html',
-  styleUrl: './employee-issue-form.component.scss',
+  templateUrl: './employee-project-form.component.html',
+  styleUrl: './employee-project-form.component.scss',
   providers: [provideNativeDateAdapter()],
 })
-export class EmployeeIssueFormComponent implements OnInit {
+export class EmployeeProjectFormComponent implements OnInit {
   isLoading = false;
   createForm: FormGroup<IEmployeeIssueForm> = EmployeeIssueFormFactory.create();
   employeeIssuesForm: FormArray<FormGroup<IEmployeeIssueForm>> = new FormArray<FormGroup<IEmployeeIssueForm>>([]);
-  @Input() issue: Partial<IIssue>;
+  @Input() project: Partial<IProject>;
   employees: Partial<IEmployee>[] = [];
 
   constructor(
-    private employeeIssueController: EmployeeIssueControllerService,
+    private employeeIssueController: EmployeeProjectControllerService,
     private employeeController: EmployeeControllerService,
     private snackBarService: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
     this.getEmployees();
-    if (this.issue?.employeeIssues) {
+    if (this.project?.employeeProjects) {
       this.prefillForm();
     }
   }
 
   prefillForm(): void {
-    this?.issue?.employeeIssues.forEach((employeeIssue) => {
+    this?.project?.employeeProjects.forEach((employeeIssue) => {
       const newGroup = EmployeeIssueFormFactory.create();
       newGroup.patchValue(employeeIssue);
       this.employeeIssuesForm.push(newGroup);
@@ -73,7 +73,7 @@ export class EmployeeIssueFormComponent implements OnInit {
 
   createEmployee(): void {
     this.isLoading = true;
-    this.employeeIssueController.createEmployeeIssue(this.createPayload()).subscribe({
+    this.employeeIssueController.createEmployeeProject(this.createPayload()).subscribe({
       next: (res) => {
         const newGroup = EmployeeIssueFormFactory.create();
         newGroup.patchValue(res);
@@ -90,10 +90,10 @@ export class EmployeeIssueFormComponent implements OnInit {
     });
   }
 
-  createPayload(): IEmployeeIssue {
+  createPayload(): IEmployeeProject {
     return {
       employeeId: this.createForm.controls.employee.value.id,
-      issueId: this.issue.id,
+      projectId: this.project.id,
       startDate: this.createForm.controls.startDate.value,
       endDate: this.createForm.controls.endDate.value,
     };

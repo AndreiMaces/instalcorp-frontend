@@ -1,5 +1,5 @@
 import { Component, Input, output } from '@angular/core';
-import { IIssue } from '../../../../core/models/IIssue';
+import { IProject } from '../../../../core/models/IProject';
 import { MatIcon } from '@angular/material/icon';
 import { MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
@@ -10,14 +10,14 @@ import {
   IConfirmationDialogData,
 } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { EditProjectDialogComponent } from '../edit-project-dialog/edit-project-dialog.component';
-import { IssueStatusComponent } from './issue-status/issue-status.component';
+import { ProjectStatusComponent } from './project-status/project-status.component';
 import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
-import { IssueImportanceComponent } from './issue-importance/issue-importance.component';
+import { ProjectImportanceComponent } from './project-importance/project-importance.component';
 import { HandleEmployeesComponent } from '../handle-employees-dialog/handle-employees.component';
 
 @Component({
-  selector: 'app-project-type-issue',
+  selector: 'app-project-row',
   standalone: true,
   imports: [
     MatIcon,
@@ -26,17 +26,17 @@ import { HandleEmployeesComponent } from '../handle-employees-dialog/handle-empl
     MatMenuItem,
     RouterLink,
     MatMenuTrigger,
-    IssueStatusComponent,
+    ProjectStatusComponent,
     CdkMenu,
     CdkMenuItem,
     CdkContextMenuTrigger,
-    IssueImportanceComponent,
+    ProjectImportanceComponent,
   ],
-  templateUrl: './project-type-issue.component.html',
-  styleUrl: './project-type-issue.component.scss',
+  templateUrl: './project-row.component.html',
+  styleUrl: './project-row.component.scss',
 })
-export class ProjectTypeIssueComponent {
-  @Input() issue: IIssue;
+export class ProjectRowComponent {
+  @Input() project: IProject;
   _delete = output<number>();
   _clone = output<number>();
   _edit = output();
@@ -47,13 +47,13 @@ export class ProjectTypeIssueComponent {
     this.dialog
       .open(ConfirmationDialogComponent, {
         data: {
-          message: `Sunteți sigur că doriți să creați o copie a proiectului '${this.issue.title}'?`,
+          message: `Sunteți sigur că doriți să creați o copie a proiectului '${this.project.title}'?`,
         } as IConfirmationDialogData,
         disableClose: true,
       })
       .afterClosed()
       .subscribe((res) => {
-        if (res) this._clone.emit(this.issue.id);
+        if (res) this._clone.emit(this.project.id);
       });
   }
 
@@ -61,7 +61,7 @@ export class ProjectTypeIssueComponent {
     this.dialog
       .open(EditProjectDialogComponent, {
         data: {
-          issue: this.issue,
+          project: this.project,
         },
         width: '1200px',
         maxWidth: '100%',
@@ -78,20 +78,20 @@ export class ProjectTypeIssueComponent {
     this.dialog
       .open(ConfirmationDialogComponent, {
         data: {
-          message: `Sunteți sigur că doriți să ștergeți proiectul '${this.issue.title}'?`,
+          message: `Sunteți sigur că doriți să ștergeți proiectul '${this.project.title}'?`,
         } as IConfirmationDialogData,
         disableClose: true,
       })
       .afterClosed()
       .subscribe((res) => {
-        if (res) this._delete.emit(this.issue.id);
+        if (res) this._delete.emit(this.project.id);
       });
   }
 
   openHandleEmployeesDialog(): void {
     this.dialog.open(HandleEmployeesComponent, {
       data: {
-        issue: this.issue,
+        project: this.project,
       },
       disableClose: true,
       maxWidth: '100%',

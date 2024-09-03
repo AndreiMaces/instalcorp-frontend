@@ -3,19 +3,19 @@ import { MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } fr
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem } from '@angular/material/menu';
-import { IIssueType } from '../../../../core/models/IIssueType';
+import { IProjectType } from '../../../../core/models/IProjectType';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
-  selector: 'app-archived-project-type',
+  selector: 'app-archived-project-type-row',
   standalone: true,
   imports: [MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle, MatIcon, MatIconButton, MatMenu, MatMenuItem, MatButton],
   templateUrl: './archived-project-type.component.html',
   styleUrl: './archived-project-type.component.scss',
 })
 export class ArchivedProjectTypeComponent {
-  @Input() projectType: IIssueType;
+  @Input() projectType: IProjectType;
   _restore = output<number>();
 
   constructor(private dialog: MatDialog) {}

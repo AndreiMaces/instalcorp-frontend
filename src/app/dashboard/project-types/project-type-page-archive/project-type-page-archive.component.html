@@ -20,13 +20,13 @@
           <p>{{ projectType?.description }}</p>
         </div>
         <div class="flex flex-col gap-5 h-full" *ngIf="!isLoading">
-          <div *ngIf="projectType?.issues?.length === 0" class="flex justify-center items-center h-full">
+          <div *ngIf="projectType?.projects?.length === 0" class="flex justify-center items-center h-full">
             <p class="text-gray-500 text-2xl">Nu există proiecte.</p>
           </div>
-          <div *ngIf="projectType?.issues?.length > 0" class="flex flex-col gap-5">
+          <div *ngIf="projectType?.projects?.length > 0" class="flex flex-col gap-5">
             <app-archived-project
-              *ngFor="let issue of projectType?.issues"
-              [issue]="issue"
+              *ngFor="let project of projectType?.projects"
+              [project]="project"
               (_restore)="restoreProject($event)"
             ></app-archived-project>
           </div>

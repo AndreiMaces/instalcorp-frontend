@@ -7,7 +7,7 @@
       (close)="openDenyConfirmationDialog()"
       (_submit)="editProject($event)"
       *ngIf="!isLoading"
-      [project]="data.issue"
+      [project]="data.project"
     ></app-project-form>
     <div *ngIf="isLoading" class="h-[400px] w-full flex justify-center items-center">
       <mat-spinner diameter="80"></mat-spinner>

@@ -1,6 +1,6 @@
 import { Component, Input, OnInit, output } from '@angular/core';
 import { ProjectTypeFormFactory } from './ProjectTypeFormFactory';
-import { IIssueType } from '../../../../../core/models/IIssueType';
+import { IProjectType } from '../../../../../core/models/IProjectType';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatError, MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatInput } from '@angular/material/input';
@@ -19,8 +19,8 @@ import { UploadMediaSingleComponent } from '../../../../../shared/components/upl
 })
 export class ProjectTypeFormComponent implements OnInit {
   projectTypeForm = ProjectTypeFormFactory.create();
-  @Input() projectType: IIssueType;
-  _submit = output<Partial<IIssueType>>();
+  @Input() projectType: IProjectType;
+  _submit = output<Partial<IProjectType>>();
   close = output<void>();
 
   constructor(private snackBarService: MatSnackBar) {}

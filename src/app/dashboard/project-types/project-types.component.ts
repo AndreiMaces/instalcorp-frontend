@@ -1,26 +1,26 @@
 import { Component, OnInit } from '@angular/core';
-import { IssueTypeControllerService } from '../../core/api/controllers/issue-type-controller.service';
-import { IIssueType } from '../../core/models/IIssueType';
-import { ProjectTypeComponent } from './project-type/project-type.component';
+import { ProjectTypeControllerService } from '../../core/api/controllers/project-type-controller.service';
+import { IProjectType } from '../../core/models/IProjectType';
+import { ProjectTypeRowComponent } from './project-type-row/project-type-row.component';
 import { NgForOf, NgIf } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatAnchor, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateProjectTypeDialogComponent } from './create-project-type-dialog/create-project-type-dialog.component';
+import { CreateProjectTypeDialogComponent } from './shared/components/create-project-type-dialog/create-project-type-dialog.component';
 import { Router, RouterLink } from '@angular/router';
 import { ArchivedProjectTypeComponent } from './project-types-archive/archived-project-type/archived-project-type.component';
 import { BradcrumbsMenuComponent } from '../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { CreateProjectDialogComponent } from './project-type-page/create-project-dialog/create-project-dialog.component';
-import { IIssue } from '../../core/models/IIssue';
-import { MatMenu, MatMenuTrigger } from "@angular/material/menu";
+import { IProject } from '../../core/models/IProject';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-project-types',
   standalone: true,
   imports: [
-    ProjectTypeComponent,
+    ProjectTypeRowComponent,
     NgForOf,
     NgIf,
     MatProgressSpinner,
@@ -33,7 +33,7 @@ import { MatMenu, MatMenuTrigger } from "@angular/material/menu";
     CdkDropList,
     CdkDrag,
     MatMenuTrigger,
-    MatMenu
+    MatMenu,
   ],
   host: {
     class: 'flex-grow',
@@ -42,11 +42,11 @@ import { MatMenu, MatMenuTrigger } from "@angular/material/menu";
   styleUrl: './project-types.component.scss',
 })
 export class ProjectTypesComponent implements OnInit {
-  issueTypes: IIssueType[];
+  projectTypes: IProjectType[];
   isLoading = true;
 
   constructor(
-    private issueTypeController: IssueTypeControllerService,
+    private projectTypeController: ProjectTypeControllerService,
     private dialog: MatDialog,
     private router: Router,
   ) {}
@@ -57,9 +57,9 @@ export class ProjectTypesComponent implements OnInit {
 
   getIssueTypes(): void {
     this.isLoading = true;
-    this.issueTypeController.getIssueTypes().subscribe({
-      next: (issueTypes) => {
-        this.issueTypes = issueTypes;
+    this.projectTypeController.getProjectTypes().subscribe({
+      next: (projectTypes) => {
+        this.projectTypes = projectTypes;
         this.isLoading = false;
       },
       error: (error) => {
@@ -92,16 +92,16 @@ export class ProjectTypesComponent implements OnInit {
         disableClose: true,
       })
       .afterClosed()
-      .subscribe((res: Partial<IIssue>) => {
+      .subscribe((res: Partial<IProject>) => {
         if (res) {
           this.router.navigateByUrl(`/dashboard/project-types/${res.type.id}/${res.type.title}/${res.id}/${res.title}`);
         }
       });
   }
 
-  removeIssueType(issueTypeId: number): void {
+  removeIssueType(projectTypeId: number): void {
     this.isLoading = true;
-    this.issueTypeController.deleteIssueType(issueTypeId).subscribe({
+    this.projectTypeController.deleteProjectType(projectTypeId).subscribe({
       next: () => {
         this.getIssueTypes();
       },
@@ -112,8 +112,8 @@ export class ProjectTypesComponent implements OnInit {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.issueTypes, event.previousIndex, event.currentIndex);
-    this.issueTypeController.updateIssueTypeOrder(this.issueTypes).subscribe({
+    moveItemInArray(this.projectTypes, event.previousIndex, event.currentIndex);
+    this.projectTypeController.updateProjectTypeOrder(this.projectTypes).subscribe({
       next: () => {},
       error: (error) => {
         console.error(error);

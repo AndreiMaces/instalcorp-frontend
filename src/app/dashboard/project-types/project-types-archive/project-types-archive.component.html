@@ -11,15 +11,15 @@
     </div>
     <div class="flex-grow">
       <div class="flex flex-col gap-5 h-full" *ngIf="!isLoading">
-        <div *ngIf="issueTypes.length === 0" class="flex justify-center items-center h-full">
+        <div *ngIf="projectTypes.length === 0" class="flex justify-center items-center h-full">
           <p class="text-gray-500 text-2xl">Nu există tipuri de proiecte arhivate</p>
         </div>
-        <div *ngIf="issueTypes.length > 0" class="flex flex-col gap-5">
-          <app-archived-project-type
-            *ngFor="let projectType of issueTypes"
+        <div *ngIf="projectTypes.length > 0" class="flex flex-col gap-5">
+          <app-archived-project-type-row
+            *ngFor="let projectType of projectTypes"
             [projectType]="projectType"
             (_restore)="restoreIssueType($event)"
-          ></app-archived-project-type>
+          ></app-archived-project-type-row>
         </div>
       </div>
       <div class="w-full h-full flex items-center justify-center" *ngIf="isLoading">

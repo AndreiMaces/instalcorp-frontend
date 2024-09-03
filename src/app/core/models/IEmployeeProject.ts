@@ -1,11 +1,11 @@
-import { IIssue } from './IIssue';
+import { IProject } from './IProject';
 import { IEmployee } from './IEmployee';
 
-export interface IEmployeeIssue {
+export interface IEmployeeProject {
   id?: number;
   employeeId: number;
-  issueId: number;
-  issue?: IIssue;
+  projectId: number;
+  project?: IProject;
   employee?: IEmployee;
   startDate: Date;
   endDate: Date;

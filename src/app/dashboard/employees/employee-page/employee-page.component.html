@@ -13,10 +13,10 @@
         <div *ngFor="let employeeIssue of employee?.employeeIssues">
           <div
             class="flex items-center gap-3 w-full px-5 py-2 shadow rounded-2xl"
-            [style.color]="ColorHelperService.invertedColor(employeeIssue.issue.color ?? 'white')"
-            [style.background-color]="employeeIssue.issue.color ?? 'white'"
+            [style.color]="ColorHelperService.invertedColor(employeeIssue.project.color ?? 'white')"
+            [style.background-color]="employeeIssue.project.color ?? 'white'"
           >
-            <span> {{ employeeIssue.issue.title }} </span>
+            <span> {{ employeeIssue.project.title }} </span>
             <span>{{ employeeIssue.startDate | date }} - {{ employeeIssue.endDate | date }}</span>
           </div>
         </div>

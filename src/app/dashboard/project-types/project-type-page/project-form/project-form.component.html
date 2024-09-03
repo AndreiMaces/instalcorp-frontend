@@ -2,8 +2,8 @@
   <mat-form-field appearance="outline">
     <mat-label>Tip proiect</mat-label>
     <mat-select [formControl]="projectForm.controls.typeId">
-      <mat-option *ngFor="let issueType of issueTypes" [value]="issueType.id">
-        {{ issueType.title }}
+      <mat-option *ngFor="let projectType of projectTypes" [value]="projectType.id">
+        {{ projectType.title }}
       </mat-option>
     </mat-select>
   </mat-form-field>
@@ -80,7 +80,7 @@
   </div>
   <div class="flex flex-col gap-5">
     <h3 class="border-b !m-0 font-bold py-3">Intervale de lucru ale angajaților</h3>
-    <app-employee-issue-form [issue]="project" *ngIf="!!project?.id"></app-employee-issue-form>
+    <app-employee-project-form [project]="project" *ngIf="!!project?.id"></app-employee-project-form>
   </div>
   <div class="p-5 border-t flex justify-end gap-5">
     <button mat-flat-button>Salvează</button>

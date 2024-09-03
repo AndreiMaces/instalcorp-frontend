@@ -1,15 +1,15 @@
 import { Component, Inject } from '@angular/core';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgIf } from '@angular/common';
-import { ProjectTypeFormComponent } from '../../shared/components/project-type-form/project-type-form.component';
-import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ProjectTypeFormComponent } from '../project-type-form/project-type-form.component';
+import { ConfirmationDialogComponent } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { IssueTypeControllerService } from '../../../../core/api/controllers/issue-type-controller.service';
+import { ProjectTypeControllerService } from '../../../../../core/api/controllers/project-type-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IIssueType } from '../../../../core/models/IIssueType';
+import { IProjectType } from '../../../../../core/models/IProjectType';
 
 @Component({
-  selector: 'app-edit-project-type-dialog',
+  selector: 'app-edit-project-type-row-dialog',
   standalone: true,
   imports: [MatProgressSpinner, NgIf, ProjectTypeFormComponent],
   templateUrl: './edit-project-type-dialog.component.html',
@@ -20,15 +20,15 @@ export class EditProjectTypeDialogComponent {
 
   constructor(
     private dialog: MatDialog,
-    private issueTypeController: IssueTypeControllerService,
+    private projectTypeController: ProjectTypeControllerService,
     private dialogRef: MatDialogRef<EditProjectTypeDialogComponent>,
     private snackBarService: MatSnackBar,
-    @Inject(MAT_DIALOG_DATA) public data: { issueType: IIssueType },
+    @Inject(MAT_DIALOG_DATA) public data: { projectType: IProjectType },
   ) {}
 
-  editProjectType(newIssueType: Partial<IIssueType>): void {
+  editProjectType(newIssueType: Partial<IProjectType>): void {
     this.isLoading = true;
-    this.issueTypeController.updateIssueType(this.createPayload(newIssueType)).subscribe({
+    this.projectTypeController.updateProjectType(this.createPayload(newIssueType)).subscribe({
       next: () => {
         this.isLoading = false;
         this.dialogRef.close(true);
@@ -42,9 +42,9 @@ export class EditProjectTypeDialogComponent {
     });
   }
 
-  createPayload(newIssueType: Partial<IIssueType>): IIssueType {
+  createPayload(newIssueType: Partial<IProjectType>): IProjectType {
     return {
-      ...this.data.issueType,
+      ...this.data.projectType,
       ...newIssueType,
     };
   }

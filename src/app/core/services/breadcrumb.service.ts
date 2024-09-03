@@ -44,8 +44,8 @@ export class BreadcrumbService {
         label = child?.snapshot?.params['name'];
       }
 
-      if (label === 'Issue' && child?.snapshot?.params['issueName']) {
-        label = child?.snapshot?.params['issueName'];
+      if (label === 'Issue' && child?.snapshot?.params['projectName']) {
+        label = child?.snapshot?.params['projectName'];
       }
       if (!breadcrumbs.find((breadcrumb) => breadcrumb.label === label)) {
         breadcrumbs.push({ label: label, url: url });

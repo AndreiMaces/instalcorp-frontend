@@ -1,14 +1,14 @@
 <a
   [cdkContextMenuTriggerFor]="context_menu"
-  [routerLink]="issue?.id + '/' + issue?.title"
+  [routerLink]="project?.id + '/' + project?.title"
   class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl hover:brightness-[80%] transition-all cursor-pointer"
-  [style]="'background-image: linear-gradient(to right, white 40% ,' + issue?.color + ' 0%);'"
+  [style]="'background-image: linear-gradient(to right, white 40% ,' + project?.color + ' 0%);'"
 >
   <div class="w-full flex items-center gap-5 lg:max-w-[35%]">
-    <app-issue-importance [importance]="issue.importance"></app-issue-importance>
-    <app-issue-status [status]="issue.status"></app-issue-status>
+    <app-project-importance [importance]="project.importance"></app-project-importance>
+    <app-project-status [status]="project.status"></app-project-status>
     <span class="truncate">
-      {{ issue?.title }}
+      {{ project?.title }}
     </span>
   </div>
 

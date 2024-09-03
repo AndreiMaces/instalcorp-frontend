@@ -1,9 +1,9 @@
-import { IEmployeeIssue } from './IEmployeeIssue';
+import { IEmployeeProject } from './IEmployeeProject';
 
 export interface IEmployee {
   id?: number;
   firstName: string;
   lastName: string;
   phone?: string;
-  employeeIssues?: IEmployeeIssue[];
+  employeeIssues?: IEmployeeProject[];
 }

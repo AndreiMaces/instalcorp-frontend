@@ -6,7 +6,7 @@
     <app-project-type-form
       (close)="openDenyConfirmationDialog()"
       (_submit)="editProjectType($event)"
-      [projectType]="data.issueType"
+      [projectType]="data.projectType"
       *ngIf="!isLoading"
     ></app-project-type-form>
     <div *ngIf="isLoading" class="h-[400px] w-full flex justify-center items-center">

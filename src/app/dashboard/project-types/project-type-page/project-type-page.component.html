@@ -30,7 +30,7 @@
         <div class="flex flex-col gap-5 h-full" *ngIf="!isLoading">
           <div class="flex justify-between items-center w-full gap-5 border-b py-3">
             <h3 class="text-xl font-bold !m-0">Proiecte</h3>
-            <form *ngIf="projectType?.issues?.length > 0" [formGroup]="sortForm" (ngSubmit)="onSortChange()" class="flex gap-5">
+            <form *ngIf="projectType?.projects?.length > 0" [formGroup]="sortForm" (ngSubmit)="onSortChange()" class="flex gap-5">
               <mat-form-field subscriptSizing="dynamic">
                 <mat-label>Sortare</mat-label>
                 <mat-select [formControl]="sortForm.controls.sortingCriteria">
@@ -58,19 +58,19 @@
                 [cdkDropListDisabled]="sortForm.controls.sortingCriteria.value !== 'order'"
                 cdkDropList
                 (cdkDropListDropped)="drop($event)"
-                *ngIf="projectType?.issues?.length > 0"
+                *ngIf="projectType?.projects?.length > 0"
                 class="flex flex-col gap-5"
               >
-                <app-project-type-issue
+                <app-project-row
                   cdkDrag
-                  *ngFor="let issue of projectType?.issues"
-                  [issue]="issue"
+                  *ngFor="let project of projectType?.projects"
+                  [project]="project"
                   (_delete)="removeIssue($event)"
                   (_edit)="getProjectType()"
                   (_clone)="cloneIssue($event)"
-                ></app-project-type-issue>
+                ></app-project-row>
               </div>
-              <div *ngIf="projectType?.issues?.length === 0" class="flex justify-center items-center h-full">
+              <div *ngIf="projectType?.projects?.length === 0" class="flex justify-center items-center h-full">
                 <p class="text-gray-500 text-2xl">Nu există proiecte.</p>
               </div>
             </div>

@@ -6,7 +6,7 @@ import { MatAnchor, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgForOf, NgIf } from '@angular/common';
-import { ProjectTypeComponent } from '../project-types/project-type/project-type.component';
+import { ProjectTypeRowComponent } from '../project-types/project-type-row/project-type-row.component';
 import { RouterLink, RouterOutlet } from '@angular/router';
 import { MatFormField } from '@angular/material/form-field';
 
@@ -27,7 +27,7 @@ import { MatFormField } from '@angular/material/form-field';
     MatProgressSpinner,
     NgForOf,
     NgIf,
-    ProjectTypeComponent,
+    ProjectTypeRowComponent,
     RouterLink,
     MatFormField,
     RouterOutlet,

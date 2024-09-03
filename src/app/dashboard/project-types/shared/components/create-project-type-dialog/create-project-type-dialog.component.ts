@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { ProjectTypeFormComponent } from '../shared/components/project-type-form/project-type-form.component';
+import { ProjectTypeFormComponent } from '../project-type-form/project-type-form.component';
 import { MatButton } from '@angular/material/button';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
-import { IIssueType } from '../../../core/models/IIssueType';
-import { IssueTypeControllerService } from '../../../core/api/controllers/issue-type-controller.service';
+import { ConfirmationDialogComponent } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { IProjectType } from '../../../../../core/models/IProjectType';
+import { ProjectTypeControllerService } from '../../../../../core/api/controllers/project-type-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { NgIf } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 @Component({
-  selector: 'app-create-project-type-dialog',
+  selector: 'app-create-project-type-row-dialog',
   standalone: true,
   imports: [ProjectTypeFormComponent, MatButton, NgIf, MatProgressSpinner],
   templateUrl: './create-project-type-dialog.component.html',
@@ -21,7 +21,7 @@ export class CreateProjectTypeDialogComponent {
 
   constructor(
     private dialog: MatDialog,
-    private issueTypeController: IssueTypeControllerService,
+    private projectTypeController: ProjectTypeControllerService,
     private dialogRef: MatDialogRef<CreateProjectTypeDialogComponent>,
     private snackBarService: MatSnackBar,
   ) {}
@@ -42,9 +42,9 @@ export class CreateProjectTypeDialogComponent {
       });
   }
 
-  createProjectType(newIssueType: Partial<IIssueType>): void {
+  createProjectType(newIssueType: Partial<IProjectType>): void {
     this.isLoading = true;
-    this.issueTypeController.createIssueType(newIssueType).subscribe({
+    this.projectTypeController.createProjectType(newIssueType).subscribe({
       next: () => {
         this.isLoading = false;
         this.dialogRef.close(true);

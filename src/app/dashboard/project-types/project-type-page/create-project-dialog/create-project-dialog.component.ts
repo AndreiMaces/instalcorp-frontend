@@ -5,10 +5,10 @@ import { ProjectTypeFormComponent } from '../../shared/components/project-type-f
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { IIssueType } from '../../../../core/models/IIssueType';
+import { IProjectType } from '../../../../core/models/IProjectType';
 import { ProjectFormComponent } from '../project-form/project-form.component';
-import { IIssue } from '../../../../core/models/IIssue';
-import { IssueControllerService } from '../../../../core/api/controllers/issue-controller.service';
+import { IProject } from '../../../../core/models/IProject';
+import { ProjectControllerService } from '../../../../core/api/controllers/project-controller.service';
 
 @Component({
   selector: 'app-create-project-dialog',
@@ -19,14 +19,14 @@ import { IssueControllerService } from '../../../../core/api/controllers/issue-c
 })
 export class CreateProjectDialogComponent {
   isLoading = false;
-  project: Partial<IIssue>;
+  project: Partial<IProject>;
 
   constructor(
-    private issueController: IssueControllerService,
+    private projectController: ProjectControllerService,
     private snackBarService: MatSnackBar,
     private dialog: MatDialog,
     private dialogRef: MatDialogRef<CreateProjectDialogComponent>,
-    @Inject(MAT_DIALOG_DATA) private data: { issueType: IIssueType },
+    @Inject(MAT_DIALOG_DATA) private data: { projectType: IProjectType },
   ) {}
 
   ngOnInit(): void {
@@ -35,8 +35,8 @@ export class CreateProjectDialogComponent {
 
   initType(): void {
     this.project = {
-      color: this.data?.issueType.color,
-      typeId: this?.data?.issueType?.id,
+      color: this.data?.projectType.color,
+      typeId: this?.data?.projectType?.id,
     };
   }
 
@@ -56,9 +56,9 @@ export class CreateProjectDialogComponent {
       });
   }
 
-  createProject(newIssue: Partial<IIssue>): void {
+  createProject(newIssue: Partial<IProject>): void {
     this.isLoading = true;
-    this.issueController.createIssue(newIssue).subscribe({
+    this.projectController.createProject(newIssue).subscribe({
       next: (res) => {
         this.isLoading = false;
         this.dialogRef.close(res);

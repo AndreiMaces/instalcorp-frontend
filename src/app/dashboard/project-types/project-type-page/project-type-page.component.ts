@@ -3,27 +3,27 @@ import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { JsonPipe, NgForOf, NgIf } from '@angular/common';
-import { ProjectTypeComponent } from '../project-type/project-type.component';
+import { ProjectTypeRowComponent } from '../project-type-row/project-type-row.component';
 import { ActivatedRoute, Router, RouterLink } from '@angular/router';
-import { IssueTypeControllerService } from '../../../core/api/controllers/issue-type-controller.service';
-import { IIssueType } from '../../../core/models/IIssueType';
+import { ProjectTypeControllerService } from '../../../core/api/controllers/project-type-controller.service';
+import { IProjectType } from '../../../core/models/IProjectType';
 import { BradcrumbsMenuComponent } from '../../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
-import { ProjectTypeIssueComponent } from './project-type-issue/project-type-issue.component';
+import { ProjectRowComponent } from './project-row/project-row.component';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateProjectDialogComponent } from './create-project-dialog/create-project-dialog.component';
-import { IssueControllerService } from '../../../core/api/controllers/issue-controller.service';
+import { ProjectControllerService } from '../../../core/api/controllers/project-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray } from '@angular/cdk/drag-drop';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
-import { EditProjectTypeDialogComponent } from '../project-type/edit-project-type-dialog/edit-project-type-dialog.component';
+import { EditProjectTypeDialogComponent } from '../shared/components/edit-project-type-dialog/edit-project-type-dialog.component';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { MatSlideToggle } from '@angular/material/slide-toggle';
 
 @Component({
-  selector: 'app-project-type-page',
+  selector: 'app-project-type-row-page',
   standalone: true,
   imports: [
     MatAnchor,
@@ -32,10 +32,10 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
     MatProgressSpinner,
     NgForOf,
     NgIf,
-    ProjectTypeComponent,
+    ProjectTypeRowComponent,
     RouterLink,
     BradcrumbsMenuComponent,
-    ProjectTypeIssueComponent,
+    ProjectRowComponent,
     CdkDropList,
     CdkDrag,
     MatFormField,
@@ -57,7 +57,7 @@ import { MatSlideToggle } from '@angular/material/slide-toggle';
   styleUrl: './project-type-page.component.scss',
 })
 export class ProjectTypePageComponent {
-  projectType: IIssueType;
+  projectType: IProjectType;
   isLoading = false;
   isLoadingIssues = false;
   sortForm = new FormGroup({
@@ -66,10 +66,10 @@ export class ProjectTypePageComponent {
   });
 
   constructor(
-    private issueTypeController: IssueTypeControllerService,
+    private projectTypeController: ProjectTypeControllerService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
-    private issueController: IssueControllerService,
+    private projectController: ProjectControllerService,
     private snackBarService: MatSnackBar,
     private router: Router,
   ) {}
@@ -105,12 +105,12 @@ export class ProjectTypePageComponent {
 
   getProjectType(): void {
     this.isLoading = true;
-    this.issueTypeController.getIssueType(this.route.snapshot.params['id'], this.createGetProjectTypeIssuesPayload()).subscribe({
+    this.projectTypeController.getProjectType(this.route.snapshot.params['id'], this.createGetProjectTypeIssuesPayload()).subscribe({
       next: (projectType) => {
         this.projectType = projectType;
-        this.projectType.issues.map((issue) => {
+        this.projectType.projects.map((project) => {
           return {
-            ...issue,
+            ...project,
             typeId: this.projectType.id,
             type: {
               id: this.projectType.id,
@@ -131,7 +131,7 @@ export class ProjectTypePageComponent {
     this.dialog
       .open(CreateProjectDialogComponent, {
         data: {
-          issueType: this.projectType,
+          projectType: this.projectType,
         },
         width: '1200px',
         maxWidth: '100%',
@@ -150,7 +150,7 @@ export class ProjectTypePageComponent {
     this.dialog
       .open(EditProjectTypeDialogComponent, {
         data: {
-          issueType: this.createEditPayload(),
+          projectType: this.createEditPayload(),
         },
         width: '1200px',
         maxWidth: '100%',
@@ -164,7 +164,7 @@ export class ProjectTypePageComponent {
       });
   }
 
-  createEditPayload(): IIssueType {
+  createEditPayload(): IProjectType {
     return {
       title: this.projectType.title,
       color: this.projectType.color,
@@ -187,7 +187,7 @@ export class ProjectTypePageComponent {
       .subscribe((result) => {
         if (result) {
           this.isLoading = true;
-          this.issueTypeController.deleteIssueType(this.projectType.id).subscribe({
+          this.projectTypeController.deleteProjectType(this.projectType.id).subscribe({
             next: () => {
               this.isLoading = false;
               this.router.navigate(['/dashboard/project-types']);
@@ -203,9 +203,9 @@ export class ProjectTypePageComponent {
       });
   }
 
-  removeIssue(issueId: number): void {
+  removeIssue(projectId: number): void {
     this.isLoading = true;
-    this.issueController.removeIssue(issueId).subscribe({
+    this.projectController.removeProject(projectId).subscribe({
       next: () => {
         this.getProjectType();
       },
@@ -217,9 +217,9 @@ export class ProjectTypePageComponent {
     });
   }
 
-  cloneIssue(issueId: number): void {
+  cloneIssue(projectId: number): void {
     this.isLoading = true;
-    this.issueController.cloneIssue(issueId).subscribe({
+    this.projectController.cloneProject(projectId).subscribe({
       next: () => {
         this.getProjectType();
       },
@@ -233,12 +233,12 @@ export class ProjectTypePageComponent {
 
   getProjectTypeIssues(): void {
     this.isLoadingIssues = true;
-    this.issueTypeController.getIssueType(this.route.snapshot.params['id'], this.createGetProjectTypeIssuesPayload()).subscribe({
+    this.projectTypeController.getProjectType(this.route.snapshot.params['id'], this.createGetProjectTypeIssuesPayload()).subscribe({
       next: (projectType) => {
-        this.projectType.issues = projectType.issues;
-        this.projectType.issues.map((issue) => {
+        this.projectType.projects = projectType.projects;
+        this.projectType.projects.map((project) => {
           return {
-            ...issue,
+            ...project,
             typeId: this.projectType.id,
             type: {
               id: this.projectType.id,
@@ -269,8 +269,8 @@ export class ProjectTypePageComponent {
   }
 
   drop(event: CdkDragDrop<string[]>) {
-    moveItemInArray(this.projectType?.issues, event.previousIndex, event.currentIndex);
-    this.issueTypeController.updateIssuesOrder(this.projectType).subscribe({
+    moveItemInArray(this.projectType?.projects, event.previousIndex, event.currentIndex);
+    this.projectTypeController.updateProjectsOrder(this.projectType).subscribe({
       next: () => {},
       error: (error) => {
         console.error(error);

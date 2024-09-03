@@ -1,5 +1,5 @@
-import { Component, Input, output, ViewChild } from "@angular/core";
-import { IIssueType } from '../../../core/models/IIssueType';
+import { Component, Input, output, ViewChild } from '@angular/core';
+import { IProjectType } from '../../../core/models/IProjectType';
 import {
   MatExpansionPanel,
   MatExpansionPanelActionRow,
@@ -11,14 +11,14 @@ import { MatSuffix } from '@angular/material/form-field';
 import { MatIcon } from '@angular/material/icon';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
-import { EditProjectTypeDialogComponent } from './edit-project-type-dialog/edit-project-type-dialog.component';
+import { EditProjectTypeDialogComponent } from '../shared/components/edit-project-type-dialog/edit-project-type-dialog.component';
 import { ConfirmationDialogComponent } from '../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { RouterLink } from '@angular/router';
 import { ColorHelperService } from '../../../core/helpers/color-helper.service';
-import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
+import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
 
 @Component({
-  selector: 'app-project-type',
+  selector: 'app-project-type-row',
   standalone: true,
   imports: [
     MatExpansionPanel,
@@ -35,14 +35,14 @@ import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
     RouterLink,
     CdkContextMenuTrigger,
     CdkMenu,
-    CdkMenuItem
+    CdkMenuItem,
   ],
-  templateUrl: './project-type.component.html',
-  styleUrl: './project-type.component.scss',
+  templateUrl: './project-type-row.component.html',
+  styleUrl: './project-type-row.component.scss',
 })
-export class ProjectTypeComponent {
-  @Input() projectType: IIssueType;
-  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger
+export class ProjectTypeRowComponent {
+  @Input() projectType: IProjectType;
+  @ViewChild(MatMenuTrigger) trigger: MatMenuTrigger;
   _edit = output();
   _delete = output<number>();
 
@@ -52,7 +52,7 @@ export class ProjectTypeComponent {
     this.dialog
       .open(EditProjectTypeDialogComponent, {
         data: {
-          issueType: this.projectType,
+          projectType: this.projectType,
         },
         width: '800px',
         maxHeight: '90vh',

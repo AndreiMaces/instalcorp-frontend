@@ -1,5 +1,5 @@
 import { Component, Input, output } from '@angular/core';
-import { IIssue } from '../../../../core/models/IIssue';
+import { IProject } from '../../../../core/models/IProject';
 import { MatIcon } from '@angular/material/icon';
 import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
@@ -18,7 +18,7 @@ import {
   styleUrl: './archived-project.component.scss',
 })
 export class ArchivedProjectComponent {
-  @Input() issue: IIssue;
+  @Input() project: IProject;
   _restore = output<number>();
 
   constructor(private dialog: MatDialog) {}
@@ -27,13 +27,13 @@ export class ArchivedProjectComponent {
     this.dialog
       .open(ConfirmationDialogComponent, {
         data: {
-          message: `Sunteți sigur că doriți să restaurați proiectul '${this.issue.title}'?`,
+          message: `Sunteți sigur că doriți să restaurați proiectul '${this.project.title}'?`,
         } as IConfirmationDialogData,
         disableClose: true,
       })
       .afterClosed()
       .subscribe((res) => {
-        if (res) this._restore.emit(this.issue.id);
+        if (res) this._restore.emit(this.project.id);
       });
   }
 }

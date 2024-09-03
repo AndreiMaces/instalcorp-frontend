@@ -1,34 +1,34 @@
 import { Component, OnInit } from '@angular/core';
 import { BradcrumbsMenuComponent } from '../../../../shared/components/bradcrumbs-menu/bradcrumbs-menu.component';
-import { MatAnchor, MatButton, MatIconButton } from "@angular/material/button";
+import { MatAnchor, MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { DatePipe, NgForOf, NgIf } from '@angular/common';
-import { ProjectTypeComponent } from '../../project-type/project-type.component';
-import { ActivatedRoute, Router, RouterLink } from "@angular/router";
-import { IssueControllerService } from '../../../../core/api/controllers/issue-controller.service';
-import { IIssue } from '../../../../core/models/IIssue';
+import { ProjectTypeRowComponent } from '../../project-type-row/project-type-row.component';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ProjectControllerService } from '../../../../core/api/controllers/project-controller.service';
+import { IProject } from '../../../../core/models/IProject';
 import { CdkDrag, CdkDropList } from '@angular/cdk/drag-drop';
 import { MatFormField, MatLabel } from '@angular/material/form-field';
 import { MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
-import { ProjectTypeIssueComponent } from '../../project-type-page/project-type-issue/project-type-issue.component';
+import { ProjectRowComponent } from '../../project-type-page/project-row/project-row.component';
 import { ReactiveFormsModule } from '@angular/forms';
-import { IssueImportanceComponent } from '../../project-type-page/project-type-issue/issue-importance/issue-importance.component';
+import { ProjectImportanceComponent } from '../../project-type-page/project-row/project-importance/project-importance.component';
 import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
 import { EmployeesTableComponent } from '../../../../shared/components/employees-table/employees-table.component';
-import { MatMenu, MatMenuItem, MatMenuTrigger } from "@angular/material/menu";
-import { CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
+import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
+import { CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
 import {
   ConfirmationDialogComponent,
-  IConfirmationDialogData
-} from "../../../../shared/components/confirmation-dialog/confirmation-dialog.component";
-import { MatDialog } from "@angular/material/dialog";
-import { EditProjectDialogComponent } from "../../project-type-page/edit-project-dialog/edit-project-dialog.component";
-import { HandleEmployeesComponent } from "../../project-type-page/handle-employees-dialog/handle-employees.component";
+  IConfirmationDialogData,
+} from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { EditProjectDialogComponent } from '../../project-type-page/edit-project-dialog/edit-project-dialog.component';
+import { HandleEmployeesComponent } from '../../project-type-page/handle-employees-dialog/handle-employees.component';
 
 @Component({
-  selector: 'app-issue-page',
+  selector: 'app-project-page',
   standalone: true,
   imports: [
     BradcrumbsMenuComponent,
@@ -38,7 +38,7 @@ import { HandleEmployeesComponent } from "../../project-type-page/handle-employe
     MatProgressSpinner,
     NgForOf,
     NgIf,
-    ProjectTypeComponent,
+    ProjectTypeRowComponent,
     RouterLink,
     CdkDrag,
     CdkDropList,
@@ -46,9 +46,9 @@ import { HandleEmployeesComponent } from "../../project-type-page/handle-employe
     MatLabel,
     MatOption,
     MatSelect,
-    ProjectTypeIssueComponent,
+    ProjectRowComponent,
     ReactiveFormsModule,
-    IssueImportanceComponent,
+    ProjectImportanceComponent,
     DatePipe,
     EmployeesTableComponent,
     MatIconButton,
@@ -56,59 +56,58 @@ import { HandleEmployeesComponent } from "../../project-type-page/handle-employe
     MatMenuItem,
     MatMenuTrigger,
     CdkMenu,
-    CdkMenuItem
+    CdkMenuItem,
   ],
-  templateUrl: './issue-page.component.html',
-  styleUrl: './issue-page.component.scss',
+  templateUrl: './project-page.component.html',
+  styleUrl: './project-page.component.scss',
   host: {
     class: 'flex-grow',
   },
 })
-export class IssuePageComponent implements OnInit {
-  issue: IIssue;
+export class ProjectPageComponent implements OnInit {
+  project: IProject;
   isLoading: boolean;
 
   constructor(
-    private issueControllerService: IssueControllerService,
+    private projectControllerService: ProjectControllerService,
     private route: ActivatedRoute,
     private dialog: MatDialog,
     private router: Router,
   ) {}
 
   ngOnInit() {
-    this.initIssue();
+    this.initProject();
   }
 
-  initIssue() {
+  initProject() {
     this.isLoading = true;
-    this.route.params.subscribe(params => {
-      const issueId = +params['issueId'];
-      this.issueControllerService.getIssue(issueId).subscribe(
-        (issue) => {
-          this.issue = issue;
+    this.route.params.subscribe((params) => {
+      const projectId = +params['projectId'];
+      this.projectControllerService.getProject(projectId).subscribe({
+        next: (project) => {
+          this.project = project;
           this.isLoading = false;
         },
-        (error) => {
+        error: (error) => {
           console.error(error);
           this.isLoading = false;
         },
-      );
+      });
     });
-
   }
 
   openDuplicateDialog(): void {
     this.dialog
       .open(ConfirmationDialogComponent, {
         data: {
-          message: `Sunteți sigur că doriți să creați o copie a proiectului '${this.issue.title}'?`,
+          message: `Sunteți sigur că doriți să creați o copie a proiectului '${this.project.title}'?`,
         } as IConfirmationDialogData,
         disableClose: true,
       })
       .afterClosed()
       .subscribe(() => {
-        this.issueControllerService.cloneIssue(this.issue.id).subscribe((issue) => {
-          const redirectRoute = `../../${issue.id}/${issue.title}`;
+        this.projectControllerService.cloneProject(this.project.id).subscribe((project) => {
+          const redirectRoute = `../../${project.id}/${project.title}`;
           this.router.navigate([redirectRoute], { relativeTo: this.route });
         });
       });
@@ -118,7 +117,7 @@ export class IssuePageComponent implements OnInit {
     this.dialog
       .open(EditProjectDialogComponent, {
         data: {
-          issue: this.issue,
+          project: this.project,
         },
         width: '1200px',
         maxWidth: '100%',
@@ -128,7 +127,7 @@ export class IssuePageComponent implements OnInit {
       .afterClosed()
       .subscribe((res) => {
         if (res) {
-          this.initIssue();
+          this.initProject();
         }
       });
   }
@@ -136,7 +135,7 @@ export class IssuePageComponent implements OnInit {
   openHandleEmployeesDialog(): void {
     this.dialog.open(HandleEmployeesComponent, {
       data: {
-        issue: this.issue,
+        project: this.project,
       },
       disableClose: true,
       maxWidth: '100%',
@@ -149,14 +148,14 @@ export class IssuePageComponent implements OnInit {
     this.dialog
       .open(ConfirmationDialogComponent, {
         data: {
-          message: `Sunteți sigur că doriți să ștergeți proiectul '${this.issue.title}'?`,
+          message: `Sunteți sigur că doriți să ștergeți proiectul '${this.project.title}'?`,
         } as IConfirmationDialogData,
         disableClose: true,
       })
       .afterClosed()
       .subscribe((res) => {
         if (res) {
-          this.issueControllerService.removeIssue(this.issue.id).subscribe(() => {
+          this.projectControllerService.removeProject(this.project.id).subscribe(() => {
             this.router.navigate(['../../'], { relativeTo: this.route });
           });
         }

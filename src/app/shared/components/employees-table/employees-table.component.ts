@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { DatePipe, NgForOf } from '@angular/common';
-import { IEmployeeIssue } from '../../../core/models/IEmployeeIssue';
+import { IEmployeeProject } from '../../../core/models/IEmployeeProject';
 
 @Component({
   selector: 'app-employees-table',
@@ -10,5 +10,5 @@ import { IEmployeeIssue } from '../../../core/models/IEmployeeIssue';
   styleUrl: './employees-table.component.scss',
 })
 export class EmployeesTableComponent {
-  @Input() employeeIssues: IEmployeeIssue[];
+  @Input() employeeIssues: IEmployeeProject[];
 }

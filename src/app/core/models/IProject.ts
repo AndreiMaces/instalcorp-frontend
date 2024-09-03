@@ -1,8 +1,8 @@
-import { IIssueType } from './IIssueType';
+import { IProjectType } from './IProjectType';
 import { EProjectImportance } from '../../dashboard/project-types/shared/enums/EProjectImportance';
-import { IEmployeeIssue } from './IEmployeeIssue';
+import { IEmployeeProject } from './IEmployeeProject';
 
-export interface IIssue {
+export interface IProject {
   id: number;
   name: string;
   title: string;
@@ -13,10 +13,10 @@ export interface IIssue {
   startDate?: Date;
   endDate?: Date;
   status: number;
-  type?: IIssueType;
+  type?: IProjectType;
   typeId?: number;
   importance: EProjectImportance;
-  employeeIssues?: IEmployeeIssue[];
+  employeeProjects?: IEmployeeProject[];
   media: string[];
   isDeleted: boolean;
 }

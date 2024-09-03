@@ -7,20 +7,20 @@ import { MatInput } from '@angular/material/input';
 import { NgForOf, NgIf } from '@angular/common';
 import { ValidationHelperService } from '../../../../core/helpers/validation-helper.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { IIssueType } from '../../../../core/models/IIssueType';
+import { IProjectType } from '../../../../core/models/IProjectType';
 import { MatOption, MatSelect } from '@angular/material/select';
 import { EProjectStatus } from '../../shared/enums/EProjectStatus';
 import { MatDatepickerModule, MatDatepickerToggle, MatDateRangeInput, MatDateRangePicker } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
-import { IssueTypeControllerService } from '../../../../core/api/controllers/issue-type-controller.service';
+import { ProjectTypeControllerService } from '../../../../core/api/controllers/project-type-controller.service';
 import { MatDialog } from '@angular/material/dialog';
-import { IIssue } from '../../../../core/models/IIssue';
+import { IProject } from '../../../../core/models/IProject';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { IEmployee } from '../../../../core/models/IEmployee';
-import { EmployeeIssueFormComponent } from './employee-issue-form/employee-issue-form.component';
 import { UploadMediaSingleComponent } from '../../../../shared/components/upload-media-single/upload-media-single.component';
 import { UploadMediaMultipleComponent } from '../../../../shared/components/upload-media-multiple/upload-media-multiple.component';
+import { EmployeeProjectFormComponent } from './employee-project-form/employee-project-form.component';
 
 @Component({
   selector: 'app-project-form',
@@ -46,7 +46,7 @@ import { UploadMediaMultipleComponent } from '../../../../shared/components/uplo
     MatIcon,
     NgForOf,
     MatProgressSpinner,
-    EmployeeIssueFormComponent,
+    EmployeeProjectFormComponent,
     UploadMediaSingleComponent,
     UploadMediaMultipleComponent,
   ],
@@ -54,17 +54,17 @@ import { UploadMediaMultipleComponent } from '../../../../shared/components/uplo
   styleUrl: './project-form.component.scss',
 })
 export class ProjectFormComponent {
-  _submit = output<Partial<IIssue>>();
+  _submit = output<Partial<IProject>>();
   close = output();
   projectForm = ProjectFormFactory.create();
-  @Input() project: Partial<IIssue>;
-  issueTypes: Partial<IIssueType>[];
+  @Input() project: Partial<IProject>;
+  projectTypes: Partial<IProjectType>[];
   employees: Partial<IEmployee>[];
   isLoading = false;
 
   constructor(
     private snackBarService: MatSnackBar,
-    private issueTypeController: IssueTypeControllerService,
+    private projectTypeController: ProjectTypeControllerService,
     private dialog: MatDialog,
   ) {}
 
@@ -74,9 +74,9 @@ export class ProjectFormComponent {
 
   getIssueTypesDropdown(): void {
     this.isLoading = true;
-    this.issueTypeController.getIssueTypesDropdown().subscribe({
+    this.projectTypeController.getProjectTypesDropdown().subscribe({
       next: (value) => {
-        this.issueTypes = value;
+        this.projectTypes = value;
         if (this.project) {
           this.prefillForm();
         }
@@ -102,7 +102,7 @@ export class ProjectFormComponent {
       startDate: this.project.startDate ?? new Date(),
       endDate: this.project.endDate ?? new Date(),
       status: this.project.status ?? 0,
-      typeId: this.project.typeId ?? this.issueTypes[0].id,
+      typeId: this.project.typeId ?? this.projectTypes[0].id,
       importance: this.project.importance ?? 0,
     });
     this?.project?.media?.forEach((url) => this.projectForm.controls.media.push(new FormControl(url)));
@@ -119,11 +119,11 @@ export class ProjectFormComponent {
     }
   }
 
-  createPayload(): Partial<IIssue> {
+  createPayload(): Partial<IProject> {
     return {
       name: 'Project',
       ...this.projectForm.value,
-    } as Partial<IIssue>;
+    } as Partial<IProject>;
   }
 
   protected readonly ValidationHelperService = ValidationHelperService;

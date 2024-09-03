@@ -3,13 +3,13 @@ import { EProjectStatus } from '../../../shared/enums/EProjectStatus';
 import { NgIf } from '@angular/common';
 
 @Component({
-  selector: 'app-issue-status',
+  selector: 'app-project-status',
   standalone: true,
   imports: [NgIf],
-  templateUrl: './issue-status.component.html',
-  styleUrl: './issue-status.component.scss',
+  templateUrl: './project-status.component.html',
+  styleUrl: './project-status.component.scss',
 })
-export class IssueStatusComponent {
+export class ProjectStatusComponent {
   @Input() status: EProjectStatus;
   protected readonly EProjectStatus = EProjectStatus;
 }

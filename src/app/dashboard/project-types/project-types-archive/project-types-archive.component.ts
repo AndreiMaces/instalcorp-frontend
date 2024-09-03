@@ -3,9 +3,9 @@ import { MatAnchor, MatButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgForOf, NgIf } from '@angular/common';
-import { ProjectTypeComponent } from '../project-type/project-type.component';
-import { IIssueType } from '../../../core/models/IIssueType';
-import { IssueTypeControllerService } from '../../../core/api/controllers/issue-type-controller.service';
+import { ProjectTypeRowComponent } from '../project-type-row/project-type-row.component';
+import { IProjectType } from '../../../core/models/IProjectType';
+import { ProjectTypeControllerService } from '../../../core/api/controllers/project-type-controller.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ArchivedProjectTypeComponent } from './archived-project-type/archived-project-type.component';
 import { RouterLink } from '@angular/router';
@@ -20,7 +20,7 @@ import { BradcrumbsMenuComponent } from '../../../shared/components/bradcrumbs-m
     MatProgressSpinner,
     NgForOf,
     NgIf,
-    ProjectTypeComponent,
+    ProjectTypeRowComponent,
     ArchivedProjectTypeComponent,
     MatAnchor,
     RouterLink,
@@ -33,11 +33,11 @@ import { BradcrumbsMenuComponent } from '../../../shared/components/bradcrumbs-m
   styleUrl: './project-types-archive.component.scss',
 })
 export class ProjectTypesArchiveComponent {
-  issueTypes: IIssueType[];
+  projectTypes: IProjectType[];
   isLoading = true;
 
   constructor(
-    private issueTypeController: IssueTypeControllerService,
+    private projectTypeController: ProjectTypeControllerService,
     private dialog: MatDialog,
   ) {}
 
@@ -47,9 +47,9 @@ export class ProjectTypesArchiveComponent {
 
   getIssueTypesArchive(): void {
     this.isLoading = true;
-    this.issueTypeController.getIssueTypesArchive().subscribe({
-      next: (issueTypes) => {
-        this.issueTypes = issueTypes;
+    this.projectTypeController.getProjectTypesArchive().subscribe({
+      next: (projectTypes) => {
+        this.projectTypes = projectTypes;
         this.isLoading = false;
       },
       error: (error) => {
@@ -59,9 +59,9 @@ export class ProjectTypesArchiveComponent {
     });
   }
 
-  restoreIssueType(issueTypeId: number): void {
+  restoreIssueType(projectTypeId: number): void {
     this.isLoading = true;
-    this.issueTypeController.restoreIssueType(issueTypeId).subscribe({
+    this.projectTypeController.restoreProjectType(projectTypeId).subscribe({
       next: () => {
         this.getIssueTypesArchive();
       },

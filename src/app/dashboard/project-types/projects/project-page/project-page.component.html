@@ -7,28 +7,28 @@
       <div class="h-full flex flex-col gap-5" *ngIf="!isLoading">
         <div class="flex justify-between items-center">
           <div class="flex justify-center items-center gap-5">
-            <h2 class="font-bold !m-0">{{ issue.title }}</h2>
+            <h2 class="font-bold !m-0">{{ project.title }}</h2>
           </div>
           <div class="flex gap-5 items-center">
-            <app-issue-importance [importance]="issue.importance"></app-issue-importance>
-            <div class="w-[40px] h-[40px] rounded-full shadow" [style.background-color]="issue.color ?? 'white'"></div>
+            <app-project-importance [importance]="project.importance"></app-project-importance>
+            <div class="w-[40px] h-[40px] rounded-full shadow" [style.background-color]="project.color ?? 'white'"></div>
             <button mat-icon-button [matMenuTriggerFor]="menu" (click)="$event.stopPropagation(); $event.preventDefault()">
               <mat-icon>more_vert</mat-icon>
             </button>
           </div>
         </div>
         <div>
-          <p>{{ issue.description }}</p>
+          <p>{{ project.description }}</p>
         </div>
         <div class="flex flex-col flex-grow gap-5">
           <div class="flex flex-col gap-3 flex-grow">
             <div class="flex justify-between items-center w-full gap-5 border-b py-3">
               <h3 class="text-xl font-bold !m-0">Fișiere</h3>
             </div>
-            <div *ngIf="issue?.media?.length === 0" class="flex-grow flex items-center justify-center">
+            <div *ngIf="project?.media?.length === 0" class="flex-grow flex items-center justify-center">
               <p>Nu există fișiere.</p>
             </div>
-            <div *ngFor="let url of issue.media" class="flex flex-col gap-5">
+            <div *ngFor="let url of project.media" class="flex flex-col gap-5">
               <a [href]="'//' + url" target="_blank" class="text-blue-600 hover:text-blue-900 underline">{{ url }}</a>
             </div>
           </div>
@@ -37,10 +37,13 @@
             <div class="flex justify-between items-center w-full gap-5 border-b py-3">
               <h3 class="text-xl font-bold !m-0">Intervale de lucru ale angajaților</h3>
             </div>
-            <div *ngIf="issue?.employeeIssues?.length === 0" class="flex-grow flex items-center justify-center">
+            <div *ngIf="project?.employeeProjects?.length === 0" class="flex-grow flex items-center justify-center">
               <p>Nu există intervale de lucru ale angajaților.</p>
             </div>
-            <app-employees-table *ngIf="issue?.employeeIssues?.length > 0" [employeeIssues]="issue.employeeIssues"></app-employees-table>
+            <app-employees-table
+              *ngIf="project?.employeeProjects?.length > 0"
+              [employeeIssues]="project.employeeProjects"
+            ></app-employees-table>
           </div>
         </div>
       </div>
@@ -52,7 +55,7 @@
 </div>
 
 <mat-menu #menu="matMenu">
-  <div class=" rounded-[.5rem] overflow-hidden" cdkMenu>
+  <div class="rounded-[.5rem] overflow-hidden" cdkMenu>
     <button mat-menu-item cdkMenuItem (click)="openDuplicateDialog()">
       <mat-icon>content_copy</mat-icon>
       <span>Creează copie</span>

@@ -1,6 +1,6 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
 import { EProjectStatus } from '../../shared/enums/EProjectStatus';
-import { IEmployeeIssueForm } from './employee-issue-form/EmployeeIssueFormFactory';
+import { IEmployeeIssueForm } from './employee-project-form/EmployeeIssueFormFactory';
 
 export interface ProjectForm {
   title: FormControl<string>;

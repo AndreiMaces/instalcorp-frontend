@@ -29,11 +29,11 @@ const routes: Routes = [
         component: ProjectTypePageArchiveComponent,
       },
       {
-        path: ':issueId/:issueName',
+        path: ':projectId/:projectName',
         data: {
           breadcrumb: 'Issue',
         },
-        loadChildren: () => import('./issues/issues.module').then((m) => m.IssuesModule),
+        loadChildren: () => import('./projects/projects.module').then((m) => m.ProjectsModule),
       },
     ],
   },

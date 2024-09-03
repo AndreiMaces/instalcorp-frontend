@@ -1,18 +1,18 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { EmployeeIssueFormComponent } from '../project-form/employee-issue-form/employee-issue-form.component';
-import { IIssue } from '../../../../core/models/IIssue';
+import { IProject } from '../../../../core/models/IProject';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgIf } from '@angular/common';
 import { ProjectTypeFormComponent } from '../../shared/components/project-type-form/project-type-form.component';
 import { MAT_DIALOG_DATA, MatDialog } from '@angular/material/dialog';
 import { MatButton } from '@angular/material/button';
-import { IssueControllerService } from '../../../../core/api/controllers/issue-controller.service';
+import { ProjectControllerService } from '../../../../core/api/controllers/project-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { EmployeeProjectFormComponent } from '../project-form/employee-project-form/employee-project-form.component';
 
 @Component({
   selector: 'app-handle-employees-dialog',
   standalone: true,
-  imports: [EmployeeIssueFormComponent, MatProgressSpinner, NgIf, ProjectTypeFormComponent, MatButton],
+  imports: [EmployeeProjectFormComponent, MatProgressSpinner, NgIf, ProjectTypeFormComponent, MatButton],
   templateUrl: './handle-employees.component.html',
   styleUrl: './handle-employees.component.scss',
 })
@@ -20,9 +20,9 @@ export class HandleEmployeesComponent implements OnInit {
   isLoading = false;
 
   constructor(
-    @Inject(MAT_DIALOG_DATA) public data: { issue: Partial<IIssue> },
+    @Inject(MAT_DIALOG_DATA) public data: { project: Partial<IProject> },
     private dialog: MatDialog,
-    private issueController: IssueControllerService,
+    private projectController: ProjectControllerService,
     private snackBarService: MatSnackBar,
   ) {}
 
@@ -32,9 +32,9 @@ export class HandleEmployeesComponent implements OnInit {
 
   getProject(): void {
     this.isLoading = true;
-    this.issueController.getIssue(this.data.issue.id).subscribe({
+    this.projectController.getProject(this.data.project.id).subscribe({
       next: (res) => {
-        this.data.issue = res;
+        this.data.project = res;
         this.isLoading = false;
       },
       error: () => {
