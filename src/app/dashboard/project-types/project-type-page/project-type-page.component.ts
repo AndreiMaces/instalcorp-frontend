@@ -232,6 +232,7 @@ export class ProjectTypePageComponent {
   }
 
   getProjectTypeIssues(): void {
+    if (this.isLoading === true) return;
     this.isLoadingIssues = true;
     this.projectTypeController.getProjectType(this.route.snapshot.params['id'], this.createGetProjectTypeIssuesPayload()).subscribe({
       next: (projectType) => {

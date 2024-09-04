@@ -7,6 +7,6 @@ export interface IEmployeeProject {
   projectId: number;
   project?: IProject;
   employee?: IEmployee;
-  startDate: Date;
-  endDate: Date;
+  startDate: string;
+  endDate: string;
 }

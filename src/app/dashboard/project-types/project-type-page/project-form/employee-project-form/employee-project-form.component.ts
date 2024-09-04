@@ -66,7 +66,11 @@ export class EmployeeProjectFormComponent implements OnInit {
   prefillForm(): void {
     this?.project?.employeeProjects.forEach((employeeIssue) => {
       const newGroup = EmployeeIssueFormFactory.create();
-      newGroup.patchValue(employeeIssue);
+      newGroup.patchValue({
+        ...employeeIssue,
+        startDate: new Date(employeeIssue.startDate),
+        endDate: new Date(employeeIssue.endDate),
+      });
       this.employeeIssuesForm.push(newGroup);
     });
   }
@@ -76,7 +80,11 @@ export class EmployeeProjectFormComponent implements OnInit {
     this.employeeIssueController.createEmployeeProject(this.createPayload()).subscribe({
       next: (res) => {
         const newGroup = EmployeeIssueFormFactory.create();
-        newGroup.patchValue(res);
+        newGroup.patchValue({
+          ...res,
+          startDate: new Date(res.startDate),
+          endDate: new Date(res.endDate),
+        });
         this.employeeIssuesForm.push(newGroup);
         this.employees.push(res);
         this.isLoading = false;
@@ -94,8 +102,8 @@ export class EmployeeProjectFormComponent implements OnInit {
     return {
       employeeId: this.createForm.controls.employee.value.id,
       projectId: this.project.id,
-      startDate: this.createForm.controls.startDate.value,
-      endDate: this.createForm.controls.endDate.value,
+      startDate: this.createForm.controls.startDate.value.toISOString(),
+      endDate: this.createForm.controls.endDate.value.toISOString(),
     };
   }
 
