@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full h-full">
+<div class="flex flex-col w-full pt-5">
   <div>
     <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6 [&>div]:flex [&>div]:justify-center [&>div]:items-center">
       <div></div>
@@ -8,7 +8,10 @@
       <div>Joi</div>
       <div>Vineri</div>
     </div>
-    <div class="h-full">
+    <div class="h-full min-h-[400px] w-full border flex justify-center items-center" *ngIf="isLoading">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+    <div class="h-full" *ngIf="!isLoading">
       <div class="[&>div]:border w-full grid grid-cols-6" *ngFor="let employee of employees; let i = index">
         <div class="flex justify-center items-center">
           <span> {{ employee.firstName }} {{ employee.lastName }} </span>
@@ -31,6 +34,7 @@
             </div>
 
             <app-resizeable-project
+              [referenceDate]="referenceDate"
               [employeeProject]="employeeProject"
               *ngFor="let employeeProject of employee.employeeProjects"
             ></app-resizeable-project>

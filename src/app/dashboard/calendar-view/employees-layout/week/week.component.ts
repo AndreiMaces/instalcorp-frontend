@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -8,13 +8,14 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { NgForOf } from '@angular/common';
+import { NgForOf, NgIf } from '@angular/common';
 import { ResizeableProjectComponent } from './resizeable-project/resizeable-project.component';
 import { EmployeesCalendarComponent } from '../../../../core/api/controllers/employees-calendar-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IEmployee } from '../../../../core/models/IEmployee';
 import { IEmployeeProject } from '../../../../core/models/IEmployeeProject';
 import { DateHelperService } from '../../../../core/helpers/date-helper.service';
+import { MatProgressSpinner } from '@angular/material/progress-spinner';
 
 export interface IDay {
   name: string;
@@ -24,13 +25,14 @@ export interface IDay {
 @Component({
   selector: 'app-week',
   standalone: true,
-  imports: [CdkDrag, CdkDropList, CdkDropListGroup, NgForOf, ResizeableProjectComponent, DragDropModule],
+  imports: [CdkDrag, CdkDropList, CdkDropListGroup, NgForOf, ResizeableProjectComponent, DragDropModule, NgIf, MatProgressSpinner],
   templateUrl: './week.component.html',
   styleUrl: './week.component.scss',
 })
 export class WeekComponent {
   employees: IEmployee[] = [];
   isLoading = false;
+  @Input() referenceDate: Date = new Date();
 
   constructor(
     private employeesCalendarController: EmployeesCalendarComponent,
@@ -43,7 +45,7 @@ export class WeekComponent {
 
   getWeek(): void {
     this.isLoading = true;
-    this.employeesCalendarController.getWeek(new Date()).subscribe({
+    this.employeesCalendarController.getWeek(this.referenceDate).subscribe({
       next: (employees) => {
         this.employees = employees;
         this.isLoading = false;
@@ -58,7 +60,7 @@ export class WeekComponent {
   }
 
   getWeekDayDate(day: number): string {
-    return DateHelperService.getWeekDayDate(new Date(), day);
+    return DateHelperService.getWeekDayDate(this.referenceDate, day);
   }
 
   drop(event: CdkDragDrop<IEmployeeProject[]>) {

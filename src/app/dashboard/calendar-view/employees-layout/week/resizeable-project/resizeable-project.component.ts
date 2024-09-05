@@ -29,6 +29,7 @@ export class ResizeableProjectComponent implements OnInit {
   })
   employeeProject: IEmployeeProject & { style: { left: string; width: string } };
   @ViewChild('container') div: ElementRef;
+  @Input() referenceDate: Date = new Date();
   isDragDisabled = false;
   maxSpace = 998;
   cachedDateRange: { startDate: string; endDate: string } = { startDate: '', endDate: '' };
@@ -51,7 +52,7 @@ export class ResizeableProjectComponent implements OnInit {
 
   initLeft(): number {
     let startDate = new Date(this.employeeProject.startDate);
-    const monday = DateHelperService.getMonday(new Date());
+    const monday = DateHelperService.getMonday(this.referenceDate);
     if (startDate < monday) {
       startDate = monday;
     }
@@ -66,8 +67,8 @@ export class ResizeableProjectComponent implements OnInit {
   initWidth(): number {
     let startDate = new Date(this.employeeProject.startDate);
     let endDate = new Date(this.employeeProject.endDate);
-    let monday = DateHelperService.getMonday(new Date());
-    let friday = DateHelperService.getFriday(new Date());
+    let monday = DateHelperService.getMonday(this.referenceDate);
+    let friday = DateHelperService.getFriday(this.referenceDate);
     if (startDate < monday) {
       startDate = monday;
     }
@@ -106,7 +107,7 @@ export class ResizeableProjectComponent implements OnInit {
 
   computeStartDate(event: ResizeEvent): Date {
     const leftDays = Math.trunc(Math.round((event.rectangle.left / 200) * 200) / 200);
-    const date = DateHelperService.getMonday(new Date());
+    const date = DateHelperService.getMonday(this.referenceDate);
     date.setDate(date.getDate() + leftDays);
     return date;
   }
