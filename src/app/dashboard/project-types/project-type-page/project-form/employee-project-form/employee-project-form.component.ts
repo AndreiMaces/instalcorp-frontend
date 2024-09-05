@@ -98,7 +98,7 @@ export class EmployeeProjectFormComponent implements OnInit {
     });
   }
 
-  createPayload(): IEmployeeProject {
+  createPayload(): Partial<IEmployeeProject> {
     return {
       employeeId: this.createForm.controls.employee.value.id,
       projectId: this.project.id,

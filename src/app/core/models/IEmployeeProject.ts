@@ -9,4 +9,5 @@ export interface IEmployeeProject {
   employee?: IEmployee;
   startDate: string;
   endDate: string;
+  order: number;
 }

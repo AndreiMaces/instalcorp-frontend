@@ -7,7 +7,7 @@ import { IEmployeeProject } from '../../models/IEmployeeProject';
 @Injectable({
   providedIn: 'root',
 })
-export class EmployeesCalendarComponent {
+export class EmployeesCalendarController {
   private _baseURL = `/employees-calendar`;
 
   constructor(private apiService: ApiService) {}
@@ -18,5 +18,9 @@ export class EmployeesCalendarComponent {
 
   resizeProject(employeeProjectId: number, employeeProject: Partial<IEmployeeProject>): Observable<IEmployeeProject> {
     return this.apiService.put<IEmployeeProject>(`${this._baseURL}/project/${employeeProjectId}/resize`, employeeProject);
+  }
+
+  reorderProjects(employeeId: number, employeeProjects: Partial<IEmployeeProject>[]): Observable<IEmployeeProject[]> {
+    return this.apiService.put<IEmployeeProject[]>(`${this._baseURL}/employee/${employeeId}/projects/reorder`, employeeProjects);
   }
 }

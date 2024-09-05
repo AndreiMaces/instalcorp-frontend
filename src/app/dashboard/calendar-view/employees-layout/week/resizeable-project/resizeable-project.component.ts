@@ -5,7 +5,7 @@ import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 import { IEmployeeProject } from '../../../../../core/models/IEmployeeProject';
 import { DateHelperService } from '../../../../../core/helpers/date-helper.service';
 import { MatTooltip } from '@angular/material/tooltip';
-import { EmployeesCalendarComponent } from '../../../../../core/api/controllers/employees-calendar-controller.service';
+import { EmployeesCalendarController } from '../../../../../core/api/controllers/employees-calendar-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -35,7 +35,7 @@ export class ResizeableProjectComponent implements OnInit {
   cachedDateRange: { startDate: string; endDate: string } = { startDate: '', endDate: '' };
 
   constructor(
-    private employeesCalendarController: EmployeesCalendarComponent,
+    private employeesCalendarController: EmployeesCalendarController,
     private matSnackBar: MatSnackBar,
   ) {}
 

@@ -10,7 +10,7 @@ import {
 } from '@angular/cdk/drag-drop';
 import { NgForOf, NgIf } from '@angular/common';
 import { ResizeableProjectComponent } from './resizeable-project/resizeable-project.component';
-import { EmployeesCalendarComponent } from '../../../../core/api/controllers/employees-calendar-controller.service';
+import { EmployeesCalendarController } from '../../../../core/api/controllers/employees-calendar-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IEmployee } from '../../../../core/models/IEmployee';
 import { IEmployeeProject } from '../../../../core/models/IEmployeeProject';
@@ -35,7 +35,7 @@ export class WeekComponent {
   @Input() referenceDate: Date = new Date();
 
   constructor(
-    private employeesCalendarController: EmployeesCalendarComponent,
+    private employeesCalendarController: EmployeesCalendarController,
     private snackBarService: MatSnackBar,
   ) {}
 
@@ -66,6 +66,14 @@ export class WeekComponent {
   drop(event: CdkDragDrop<IEmployeeProject[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.employeesCalendarController.reorderProjects(event.container.data[event.currentIndex].id, event.container.data).subscribe(
+        () => {},
+        () => {
+          this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
+            duration: 3000,
+          });
+        },
+      );
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
     }
@@ -74,6 +82,4 @@ export class WeekComponent {
   getLinkedLists(): string[] {
     return this?.employees?.map((day, i) => 'list' + i);
   }
-
-  protected readonly DateHelperService = DateHelperService;
 }
