@@ -14,4 +14,8 @@ export class EmployeeProjectControllerService {
   createEmployeeProject(newEmployee: Partial<IEmployeeProject>): Observable<IEmployeeProject> {
     return this.apiService.post<IEmployeeProject>(`${this._baseURL}`, newEmployee);
   }
+
+  editEmployeeProject(employeeProjectId: number, editedEmployee: Partial<IEmployeeProject>): Observable<IEmployeeProject> {
+    return this.apiService.put<IEmployeeProject>(`${this._baseURL}/${employeeProjectId}`, editedEmployee);
+  }
 }

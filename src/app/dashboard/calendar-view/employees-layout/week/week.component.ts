@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Inject, Input, PLATFORM_ID } from '@angular/core';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -8,7 +8,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { NgForOf, NgIf } from '@angular/common';
+import { DatePipe, isPlatformBrowser, JsonPipe, NgForOf, NgIf, SlicePipe } from '@angular/common';
 import { ResizeableProjectComponent } from './resizeable-project/resizeable-project.component';
 import { EmployeesCalendarController } from '../../../../core/api/controllers/employees-calendar-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -16,6 +16,10 @@ import { IEmployee } from '../../../../core/models/IEmployee';
 import { IEmployeeProject } from '../../../../core/models/IEmployeeProject';
 import { DateHelperService } from '../../../../core/helpers/date-helper.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
+import { MatTooltip } from '@angular/material/tooltip';
+import { ResizableModule } from 'angular-resizable-element';
+import { MatIcon } from '@angular/material/icon';
+import { EmployeeProjectControllerService } from '../../../../core/api/controllers/employee-project-controller.service';
 
 export interface IDay {
   name: string;
@@ -25,22 +29,41 @@ export interface IDay {
 @Component({
   selector: 'app-week',
   standalone: true,
-  imports: [CdkDrag, CdkDropList, CdkDropListGroup, NgForOf, ResizeableProjectComponent, DragDropModule, NgIf, MatProgressSpinner],
+  imports: [
+    CdkDrag,
+    CdkDropList,
+    CdkDropListGroup,
+    NgForOf,
+    ResizeableProjectComponent,
+    DragDropModule,
+    NgIf,
+    MatProgressSpinner,
+    SlicePipe,
+    DatePipe,
+    MatTooltip,
+    ResizableModule,
+    MatIcon,
+    JsonPipe,
+  ],
   templateUrl: './week.component.html',
   styleUrl: './week.component.scss',
 })
 export class WeekComponent {
-  employees: IEmployee[] = [];
+  employees: IEmployee[];
   isLoading = false;
   @Input() referenceDate: Date = new Date();
 
   constructor(
     private employeesCalendarController: EmployeesCalendarController,
+    private employeeProjectController: EmployeeProjectControllerService,
     private snackBarService: MatSnackBar,
+    @Inject(PLATFORM_ID) private platformID: Object,
   ) {}
 
   ngOnInit(): void {
-    this.getWeek();
+    if (isPlatformBrowser(this.platformID)) {
+      this.getWeek();
+    }
   }
 
   getWeek(): void {
@@ -66,17 +89,40 @@ export class WeekComponent {
   drop(event: CdkDragDrop<IEmployeeProject[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
-      this.employeesCalendarController.reorderProjects(event.container.data[event.currentIndex].id, event.container.data).subscribe(
-        () => {},
-        () => {
-          this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
-            duration: 3000,
-          });
-        },
-      );
+      this.reorder(event);
     } else {
       transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+      const currentEmployee = this.employees.find((employee) => employee.employeeProjects === event.container.data);
+      const movedProject = event.container.data[event.currentIndex];
+      this.employeeProjectController
+        .editEmployeeProject(movedProject.id, {
+          startDate: movedProject.startDate,
+          endDate: movedProject.endDate,
+          projectId: movedProject.projectId,
+          employeeId: currentEmployee.id,
+        })
+        .subscribe({
+          next: () => {
+            this.reorder(event);
+          },
+          error: () => {
+            this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
+              duration: 3000,
+            });
+          },
+        });
     }
+  }
+
+  reorder(event: CdkDragDrop<IEmployeeProject[]>): void {
+    this.employeesCalendarController.reorderProjects(event.container.data[event.currentIndex].id, event.container.data).subscribe(
+      () => {},
+      () => {
+        this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
+          duration: 3000,
+        });
+      },
+    );
   }
 
   getLinkedLists(): string[] {

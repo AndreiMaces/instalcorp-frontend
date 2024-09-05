@@ -9,6 +9,7 @@
       (resizeStart)="isDragDisabled = true"
       (resizeEnd)="onResizeEnd($event)"
       matTooltip="{{ employeeProject.project.title }} ({{ employeeProject.startDate | date }} - {{ employeeProject.endDate | date }})"
+      *ngIf="employeeProject.projectId"
     >
       <span class="line-clamp-1">
         {{ employeeProject.project.title }} ({{ employeeProject.startDate | date }} - {{ employeeProject.endDate | date }})
