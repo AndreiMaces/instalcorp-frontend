@@ -32,7 +32,7 @@ export class ResizeableProjectComponent implements OnInit {
   @Input() referenceDate: Date = new Date();
   isDragDisabled = false;
   maxSpace = 998;
-  cachedDateRange: { startDate: string; endDate: string } = { startDate: '', endDate: '' };
+  cachedDateRange: { startDate: Date; endDate: Date } = { startDate: null, endDate: null };
 
   constructor(
     private employeesCalendarController: EmployeesCalendarController,
@@ -125,8 +125,8 @@ export class ResizeableProjectComponent implements OnInit {
       startDate: this.employeeProject.startDate,
       endDate: this.employeeProject.endDate,
     };
-    if (!!event.edges.left) this.employeeProject.startDate = this.computeStartDate(event).toISOString();
-    if (!!event.edges.right) this.employeeProject.endDate = this.computeEndDate(event).toISOString();
+    if (!!event.edges.left) this.employeeProject.startDate = this.computeStartDate(event);
+    if (!!event.edges.right) this.employeeProject.endDate = this.computeEndDate(event);
   }
 
   onResizeEnd(event: ResizeEvent): void {
@@ -164,8 +164,8 @@ export class ResizeableProjectComponent implements OnInit {
   }
 
   restoreDateInterval(): void {
-    this.employeeProject.startDate = this.cachedDateRange.startDate;
-    this.employeeProject.endDate = this.cachedDateRange.endDate;
+    this.employeeProject.startDate = new Date(this.cachedDateRange.startDate);
+    this.employeeProject.endDate = new Date(this.cachedDateRange.endDate);
   }
 
   get canStretchLeft(): boolean {

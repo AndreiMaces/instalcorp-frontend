@@ -38,6 +38,15 @@
               [employeeProject]="employeeProject"
               *ngFor="let employeeProject of employee.employeeProjects"
             ></app-resizeable-project>
+            <button
+              class="w-full h-[24px] bg-[#00000011] rounded-xl hover:bg-[#00000066] !z-20 transition-all"
+              (click)="openCreateEmployeeProjectDialog(employee)"
+            >
+              <div class="flex items-center pl-3 text-sm font-medium">
+                <span class="line-clamp-1"> Adaugă proiect </span>
+                <mat-icon class="scale-50">add</mat-icon>
+              </div>
+            </button>
           </div>
         </div>
       </div>

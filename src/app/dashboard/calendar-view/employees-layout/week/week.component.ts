@@ -1,4 +1,4 @@
-import { Component, Inject, Input, PLATFORM_ID } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   CdkDrag,
   CdkDragDrop,
@@ -8,7 +8,7 @@ import {
   moveItemInArray,
   transferArrayItem,
 } from '@angular/cdk/drag-drop';
-import { DatePipe, isPlatformBrowser, JsonPipe, NgForOf, NgIf, SlicePipe } from '@angular/common';
+import { DatePipe, JsonPipe, NgForOf, NgIf, SlicePipe } from '@angular/common';
 import { ResizeableProjectComponent } from './resizeable-project/resizeable-project.component';
 import { EmployeesCalendarController } from '../../../../core/api/controllers/employees-calendar-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -20,6 +20,8 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { ResizableModule } from 'angular-resizable-element';
 import { MatIcon } from '@angular/material/icon';
 import { EmployeeProjectControllerService } from '../../../../core/api/controllers/employee-project-controller.service';
+import { MatDialog } from '@angular/material/dialog';
+import { CreateEmployeeProjectDialogComponent } from '../../../../shared/components/create-employee-project-dialog/create-employee-project-dialog.component';
 
 export interface IDay {
   name: string;
@@ -57,13 +59,33 @@ export class WeekComponent {
     private employeesCalendarController: EmployeesCalendarController,
     private employeeProjectController: EmployeeProjectControllerService,
     private snackBarService: MatSnackBar,
-    @Inject(PLATFORM_ID) private platformID: Object,
+    private dialog: MatDialog,
   ) {}
 
   ngOnInit(): void {
-    if (isPlatformBrowser(this.platformID)) {
-      this.getWeek();
-    }
+    this.getWeek();
+  }
+
+  openCreateEmployeeProjectDialog(employee: IEmployee): void {
+    this.dialog
+      .open(CreateEmployeeProjectDialogComponent, {
+        width: '500px',
+        maxHeight: '90vh',
+        disableClose: true,
+        data: {
+          employeeProject: {
+            employeeId: employee.id,
+            startDate: this.referenceDate,
+            endDate: this.referenceDate,
+          },
+        },
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.getWeek();
+        }
+      });
   }
 
   getWeek(): void {

@@ -102,8 +102,8 @@ export class EmployeeProjectFormComponent implements OnInit {
     return {
       employeeId: this.createForm.controls.employee.value.id,
       projectId: this.project.id,
-      startDate: this.createForm.controls.startDate.value.toISOString(),
-      endDate: this.createForm.controls.endDate.value.toISOString(),
+      startDate: this.createForm.controls.startDate.value,
+      endDate: this.createForm.controls.endDate.value,
     };
   }
 

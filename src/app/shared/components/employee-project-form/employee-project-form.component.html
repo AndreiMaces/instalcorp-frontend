@@ -1,0 +1,35 @@
+<form [formGroup]="employeeProjectForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-3">
+  <mat-form-field appearance="outline">
+    <mat-label>Angajat</mat-label>
+    <mat-select [formControl]="employeeProjectForm.controls.employee">
+      <mat-option *ngFor="let employee of employees" [value]="employee"> {{ employee.firstName }} {{ employee.lastName }} </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field appearance="outline">
+    <mat-label>Proiect</mat-label>
+    <mat-select [formControl]="employeeProjectForm.controls.project">
+      <mat-optgroup [label]="projectType.title" *ngFor="let projectType of projectTypes">
+        <mat-option [value]="project" *ngFor="let project of projectType.projects">{{ project.title }}</mat-option>
+      </mat-optgroup>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field class="flex-grow" appearance="outline">
+    <mat-label>Introduceți o perioadă de timp</mat-label>
+    <mat-date-range-input [rangePicker]="picker" [min]="today">
+      <input matStartDate placeholder="Data început" [formControl]="employeeProjectForm.controls.startDate" />
+      <input matEndDate placeholder="Data sfârșit" [formControl]="employeeProjectForm.controls.endDate" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-error *ngIf="ValidationHelperService.isInvalid(employeeProjectForm.controls.startDate)">
+      {{ ValidationHelperService.getErrorMessage(employeeProjectForm.controls.startDate) }}
+    </mat-error>
+    <mat-error *ngIf="ValidationHelperService.isInvalid(employeeProjectForm.controls.endDate)">
+      {{ ValidationHelperService.getErrorMessage(employeeProjectForm.controls.endDate) }}
+    </mat-error>
+  </mat-form-field>
+  <div class="p-5 border-t flex justify-end gap-5">
+    <button mat-flat-button>Salvează</button>
+    <button mat-flat-button color="warn" (click)="close.emit()" type="button">Anulează</button>
+  </div>
+</form>

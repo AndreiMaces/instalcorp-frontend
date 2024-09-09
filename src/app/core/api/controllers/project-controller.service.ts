@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
 import { IProject } from '../../models/IProject';
+import { IProjectType } from '../../models/IProjectType';
 
 @Injectable({
   providedIn: 'root',
@@ -33,5 +34,9 @@ export class ProjectControllerService {
 
   restoreProject(projectId: number): Observable<IProject> {
     return this.apiService.put<IProject>(`${this._baseURL}/${projectId}/restore`);
+  }
+
+  getDropdown(): Observable<Partial<IProjectType>[]> {
+    return this.apiService.get<Partial<IProjectType>[]>(`${this._baseURL}/dropdown`);
   }
 }
