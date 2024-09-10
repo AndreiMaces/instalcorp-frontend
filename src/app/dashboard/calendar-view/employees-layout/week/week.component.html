@@ -16,14 +16,14 @@
         <div class="flex justify-center items-center">
           <span> {{ employee.firstName }} {{ employee.lastName }} </span>
         </div>
-        <div class="col-span-5 relative">
+        <div class="col-span-5 relative py-8">
           <div
             cdkDropList
             [id]="'list' + i"
             [cdkDropListData]="employee.employeeProjects"
             [cdkDropListConnectedTo]="getLinkedLists()"
             (cdkDropListDropped)="drop($event)"
-            class="!z-20 py-8 flex flex-col !min-h-[30px]"
+            class="!z-20 flex flex-col !min-h-[30px]"
           >
             <div class="grid grid-cols-5 [&>*]:border-r [&>*]:p-2 absolute inset-0 [&>*]:justify-self-end text-xs text-slate-400">
               <div>{{ getWeekDayDate(1) }}</div>
@@ -34,20 +34,22 @@
             </div>
 
             <app-resizeable-project
+              (_edit)="getWeek()"
+              (_delete)="deleteEmployeeProject($event)"
               [referenceDate]="referenceDate"
               [employeeProject]="employeeProject"
               *ngFor="let employeeProject of employee.employeeProjects"
             ></app-resizeable-project>
-            <button
-              class="w-full h-[24px] bg-[#00000011] rounded-xl hover:bg-[#00000066] !z-20 transition-all"
-              (click)="openCreateEmployeeProjectDialog(employee)"
-            >
-              <div class="flex items-center pl-3 text-sm font-medium">
-                <span class="line-clamp-1"> Adaugă proiect </span>
-                <mat-icon class="scale-50">add</mat-icon>
-              </div>
-            </button>
           </div>
+          <button
+            class="w-full h-[24px] bg-[#00000011] rounded-xl hover:bg-[#00000066] !z-20 transition-all"
+            (click)="openCreateEmployeeProjectDialog(employee)"
+          >
+            <div class="flex items-center pl-3 text-sm font-medium">
+              <span class="line-clamp-1"> Adaugă proiect </span>
+              <mat-icon class="scale-50">add</mat-icon>
+            </div>
+          </button>
         </div>
       </div>
     </div>

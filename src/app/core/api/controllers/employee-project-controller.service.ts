@@ -18,4 +18,8 @@ export class EmployeeProjectControllerService {
   editEmployeeProject(employeeProjectId: number, editedEmployee: Partial<IEmployeeProject>): Observable<IEmployeeProject> {
     return this.apiService.put<IEmployeeProject>(`${this._baseURL}/${employeeProjectId}`, editedEmployee);
   }
+
+  deleteEmployeeProject(employeeProjectId: number): Observable<IEmployeeProject> {
+    return this.apiService.delete<IEmployeeProject>(`${this._baseURL}/${employeeProjectId}`);
+  }
 }

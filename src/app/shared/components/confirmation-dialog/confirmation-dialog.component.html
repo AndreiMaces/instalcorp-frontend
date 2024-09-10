@@ -3,7 +3,7 @@
     <p class="text-3xl !m-0">{{ data.title ?? "Confirmare" }}</p>
   </div>
   <div class="p-5">
-    <p>{{ data.message ?? "Sunteți sigur că doriți să efectuați acțiunea?" }}</p>
+    <p [innerHTML]="data.message ?? 'Sunteți sigur că doriți să efectuați acțiunea?'"></p>
   </div>
   <div class="p-5 border-t flex justify-end gap-5">
     <button mat-flat-button color="warn" (click)="confirm()">{{ data.confirmButtonText ?? "Da" }}</button>

@@ -22,6 +22,7 @@ import { MatIcon } from '@angular/material/icon';
 import { EmployeeProjectControllerService } from '../../../../core/api/controllers/employee-project-controller.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CreateEmployeeProjectDialogComponent } from '../../../../shared/components/create-employee-project-dialog/create-employee-project-dialog.component';
+import { ApiService } from '../../../../core/api/api.service';
 
 export interface IDay {
   name: string;
@@ -60,6 +61,7 @@ export class WeekComponent {
     private employeeProjectController: EmployeeProjectControllerService,
     private snackBarService: MatSnackBar,
     private dialog: MatDialog,
+    private apiService: ApiService,
   ) {}
 
   ngOnInit(): void {
@@ -144,6 +146,18 @@ export class WeekComponent {
           duration: 3000,
         });
       },
+    );
+  }
+
+  deleteEmployeeProject(employeeProjectId: number): void {
+    this.employeeProjectController.deleteEmployeeProject(employeeProjectId).subscribe(
+      () => {
+        this.getWeek();
+      },
+      () =>
+        this.snackBarService.open('A apărut o eroare la stergerea proiectului.', 'Close', {
+          duration: 3000,
+        }),
     );
   }
 

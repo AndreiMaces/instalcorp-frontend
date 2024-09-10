@@ -1,4 +1,4 @@
-<div class="w-full h-[24px] relative" cdkDrag [cdkDragDisabled]="isDragDisabled" #container>
+<div class="w-full h-[24px] relative" cdkDrag [cdkDragDisabled]="isDragDisabled" #container [cdkContextMenuTriggerFor]="context_menu">
   <div class="relative w-full h-full">
     <div
       class="rectangle absolute box-border text-white pl-3 rounded-md text-sm cursor-move"
@@ -19,3 +19,26 @@
     </div>
   </div>
 </div>
+<ng-template #context_menu>
+  <div
+    class="flex flex-col py-2 bg-[#EFEDF1] rounded-sm text-sm [box-shadow:0_3px_6px_rgba(0,0,0,0.16),_0_3px_6px_rgba(0,0,0,0.23)]"
+    cdkMenu
+  >
+    <button
+      (click)="openEditEmployeeProjectDialog()"
+      cdkMenuItem
+      class="w-full p-3 hover:bg-[#DEDCE0] flex items-center gap-2 outline-0 font-medium"
+    >
+      <mat-icon class="text-[#44474E]">edit</mat-icon>
+      <span>Editează</span>
+    </button>
+    <button
+      (click)="openDeleteEmployeeProjectDialog()"
+      cdkMenuItem
+      class="w-full p-3 hover:bg-[#DEDCE0] flex items-center gap-2 outline-0 font-medium"
+    >
+      <mat-icon class="text-[#44474E]">delete</mat-icon>
+      <span>Șterge</span>
+    </button>
+  </div>
+</ng-template>

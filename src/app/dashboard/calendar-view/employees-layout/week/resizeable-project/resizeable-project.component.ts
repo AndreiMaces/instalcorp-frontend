@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, output, ViewChild } from '@angular/core';
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { DatePipe, NgForOf, NgIf, NgStyle } from '@angular/common';
 import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
@@ -7,13 +7,34 @@ import { DateHelperService } from '../../../../../core/helpers/date-helper.servi
 import { MatTooltip } from '@angular/material/tooltip';
 import { EmployeesCalendarController } from '../../../../../core/api/controllers/employees-calendar-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
+import { MatIcon } from '@angular/material/icon';
+import { MatMenu, MatMenuItem } from '@angular/material/menu';
+import { MatDialog } from '@angular/material/dialog';
+import { EditEmployeeProjectDialogComponent } from '../../../../../shared/components/edit-employee-project-dialog/edit-employee-project-dialog.component';
+import { ConfirmationDialogComponent } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 
 @Component({
   selector: 'app-resizeable-project',
   standalone: true,
-  imports: [CdkDrag, NgForOf, ResizableModule, NgStyle, NgIf, DatePipe, MatTooltip],
+  imports: [
+    CdkDrag,
+    NgForOf,
+    ResizableModule,
+    NgStyle,
+    NgIf,
+    DatePipe,
+    MatTooltip,
+    CdkContextMenuTrigger,
+    CdkMenu,
+    CdkMenuItem,
+    MatIcon,
+    MatMenuItem,
+    MatMenu,
+  ],
   templateUrl: './resizeable-project.component.html',
   styleUrl: './resizeable-project.component.scss',
+  providers: [DatePipe],
 })
 export class ResizeableProjectComponent implements OnInit {
   @Input({
@@ -34,9 +55,14 @@ export class ResizeableProjectComponent implements OnInit {
   maxSpace = 998;
   cachedDateRange: { startDate: Date; endDate: Date } = { startDate: null, endDate: null };
 
+  _delete = output<number>();
+  _edit = output();
+
   constructor(
     private employeesCalendarController: EmployeesCalendarController,
     private matSnackBar: MatSnackBar,
+    private dialog: MatDialog,
+    private datePipe: DatePipe,
   ) {}
 
   ngOnInit(): void {
@@ -166,6 +192,42 @@ export class ResizeableProjectComponent implements OnInit {
   restoreDateInterval(): void {
     this.employeeProject.startDate = new Date(this.cachedDateRange.startDate);
     this.employeeProject.endDate = new Date(this.cachedDateRange.endDate);
+  }
+
+  openEditEmployeeProjectDialog(): void {
+    this.dialog
+      .open(EditEmployeeProjectDialogComponent, {
+        width: '500px',
+        maxHeight: '90vh',
+        disableClose: true,
+        data: {
+          employeeProject: this.employeeProject,
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this._edit.emit();
+      });
+  }
+
+  openDeleteEmployeeProjectDialog(): void {
+    this.dialog
+      .open(ConfirmationDialogComponent, {
+        maxWidth: '100%',
+        width: '800px',
+        maxHeight: '90vh',
+        disableClose: true,
+        data: {
+          message: `Sunteți sigur că doriți să ștergeți intervalul de lucru
+                    <b>${this.datePipe.transform(this.employeeProject.startDate)} - ${this.datePipe.transform(this.employeeProject.endDate)}</b>
+                     al angajatului <b>${this.employeeProject.employee.firstName} ${this.employeeProject.employee.lastName}</b>
+                     la proiectul <b>${this.employeeProject.project.title}</b>?`,
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this._delete.emit(this.employeeProject.id);
+      });
   }
 
   get canStretchLeft(): boolean {
