@@ -39,4 +39,8 @@ export class ProjectControllerService {
   getDropdown(): Observable<Partial<IProjectType>[]> {
     return this.apiService.get<Partial<IProjectType>[]>(`${this._baseURL}/dropdown`);
   }
+
+  getStack(): Observable<Partial<IProjectType>[]> {
+    return this.apiService.get<Partial<IProjectType>[]>(`${this._baseURL}/stack`);
+  }
 }

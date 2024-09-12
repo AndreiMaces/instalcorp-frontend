@@ -1,0 +1,40 @@
+<div class="relative !z-40 w-[calc(200px+1.5rem)]">
+  <div class="bg-white border rounded" [class.absolute]="isVisible" cdkDrag>
+    <div class="w-full flex justify-between items-center pl-3">
+      <span class="font-medium text-md">Proiecte</span>
+      <button mat-icon-button (click)="isVisible = !isVisible">
+        <mat-icon>expand_more</mat-icon>
+      </button>
+    </div>
+    <div [style.display]="isVisible ? 'block' : 'none'">
+      <div *ngIf="isLoading">
+        <div class="flex items-center justify-center w-full h-[400px]">
+          <mat-spinner diameter="80"></mat-spinner>
+        </div>
+      </div>
+      <div *ngIf="!isLoading">
+        <div *ngFor="let projectType of projectTypes; let i = index" class="p-3 flex flex-col border-b">
+          <span class="text-md font-medium !m-0" [style.color]="projectType.color">{{ projectType.title }}</span>
+          <div
+            class="flex flex-col gap-1"
+            cdkDropList
+            [id]="'stack' + i"
+            [cdkDropListData]="projectType.projects"
+            [cdkDropListConnectedTo]="getLinkedLists()"
+            [cdkDropListSortingDisabled]="true"
+          >
+            <div
+              *ngFor="let project of projectType.projects"
+              class="text-white pl-3 rounded-md text-sm cursor-move line-clamp-1 w-[200px]"
+              [style.background-color]="project.color"
+              cdkDrag
+              matTooltip="{{ project.title }} {{ project.startDate | date }} - {{ project.endDate | date }}"
+            >
+              {{ project.title }} {{ project.startDate | date }} - {{ project.endDate | date }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

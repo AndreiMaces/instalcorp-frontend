@@ -1,4 +1,11 @@
-<div class="w-full h-[24px] relative" cdkDrag [cdkDragDisabled]="isDragDisabled" #container [cdkContextMenuTriggerFor]="context_menu">
+<div
+  class="w-full h-[24px] relative"
+  cdkDragBoundary=".example-boundary"
+  cdkDrag
+  [cdkDragDisabled]="isDragDisabled"
+  #container
+  [cdkContextMenuTriggerFor]="context_menu"
+>
   <div class="relative w-full h-full">
     <div
       class="rectangle absolute box-border text-white pl-3 rounded-md text-sm cursor-move"

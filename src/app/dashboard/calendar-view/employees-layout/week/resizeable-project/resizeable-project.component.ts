@@ -55,7 +55,7 @@ export class ResizeableProjectComponent implements OnInit {
   maxSpace = 998;
   cachedDateRange: { startDate: Date; endDate: Date } = { startDate: null, endDate: null };
 
-  _delete = output<number>();
+  _delete = output<IEmployeeProject>();
   _edit = output();
 
   constructor(
@@ -226,7 +226,8 @@ export class ResizeableProjectComponent implements OnInit {
       })
       .afterClosed()
       .subscribe((result) => {
-        if (result) this._delete.emit(this.employeeProject.id);
+        console.log(this.employeeProject);
+        if (result) this._delete.emit(this.employeeProject);
       });
   }
 

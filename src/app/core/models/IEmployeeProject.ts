@@ -2,6 +2,7 @@ import { IProject } from './IProject';
 import { IEmployee } from './IEmployee';
 
 export interface IEmployeeProject {
+  employeeProject: IEmployeeProject;
   id?: number;
   employeeId: number;
   projectId: number;

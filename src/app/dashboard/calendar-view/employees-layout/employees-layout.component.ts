@@ -5,11 +5,12 @@ import { MatButton } from '@angular/material/button';
 import { CreateEmployeeProjectDialogComponent } from '../../../shared/components/create-employee-project-dialog/create-employee-project-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
+import { ProjectsStackComponent } from './projects-stack/projects-stack.component';
 
 @Component({
   selector: 'app-employees-layout',
   standalone: true,
-  imports: [WeekComponent, MatButton, MatIcon],
+  imports: [WeekComponent, MatButton, MatIcon, ProjectsStackComponent],
   templateUrl: './employees-layout.component.html',
   styleUrl: './employees-layout.component.scss',
 })
