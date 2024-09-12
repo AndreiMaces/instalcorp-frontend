@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DatePipe } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -29,5 +30,14 @@ export class DateHelperService {
     const utc2 = Date.UTC(b.getFullYear(), b.getMonth(), b.getDate());
 
     return Math.abs(Math.floor((utc1 - utc2) / _MS_PER_DAY));
+  }
+
+  public static getWeekRange(date: Date): string {
+    const monday = this.getMonday(date);
+    const friday = this.getFriday(date);
+    // us
+    const datePipe = new DatePipe('en-US');
+
+    return `${datePipe.transform(monday, 'dd.MM.yyyy')} - ${datePipe.transform(friday, 'dd.MM.yyyy')}`;
   }
 }

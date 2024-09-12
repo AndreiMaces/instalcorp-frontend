@@ -15,7 +15,7 @@
   </mat-form-field>
   <mat-form-field class="flex-grow" appearance="outline">
     <mat-label>Introduceți o perioadă de timp</mat-label>
-    <mat-date-range-input [rangePicker]="picker" [min]="today">
+    <mat-date-range-input [rangePicker]="picker">
       <input matStartDate placeholder="Data început" [formControl]="employeeProjectForm.controls.startDate" />
       <input matEndDate placeholder="Data sfârșit" [formControl]="employeeProjectForm.controls.endDate" />
     </mat-date-range-input>

@@ -1,4 +1,7 @@
-<div class="flex flex-col w-full pt-5">
+<div class="flex flex-col w-full">
+  <div class="flex justify-between items-center p-3 pb-1 bg-gray-400 text-white rounded-t">
+    <span class="text-xl font-medium !m-0 drop-shadow">{{ getWeekRange(referenceDate) }}</span>
+  </div>
   <div>
     <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6 [&>div]:flex [&>div]:justify-center [&>div]:items-center">
       <div></div>
@@ -41,15 +44,6 @@
               *ngFor="let employeeProject of employee.employeeProjects"
             ></app-resizeable-project>
           </div>
-          <button
-            class="w-full h-[24px] bg-[#00000011] rounded-xl hover:bg-[#00000066] !z-20 transition-all"
-            (click)="openCreateEmployeeProjectDialog(employee)"
-          >
-            <div class="flex items-center pl-3 text-sm font-medium">
-              <span class="line-clamp-1"> Adaugă proiect </span>
-              <mat-icon class="scale-50">add</mat-icon>
-            </div>
-          </button>
         </div>
       </div>
     </div>

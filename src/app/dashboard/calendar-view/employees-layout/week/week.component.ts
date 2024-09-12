@@ -21,8 +21,8 @@ import { ResizableModule } from 'angular-resizable-element';
 import { MatIcon } from '@angular/material/icon';
 import { EmployeeProjectControllerService } from '../../../../core/api/controllers/employee-project-controller.service';
 import { MatDialog } from '@angular/material/dialog';
-import { CreateEmployeeProjectDialogComponent } from '../../../../shared/components/create-employee-project-dialog/create-employee-project-dialog.component';
 import { ApiService } from '../../../../core/api/api.service';
+import { Observable } from 'rxjs';
 
 export interface IDay {
   name: string;
@@ -55,6 +55,7 @@ export class WeekComponent {
   employees: IEmployee[];
   isLoading = false;
   @Input() referenceDate: Date = new Date();
+  @Input() reloadObservable: Observable<void>;
 
   constructor(
     private employeesCalendarController: EmployeesCalendarController,
@@ -66,28 +67,7 @@ export class WeekComponent {
 
   ngOnInit(): void {
     this.getWeek();
-  }
-
-  openCreateEmployeeProjectDialog(employee: IEmployee): void {
-    this.dialog
-      .open(CreateEmployeeProjectDialogComponent, {
-        width: '500px',
-        maxHeight: '90vh',
-        disableClose: true,
-        data: {
-          employeeProject: {
-            employeeId: employee.id,
-            startDate: this.referenceDate,
-            endDate: this.referenceDate,
-          },
-        },
-      })
-      .afterClosed()
-      .subscribe((res) => {
-        if (res) {
-          this.getWeek();
-        }
-      });
+    this.reloadObservable.subscribe(() => this.getWeek());
   }
 
   getWeek(): void {
@@ -163,5 +143,9 @@ export class WeekComponent {
 
   getLinkedLists(): string[] {
     return this?.employees?.map((day, i) => 'list' + i);
+  }
+
+  getWeekRange(date: Date): string {
+    return DateHelperService.getWeekRange(date);
   }
 }
