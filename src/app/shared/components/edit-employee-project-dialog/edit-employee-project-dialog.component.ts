@@ -3,9 +3,9 @@ import { EmployeeProjectFormComponent } from '../employee-project-form/employee-
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgIf } from '@angular/common';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { IEmployeeProject } from '../../../core/models/IEmployeeProject';
+import { ITask } from '../../../core/models/ITask';
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
-import { EmployeeProjectControllerService } from '../../../core/api/controllers/employee-project-controller.service';
+import { TaskControllerService } from '../../../core/api/controllers/task-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
@@ -20,12 +20,12 @@ export class EditEmployeeProjectDialogComponent {
 
   constructor(
     private dialog: MatDialog,
-    private employeeProjectController: EmployeeProjectControllerService,
+    private taskController: TaskControllerService,
     private dialogRef: MatDialogRef<EditEmployeeProjectDialogComponent>,
     private snackBarService: MatSnackBar,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      employeeProject: IEmployeeProject;
+      task: ITask;
     },
   ) {}
 
@@ -45,9 +45,9 @@ export class EditEmployeeProjectDialogComponent {
       });
   }
 
-  editEmployeeProject(newEmployeeProject: Partial<IEmployeeProject>): void {
+  editEmployeeProject(newEmployeeProject: Partial<ITask>): void {
     this.isLoading = true;
-    this.employeeProjectController.editEmployeeProject(this.data.employeeProject.id, newEmployeeProject).subscribe({
+    this.taskController.editTask(this.data.task.id, newEmployeeProject).subscribe({
       next: () => {
         this.isLoading = false;
         this.dialogRef.close(true);

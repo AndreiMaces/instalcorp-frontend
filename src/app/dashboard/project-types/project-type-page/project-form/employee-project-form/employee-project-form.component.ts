@@ -10,9 +10,9 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { IEmployee } from '../../../../../core/models/IEmployee';
 import { ValidationHelperService } from '../../../../../core/helpers/validation-helper.service';
 import { MatDatepickerToggle, MatDateRangeInput, MatDateRangePicker, MatEndDate, MatStartDate } from '@angular/material/datepicker';
-import { IEmployeeProject } from '../../../../../core/models/IEmployeeProject';
+import { ITask } from '../../../../../core/models/ITask';
 import { IProject } from '../../../../../core/models/IProject';
-import { EmployeeProjectControllerService } from '../../../../../core/api/controllers/employee-project-controller.service';
+import { TaskControllerService } from '../../../../../core/api/controllers/task-controller.service';
 import { EmployeeControllerService } from '../../../../../core/api/controllers/employee-controller.service';
 import { provideNativeDateAdapter } from '@angular/material/core';
 
@@ -51,20 +51,20 @@ export class EmployeeProjectFormComponent implements OnInit {
   employees: Partial<IEmployee>[] = [];
 
   constructor(
-    private employeeIssueController: EmployeeProjectControllerService,
+    private employeeIssueController: TaskControllerService,
     private employeeController: EmployeeControllerService,
     private snackBarService: MatSnackBar,
   ) {}
 
   ngOnInit(): void {
     this.getEmployees();
-    if (this.project?.employeeProjects) {
+    if (this.project?.tasks) {
       this.prefillForm();
     }
   }
 
   prefillForm(): void {
-    this?.project?.employeeProjects.forEach((employeeIssue) => {
+    this?.project?.tasks.forEach((employeeIssue) => {
       const newGroup = EmployeeIssueFormFactory.create();
       newGroup.patchValue({
         ...employeeIssue,
@@ -77,7 +77,7 @@ export class EmployeeProjectFormComponent implements OnInit {
 
   createEmployee(): void {
     this.isLoading = true;
-    this.employeeIssueController.createEmployeeProject(this.createPayload()).subscribe({
+    this.employeeIssueController.createTask(this.createPayload()).subscribe({
       next: (res) => {
         const newGroup = EmployeeIssueFormFactory.create();
         newGroup.patchValue({
@@ -98,7 +98,7 @@ export class EmployeeProjectFormComponent implements OnInit {
     });
   }
 
-  createPayload(): Partial<IEmployeeProject> {
+  createPayload(): Partial<ITask> {
     return {
       employeeId: this.createForm.controls.employee.value.id,
       projectId: this.project.id,

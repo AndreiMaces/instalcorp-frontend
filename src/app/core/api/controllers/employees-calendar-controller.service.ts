@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
 import { IEmployee } from '../../models/IEmployee';
-import { IEmployeeProject } from '../../models/IEmployeeProject';
+import { ITask } from '../../models/ITask';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +16,11 @@ export class EmployeesCalendarController {
     return this.apiService.get<IEmployee[]>(`${this._baseURL}/week`, { date: date.toISOString() });
   }
 
-  resizeProject(employeeProjectId: number, employeeProject: Partial<IEmployeeProject>): Observable<IEmployeeProject> {
-    return this.apiService.put<IEmployeeProject>(`${this._baseURL}/project/${employeeProjectId}/resize`, employeeProject);
+  resizeTask(taskId: number, task: Partial<ITask>): Observable<ITask> {
+    return this.apiService.put<ITask>(`${this._baseURL}/task/${taskId}/resize`, task);
   }
 
-  reorderProjects(employeeId: number, employeeProjects: Partial<IEmployeeProject>[]): Observable<IEmployeeProject[]> {
-    return this.apiService.put<IEmployeeProject[]>(`${this._baseURL}/employee/${employeeId}/projects/reorder`, employeeProjects);
+  reorderTasks(employeeId: number, tasks: Partial<ITask>[]): Observable<ITask[]> {
+    return this.apiService.put<ITask[]>(`${this._baseURL}/employee/${employeeId}/tasks/reorder`, tasks);
   }
 }

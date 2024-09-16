@@ -34,7 +34,6 @@ export class UploadMediaSingleComponent implements OnInit {
     this.fileController.uploadFile(file).subscribe({
       next: (res) => {
         this._formControl.setValue(res.url);
-        console.log(res.url);
         this.isLoading = false;
       },
       error: () => {

@@ -14,13 +14,13 @@ import { ResizeableProjectComponent } from './resizeable-project/resizeable-proj
 import { EmployeesCalendarController } from '../../../../core/api/controllers/employees-calendar-controller.service';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IEmployee } from '../../../../core/models/IEmployee';
-import { IEmployeeProject } from '../../../../core/models/IEmployeeProject';
+import { ITask } from '../../../../core/models/ITask';
 import { DateHelperService } from '../../../../core/helpers/date-helper.service';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { MatTooltip } from '@angular/material/tooltip';
 import { ResizableModule } from 'angular-resizable-element';
 import { MatIcon } from '@angular/material/icon';
-import { EmployeeProjectControllerService } from '../../../../core/api/controllers/employee-project-controller.service';
+import { TaskControllerService } from '../../../../core/api/controllers/task-controller.service';
 import { MatDialog } from '@angular/material/dialog';
 import { ApiService } from '../../../../core/api/api.service';
 import { Observable } from 'rxjs';
@@ -61,7 +61,7 @@ export class WeekComponent {
 
   constructor(
     private employeesCalendarController: EmployeesCalendarController,
-    private employeeProjectController: EmployeeProjectControllerService,
+    private taskController: TaskControllerService,
     private snackBarService: MatSnackBar,
     private dialog: MatDialog,
     private apiService: ApiService,
@@ -100,17 +100,17 @@ export class WeekComponent {
     return DateHelperService.getWeekDayDate(this.referenceDate, day);
   }
 
-  drop(event: CdkDragDrop<IEmployeeProject[]>) {
+  drop(event: CdkDragDrop<ITask[]>) {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.reorder(event);
     } else {
-      const currentEmployee = this.employees.find((employee) => employee.employeeProjects === event.container.data);
+      const currentEmployee = this.employees.find((employee) => employee.tasks === event.container.data);
       const movedProject = event.previousContainer.data[event.previousIndex];
       if (movedProject?.projectId) {
         transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-        this.employeeProjectController
-          .editEmployeeProject(movedProject.id, {
+        this.taskController
+          .editTask(movedProject.id, {
             startDate: movedProject.startDate,
             endDate: movedProject.endDate,
             projectId: movedProject.projectId,
@@ -128,12 +128,12 @@ export class WeekComponent {
           });
       } else {
         copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
-        let newEmployeeProject = movedProject as IEmployeeProject;
+        let newEmployeeProject = movedProject as ITask;
         newEmployeeProject.projectId = movedProject.id;
         newEmployeeProject.startDate = DateHelperService.getMonday(this.referenceDate);
         newEmployeeProject.endDate = DateHelperService.getMonday(this.referenceDate);
         newEmployeeProject.employeeId = currentEmployee.id;
-        newEmployeeProject.employee = { ...currentEmployee, employeeProjects: [] } as IEmployee;
+        newEmployeeProject.employee = { ...currentEmployee, tasks: [] } as IEmployee;
         const realMovedProject = movedProject as unknown as IProject;
         newEmployeeProject.project = {
           color: realMovedProject.color,
@@ -144,20 +144,20 @@ export class WeekComponent {
           endDate: realMovedProject.endDate,
         } as IProject;
 
-        this.employeeProjectController
-          .createEmployeeProject({
+        this.taskController
+          .createTask({
             startDate: newEmployeeProject.startDate,
             endDate: newEmployeeProject.endDate,
             projectId: newEmployeeProject.projectId,
             employeeId: newEmployeeProject.employeeId,
           })
           .subscribe({
-            next: (employeeProject: IEmployeeProject) => {
-              movedProject.id = employeeProject.id;
+            next: (task: ITask) => {
+              movedProject.id = task.id;
               this.reorder(event);
             },
             error: () => {
-              this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
+              this.snackBarService.open('A apărut o eroare la reordonarea sarcinilor.', 'Close', {
                 duration: 3000,
               });
             },
@@ -166,8 +166,8 @@ export class WeekComponent {
     }
   }
 
-  reorder(event: CdkDragDrop<IEmployeeProject[]>): void {
-    this.employeesCalendarController.reorderProjects(event.container.data[event.currentIndex].id, event.container.data).subscribe(
+  reorder(event: CdkDragDrop<ITask[]>): void {
+    this.employeesCalendarController.reorderTasks(event.container.data[event.currentIndex].id, event.container.data).subscribe(
       () => {
         this.getWeekSilent();
       },
@@ -179,16 +179,16 @@ export class WeekComponent {
     );
   }
 
-  deleteEmployeeProject(employeeProject: IEmployeeProject): void {
-    this.employees.find((employee) => employee.id === employeeProject.employeeId).employeeProjects = this.employees
-      .find((employee) => employee.id === employeeProject.employeeId)
-      .employeeProjects.filter((project) => project.id !== employeeProject.id);
-    this.employeeProjectController.deleteEmployeeProject(employeeProject.id).subscribe({
+  deleteTask(task: ITask): void {
+    this.employees.find((employee) => employee.id === task.employeeId).tasks = this.employees
+      .find((employee) => employee.id === task.employeeId)
+      .tasks.filter((project) => project.id !== task.id);
+    this.taskController.deleteTask(task.id).subscribe({
       next: () => {
         this.getWeekSilent();
       },
       error: () =>
-        this.snackBarService.open('A apărut o eroare la stergerea proiectului.', 'Close', {
+        this.snackBarService.open('A apărut o eroare la stergerea sarcinii.', 'Close', {
           duration: 3000,
         }),
     });

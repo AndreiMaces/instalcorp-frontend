@@ -5,8 +5,8 @@ import { ProjectTypeFormComponent } from '../../../dashboard/project-types/share
 import { MAT_DIALOG_DATA, MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { EmployeeProjectControllerService } from '../../../core/api/controllers/employee-project-controller.service';
-import { IEmployeeProject } from '../../../core/models/IEmployeeProject';
+import { TaskControllerService } from '../../../core/api/controllers/task-controller.service';
+import { ITask } from '../../../core/models/ITask';
 import { EmployeeProjectFormComponent } from '../employee-project-form/employee-project-form.component';
 
 @Component({
@@ -21,12 +21,12 @@ export class CreateEmployeeProjectDialogComponent {
 
   constructor(
     private dialog: MatDialog,
-    private employeeProjectController: EmployeeProjectControllerService,
+    private taskController: TaskControllerService,
     private dialogRef: MatDialogRef<CreateEmployeeProjectDialogComponent>,
     private snackBarService: MatSnackBar,
     @Inject(MAT_DIALOG_DATA)
     public data: {
-      employeeProject: IEmployeeProject;
+      task: ITask;
     },
   ) {}
 
@@ -46,9 +46,9 @@ export class CreateEmployeeProjectDialogComponent {
       });
   }
 
-  createEmployeeProject(newEmployeeProject: Partial<IEmployeeProject>): void {
+  createEmployeeProject(newEmployeeProject: Partial<ITask>): void {
     this.isLoading = true;
-    this.employeeProjectController.createEmployeeProject(newEmployeeProject).subscribe({
+    this.taskController.createTask(newEmployeeProject).subscribe({
       next: () => {
         this.isLoading = false;
         this.dialogRef.close(true);

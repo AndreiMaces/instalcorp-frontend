@@ -1,8 +1,7 @@
 import { IProject } from './IProject';
 import { IEmployee } from './IEmployee';
 
-export interface IEmployeeProject {
-  employeeProject: IEmployeeProject;
+export interface ITask {
   id?: number;
   employeeId: number;
   projectId: number;

@@ -2,7 +2,7 @@ import { Component, ElementRef, Input, OnInit, output, ViewChild } from '@angula
 import { CdkDrag } from '@angular/cdk/drag-drop';
 import { DatePipe, NgForOf, NgIf, NgStyle } from '@angular/common';
 import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
-import { IEmployeeProject } from '../../../../../core/models/IEmployeeProject';
+import { ITask } from '../../../../../core/models/ITask';
 import { DateHelperService } from '../../../../../core/helpers/date-helper.service';
 import { MatTooltip } from '@angular/material/tooltip';
 import { EmployeesCalendarController } from '../../../../../core/api/controllers/employees-calendar-controller.service';
@@ -38,24 +38,24 @@ import { ConfirmationDialogComponent } from '../../../../../shared/components/co
 })
 export class ResizeableProjectComponent implements OnInit {
   @Input({
-    transform: (value: IEmployeeProject): IEmployeeProject & { style: { left: string; width: string } } => {
+    transform: (value: ITask): ITask & { style: { left: string; width: string } } => {
       return {
         ...value,
         style: {
           left: '0px',
           width: '200px',
         },
-      } as unknown as IEmployeeProject & { style: { left: string; width: string } };
+      } as unknown as ITask & { style: { left: string; width: string } };
     },
   })
-  employeeProject: IEmployeeProject & { style: { left: string; width: string } };
+  task: ITask & { style: { left: string; width: string } };
   @ViewChild('container') div: ElementRef;
   @Input() referenceDate: Date = new Date();
   isDragDisabled = false;
   maxSpace = 998;
   cachedDateRange: { startDate: Date; endDate: Date } = { startDate: null, endDate: null };
 
-  _delete = output<IEmployeeProject>();
+  _delete = output<ITask>();
   _edit = output();
 
   constructor(
@@ -70,14 +70,14 @@ export class ResizeableProjectComponent implements OnInit {
   }
 
   initStyle(): any {
-    this.employeeProject.style = {
+    this.task.style = {
       width: `${this.initWidth()}px`,
       left: `${this.initLeft()}px`,
     };
   }
 
   initLeft(): number {
-    let startDate = new Date(this.employeeProject.startDate);
+    let startDate = new Date(this.task.startDate);
     const monday = DateHelperService.getMonday(this.referenceDate);
     if (startDate < monday) {
       startDate = monday;
@@ -91,8 +91,8 @@ export class ResizeableProjectComponent implements OnInit {
   }
 
   initWidth(): number {
-    let startDate = new Date(this.employeeProject.startDate);
-    let endDate = new Date(this.employeeProject.endDate);
+    let startDate = new Date(this.task.startDate);
+    let endDate = new Date(this.task.endDate);
     let monday = DateHelperService.getMonday(this.referenceDate);
     let friday = DateHelperService.getFriday(this.referenceDate);
     if (startDate < monday) {
@@ -115,10 +115,10 @@ export class ResizeableProjectComponent implements OnInit {
 
     if ((event.edges.left as number) < 0) {
       if (!this.canStretchLeft) {
-        event.rectangle.width = parseInt(this.employeeProject.style.width);
+        event.rectangle.width = parseInt(this.task.style.width);
       } else if (this.canStretchLeft) {
-        if (event.rectangle.width > parseInt(this.employeeProject.style.left) + parseInt(this.employeeProject.style.width)) {
-          event.rectangle.width = parseInt(this.employeeProject.style.left) + parseInt(this.employeeProject.style.width);
+        if (event.rectangle.width > parseInt(this.task.style.left) + parseInt(this.task.style.width)) {
+          event.rectangle.width = parseInt(this.task.style.left) + parseInt(this.task.style.width);
         }
       }
     }
@@ -142,24 +142,23 @@ export class ResizeableProjectComponent implements OnInit {
     const widthDays = Math.trunc((Math.round(event.rectangle.width / 200) * 200) / 200);
     const date = this.computeStartDate(event);
     date.setDate(date.getDate() + widthDays - 1);
-    console.log(date, widthDays);
     return date;
   }
 
   updateDateInterval(event: ResizeEvent): void {
     this.cachedDateRange = {
-      startDate: this.employeeProject.startDate,
-      endDate: this.employeeProject.endDate,
+      startDate: this.task.startDate,
+      endDate: this.task.endDate,
     };
-    if (!!event.edges.left) this.employeeProject.startDate = this.computeStartDate(event);
-    if (!!event.edges.right) this.employeeProject.endDate = this.computeEndDate(event);
+    if (!!event.edges.left) this.task.startDate = this.computeStartDate(event);
+    if (!!event.edges.right) this.task.endDate = this.computeEndDate(event);
   }
 
   onResizeEnd(event: ResizeEvent): void {
     event = this.computeEvent(event);
     this.updateDateInterval(event);
 
-    this.employeeProject.style = {
+    this.task.style = {
       left: `${event.rectangle.left}px`,
       width: `${event.rectangle.width}px`,
     };
@@ -168,7 +167,7 @@ export class ResizeableProjectComponent implements OnInit {
   }
 
   sendResizeRequest(): void {
-    this.employeesCalendarController.resizeProject(this.employeeProject.id, this.createPayload()).subscribe({
+    this.employeesCalendarController.resizeTask(this.task.id, this.createPayload()).subscribe({
       next: () => {},
       error: () => {
         this.matSnackBar.open('A apărut o eroare la redimensionarea proiectului.', 'Close', {
@@ -179,19 +178,19 @@ export class ResizeableProjectComponent implements OnInit {
     });
   }
 
-  createPayload(): Partial<IEmployeeProject> {
+  createPayload(): Partial<ITask> {
     return {
-      id: this.employeeProject.id,
-      startDate: this.employeeProject.startDate,
-      endDate: this.employeeProject.endDate,
-      employeeId: this.employeeProject.employeeId,
-      projectId: this.employeeProject.projectId,
-    } as Partial<IEmployeeProject>;
+      id: this.task.id,
+      startDate: this.task.startDate,
+      endDate: this.task.endDate,
+      employeeId: this.task.employeeId,
+      projectId: this.task.projectId,
+    } as Partial<ITask>;
   }
 
   restoreDateInterval(): void {
-    this.employeeProject.startDate = new Date(this.cachedDateRange.startDate);
-    this.employeeProject.endDate = new Date(this.cachedDateRange.endDate);
+    this.task.startDate = new Date(this.cachedDateRange.startDate);
+    this.task.endDate = new Date(this.cachedDateRange.endDate);
   }
 
   openEditEmployeeProjectDialog(): void {
@@ -201,7 +200,7 @@ export class ResizeableProjectComponent implements OnInit {
         maxHeight: '90vh',
         disableClose: true,
         data: {
-          employeeProject: this.employeeProject,
+          task: this.task,
         },
       })
       .afterClosed()
@@ -219,19 +218,18 @@ export class ResizeableProjectComponent implements OnInit {
         disableClose: true,
         data: {
           message: `Sunteți sigur că doriți să ștergeți intervalul de lucru
-                    <b>${this.datePipe.transform(this.employeeProject.startDate)} - ${this.datePipe.transform(this.employeeProject.endDate)}</b>
-                     al angajatului <b>${this.employeeProject.employee.firstName} ${this.employeeProject.employee.lastName}</b>
-                     la proiectul <b>${this.employeeProject.project.title}</b>?`,
+                    <b>${this.datePipe.transform(this.task.startDate)} - ${this.datePipe.transform(this.task.endDate)}</b>
+                     al angajatului <b>${this.task.employee.firstName} ${this.task.employee.lastName}</b>
+                     la proiectul <b>${this.task.project.title}</b>?`,
         },
       })
       .afterClosed()
       .subscribe((result) => {
-        console.log(this.employeeProject);
-        if (result) this._delete.emit(this.employeeProject);
+        if (result) this._delete.emit(this.task);
       });
   }
 
   get canStretchLeft(): boolean {
-    return parseInt(this.employeeProject.style.left) !== 0;
+    return parseInt(this.task.style.left) !== 0;
   }
 }

@@ -37,13 +37,10 @@
             <div class="flex justify-between items-center w-full gap-5 border-b py-3">
               <h3 class="text-xl font-bold !m-0">Intervale de lucru ale angajaților</h3>
             </div>
-            <div *ngIf="project?.employeeProjects?.length === 0" class="flex-grow flex items-center justify-center">
+            <div *ngIf="project?.tasks?.length === 0" class="flex-grow flex items-center justify-center">
               <p>Nu există intervale de lucru ale angajaților.</p>
             </div>
-            <app-employees-table
-              *ngIf="project?.employeeProjects?.length > 0"
-              [employeeIssues]="project.employeeProjects"
-            ></app-employees-table>
+            <app-employees-table *ngIf="project?.tasks?.length > 0" [employeeIssues]="project.tasks"></app-employees-table>
           </div>
         </div>
       </div>

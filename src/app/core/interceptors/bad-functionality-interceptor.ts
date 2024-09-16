@@ -8,7 +8,6 @@ export function badFunctionalityInterceptor(req: HttpRequest<unknown>, next: Htt
 
   return next(req).pipe(
     catchError((error) => {
-      console.log('error', error);
       if (error.status === 0) {
         router.navigateByUrl('maintenance', {
           skipLocationChange: true,

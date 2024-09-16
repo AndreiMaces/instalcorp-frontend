@@ -13,6 +13,9 @@ import { ProjectsStackComponent } from './projects-stack/projects-stack.componen
   imports: [WeekComponent, MatButton, MatIcon, ProjectsStackComponent],
   templateUrl: './employees-layout.component.html',
   styleUrl: './employees-layout.component.scss',
+  host: {
+    class: 'flex-grow',
+  },
 })
 export class EmployeesLayoutComponent {
   private _reloadSubject = new Subject<void>();
@@ -27,7 +30,7 @@ export class EmployeesLayoutComponent {
         maxHeight: '90vh',
         disableClose: true,
         data: {
-          employeeProject: {
+          task: {
             startDate: new Date(),
             endDate: new Date(),
           },

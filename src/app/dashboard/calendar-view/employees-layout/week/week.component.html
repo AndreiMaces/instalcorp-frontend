@@ -1,9 +1,9 @@
 <div class="flex flex-col w-full">
-  <div class="flex justify-between items-center p-3 pb-1 bg-gray-400 text-white rounded-t">
+  <div class="flex justify-between items-center p-3 pb-1 bg-gray-400 text-white rounded-t h-[40px] !z-30">
     <span class="text-xl font-medium !m-0 drop-shadow">{{ getWeekRange(referenceDate) }}</span>
   </div>
   <div>
-    <div class="[&>div]:border [&>div]:p-5 w-full grid grid-cols-6 [&>div]:flex [&>div]:justify-center [&>div]:items-center">
+    <div class="[&>div]:border [&>div]:p-1 w-full grid grid-cols-6 [&>div]:flex [&>div]:justify-center [&>div]:items-center font-medium">
       <div></div>
       <div>Luni</div>
       <div>Marți</div>
@@ -14,16 +14,16 @@
     <div class="h-[400px] w-full border flex justify-center items-center" *ngIf="isLoading">
       <mat-spinner diameter="80"></mat-spinner>
     </div>
-    <div class="h-full" *ngIf="!isLoading">
+    <div class="overflow-auto scrollbar-hide" *ngIf="!isLoading">
       <div class="[&>div]:border w-full grid grid-cols-6" *ngFor="let employee of employees; let i = index">
-        <div class="flex justify-center items-center">
+        <div class="flex justify-center items-center font-medium">
           <span> {{ employee.firstName }} {{ employee.lastName }} </span>
         </div>
-        <div class="col-span-5 relative py-8">
+        <div class="col-span-5 relative pt-8">
           <div
             cdkDropList
             [id]="'list' + i"
-            [cdkDropListData]="employee.employeeProjects"
+            [cdkDropListData]="employee.tasks"
             [cdkDropListConnectedTo]="getLinkedLists()"
             (cdkDropListDropped)="drop($event)"
             class="!z-20 flex flex-col !min-h-[30px]"
@@ -38,10 +38,10 @@
 
             <app-resizeable-project
               (_edit)="getWeek()"
-              (_delete)="deleteEmployeeProject($event)"
+              (_delete)="deleteTask($event)"
               [referenceDate]="referenceDate"
-              [employeeProject]="employeeProject"
-              *ngFor="let employeeProject of employee.employeeProjects"
+              [task]="task"
+              *ngFor="let task of employee.tasks"
             ></app-resizeable-project>
           </div>
         </div>

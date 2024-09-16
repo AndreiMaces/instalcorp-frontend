@@ -1,6 +1,6 @@
 import { IProjectType } from './IProjectType';
 import { EProjectImportance } from '../../dashboard/project-types/shared/enums/EProjectImportance';
-import { IEmployeeProject } from './IEmployeeProject';
+import { ITask } from './ITask';
 
 export interface IProject {
   id: number;
@@ -16,7 +16,7 @@ export interface IProject {
   type?: IProjectType;
   typeId?: number;
   importance: EProjectImportance;
-  employeeProjects?: IEmployeeProject[];
+  tasks?: ITask[];
   media: string[];
   isDeleted: boolean;
 }

@@ -4,7 +4,7 @@
   </div>
   <div class="p-5">
     <app-employee-project-form
-      [employeeProject]="data.employeeProject"
+      [task]="data.task"
       (close)="openDenyConfirmationDialog()"
       (_submit)="editEmployeeProject($event)"
       *ngIf="!isLoading"

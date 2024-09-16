@@ -6,8 +6,8 @@ import { NgForOf, NgIf } from '@angular/common';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { ValidationHelperService } from '../../../core/helpers/validation-helper.service';
-import { EmployeeProjectFormFactory } from './EmployeeProjectFormFactory';
-import { IEmployeeProject } from '../../../core/models/IEmployeeProject';
+import { TaskFormFactory } from './TaskFormFactory';
+import { ITask } from '../../../core/models/ITask';
 import { IEmployee } from '../../../core/models/IEmployee';
 import { EmployeeControllerService } from '../../../core/api/controllers/employee-controller.service';
 import { ProjectControllerService } from '../../../core/api/controllers/project-controller.service';
@@ -43,9 +43,9 @@ import { MatDatepickerToggle, MatDateRangeInput, MatDateRangePicker, MatEndDate,
   providers: [provideNativeDateAdapter()],
 })
 export class EmployeeProjectFormComponent {
-  employeeProjectForm = EmployeeProjectFormFactory.create();
-  @Input() employeeProject: IEmployeeProject;
-  _submit = output<Partial<IEmployeeProject>>();
+  taskForm = TaskFormFactory.create();
+  @Input() task: ITask;
+  _submit = output<Partial<ITask>>();
   close = output<void>();
   isLoading = false;
   employees: IEmployee[];
@@ -99,21 +99,21 @@ export class EmployeeProjectFormComponent {
   }
 
   prefillForm(): void {
-    if (this.employeeProject) {
-      this.employeeProjectForm.controls.startDate.setValue(new Date(this.employeeProject.startDate));
-      this.employeeProjectForm.controls.endDate.setValue(new Date(this.employeeProject.endDate));
-      this.employeeProjectForm.controls.employee.setValue(this.employees?.find((e) => e.id === this.employeeProject.employeeId));
-      this.employeeProjectForm.controls.project.setValue(
+    if (this.task) {
+      this.taskForm.controls.startDate.setValue(new Date(this.task.startDate));
+      this.taskForm.controls.endDate.setValue(new Date(this.task.endDate));
+      this.taskForm.controls.employee.setValue(this.employees?.find((e) => e.id === this.task.employeeId));
+      this.taskForm.controls.project.setValue(
         this.projectTypes
-          ?.find((p) => p.projects?.find((pp) => pp.id === this.employeeProject.projectId))
-          ?.projects?.find((pp) => pp.id === this.employeeProject.projectId),
+          ?.find((p) => p.projects?.find((pp) => pp.id === this.task.projectId))
+          ?.projects?.find((pp) => pp.id === this.task.projectId),
       );
     }
   }
 
   onSubmit() {
-    this.employeeProjectForm.markAllAsTouched();
-    if (this.employeeProjectForm.valid) {
+    this.taskForm.markAllAsTouched();
+    if (this.taskForm.valid) {
       this._submit.emit(this.createPayload());
     } else {
       this.snackBarService.open('Informațiile introduse sunt incorecte', 'Close', {
@@ -122,12 +122,12 @@ export class EmployeeProjectFormComponent {
     }
   }
 
-  createPayload(): Partial<IEmployeeProject> {
+  createPayload(): Partial<ITask> {
     return {
-      employeeId: this.employeeProjectForm.value.employee.id,
-      projectId: this.employeeProjectForm.value.project.id,
-      startDate: this.employeeProjectForm.value.startDate,
-      endDate: this.employeeProjectForm.value.endDate,
+      employeeId: this.taskForm.value.employee.id,
+      projectId: this.taskForm.value.project.id,
+      startDate: this.taskForm.value.startDate,
+      endDate: this.taskForm.value.endDate,
     };
   }
 

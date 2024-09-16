@@ -9,17 +9,17 @@
   <div class="relative w-full h-full">
     <div
       class="rectangle absolute box-border text-white pl-3 rounded-md text-sm cursor-move"
-      [style.background-color]="employeeProject.project.color"
-      [ngStyle]="employeeProject.style"
+      [style.background-color]="task.project.color"
+      [ngStyle]="task.style"
       mwlResizable
       [enableGhostResize]="true"
       (resizeStart)="isDragDisabled = true"
       (resizeEnd)="onResizeEnd($event)"
-      matTooltip="{{ employeeProject.project.title }} ({{ employeeProject.startDate | date }} - {{ employeeProject.endDate | date }})"
-      *ngIf="employeeProject.projectId"
+      matTooltip="{{ task.project.title }}"
+      *ngIf="task.projectId"
     >
       <span class="line-clamp-1">
-        {{ employeeProject.project.title }} ({{ employeeProject.startDate | date }} - {{ employeeProject.endDate | date }})
+        {{ task.project.title }}
       </span>
       <div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
       <div class="resize-handle-right" mwlResizeHandle [resizeEdges]="{ right: true }"></div>
