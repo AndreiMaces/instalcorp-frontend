@@ -7,12 +7,12 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { TaskControllerService } from '../../../core/api/controllers/task-controller.service';
 import { ITask } from '../../../core/models/ITask';
-import { EmployeeProjectFormComponent } from '../employee-project-form/employee-project-form.component';
+import { TaskFormComponent } from '../task-form/task-form.component';
 
 @Component({
   selector: 'app-create-employee-project-dialog',
   standalone: true,
-  imports: [MatProgressSpinner, NgIf, ProjectTypeFormComponent, EmployeeProjectFormComponent],
+  imports: [MatProgressSpinner, NgIf, ProjectTypeFormComponent, TaskFormComponent],
   templateUrl: './create-employee-project-dialog.component.html',
   styleUrl: './create-employee-project-dialog.component.scss',
 })

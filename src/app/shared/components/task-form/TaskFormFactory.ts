@@ -7,6 +7,8 @@ export interface TaskForm {
   project: FormControl<IProject>;
   startDate: FormControl<Date>;
   endDate: FormControl<Date>;
+  color: FormControl<string>;
+  title: FormControl<string>;
 }
 
 export class TaskFormFactory {
@@ -16,6 +18,8 @@ export class TaskFormFactory {
       project: new FormControl<IProject>(null, [Validators.required]),
       startDate: new FormControl<Date>(new Date(), [Validators.required]),
       endDate: new FormControl<Date>(new Date(), [Validators.required]),
+      color: new FormControl<string>('#ffffff', [Validators.required]),
+      title: new FormControl<string>(null, [Validators.required]),
     });
   }
 }

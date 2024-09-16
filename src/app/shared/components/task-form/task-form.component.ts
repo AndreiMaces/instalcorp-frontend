@@ -17,7 +17,7 @@ import { MatSelect } from '@angular/material/select';
 import { MatDatepickerToggle, MatDateRangeInput, MatDateRangePicker, MatEndDate, MatStartDate } from '@angular/material/datepicker';
 
 @Component({
-  selector: 'app-employee-project-form',
+  selector: 'app-task-form',
   standalone: true,
   imports: [
     MatButton,
@@ -38,11 +38,11 @@ import { MatDatepickerToggle, MatDateRangeInput, MatDateRangePicker, MatEndDate,
     MatSuffix,
     MatOptgroup,
   ],
-  templateUrl: './employee-project-form.component.html',
-  styleUrl: './employee-project-form.component.scss',
+  templateUrl: './task-form.component.html',
+  styleUrl: './task-form.component.scss',
   providers: [provideNativeDateAdapter()],
 })
-export class EmployeeProjectFormComponent {
+export class TaskFormComponent {
   taskForm = TaskFormFactory.create();
   @Input() task: ITask;
   _submit = output<Partial<ITask>>();
@@ -62,6 +62,10 @@ export class EmployeeProjectFormComponent {
     this.getEmployees();
     this.getProjects();
     this.prefillForm();
+  }
+
+  updateTaskColor(color: string): void {
+    this.taskForm.controls.color.setValue(color);
   }
 
   getProjects(): void {
@@ -108,6 +112,8 @@ export class EmployeeProjectFormComponent {
           ?.find((p) => p.projects?.find((pp) => pp.id === this.task.projectId))
           ?.projects?.find((pp) => pp.id === this.task.projectId),
       );
+      if (this.task.title) this.taskForm.controls.title.setValue(this.task.title);
+      if (this.task.color) this.taskForm.controls.color.setValue(this.task.color);
     }
   }
 
@@ -128,6 +134,8 @@ export class EmployeeProjectFormComponent {
       projectId: this.taskForm.value.project.id,
       startDate: this.taskForm.value.startDate,
       endDate: this.taskForm.value.endDate,
+      title: this.taskForm.value.title,
+      color: this.taskForm.value.color,
     };
   }
 

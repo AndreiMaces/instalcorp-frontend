@@ -1,4 +1,20 @@
 <form [formGroup]="taskForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-3">
+  <div class="flex gap-2">
+    <mat-form-field appearance="outline" class="flex-grow w-full">
+      <mat-label>Titlu</mat-label>
+      <input matInput [formControl]="taskForm.controls.title" />
+      <mat-error *ngIf="ValidationHelperService.isInvalid(taskForm.controls.title)">
+        {{ ValidationHelperService.getErrorMessage(taskForm.controls.title) }}
+      </mat-error>
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Culoare</mat-label>
+      <input matInput [formControl]="taskForm.controls.color" type="color" />
+      <mat-error *ngIf="ValidationHelperService.isInvalid(taskForm.controls.color)"
+        >{{ ValidationHelperService.getErrorMessage(taskForm.controls.color) }}
+      </mat-error>
+    </mat-form-field>
+  </div>
   <mat-form-field appearance="outline">
     <mat-label>Angajat</mat-label>
     <mat-select [formControl]="taskForm.controls.employee">
@@ -7,7 +23,7 @@
   </mat-form-field>
   <mat-form-field appearance="outline">
     <mat-label>Proiect</mat-label>
-    <mat-select [formControl]="taskForm.controls.project">
+    <mat-select [formControl]="taskForm.controls.project" (valueChange)="updateTaskColor($event.color)">
       <mat-optgroup [label]="projectType.title" *ngFor="let projectType of projectTypes">
         <mat-option [value]="project" *ngFor="let project of projectType.projects">{{ project.title }}</mat-option>
       </mat-optgroup>

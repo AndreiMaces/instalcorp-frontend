@@ -17,7 +17,7 @@ import { EmployeeControllerService } from '../../../../../core/api/controllers/e
 import { provideNativeDateAdapter } from '@angular/material/core';
 
 @Component({
-  selector: 'app-employee-project-form',
+  selector: 'app-task-form',
   standalone: true,
   imports: [
     NgForOf,

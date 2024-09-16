@@ -1,5 +1,5 @@
 import { Component, Inject } from '@angular/core';
-import { EmployeeProjectFormComponent } from '../employee-project-form/employee-project-form.component';
+import { TaskFormComponent } from '../task-form/task-form.component';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { NgIf } from '@angular/common';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
@@ -11,7 +11,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 @Component({
   selector: 'app-edit-employee-project-dialog',
   standalone: true,
-  imports: [EmployeeProjectFormComponent, MatProgressSpinner, NgIf],
+  imports: [TaskFormComponent, MatProgressSpinner, NgIf],
   templateUrl: './edit-employee-project-dialog.component.html',
   styleUrl: './edit-employee-project-dialog.component.scss',
 })

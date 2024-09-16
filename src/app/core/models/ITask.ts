@@ -10,4 +10,6 @@ export interface ITask {
   startDate: Date;
   endDate: Date;
   order: number;
+  title: string;
+  color: string;
 }

@@ -8,19 +8,19 @@
 >
   <div class="relative w-full h-full">
     <div
-      class="rectangle absolute box-border text-white pl-3 rounded-md text-sm cursor-move"
-      [style.background-color]="task.project.color"
+      class="rectangle absolute box-border text-white pl-3 rounded-md text-sm cursor-move shadow"
+      [style.background-color]="task.color"
+      [style.color]="ColorHelperService.invertedColor(task.color)"
       [ngStyle]="task.style"
       mwlResizable
       [enableGhostResize]="true"
       (resizeStart)="isDragDisabled = true"
       (resizeEnd)="onResizeEnd($event)"
-      matTooltip="{{ task.project.title }}"
+      matTooltip="{{ task.project.title }} / {{ task.title }}"
       *ngIf="task.projectId"
+      (dblclick)="openEditEmployeeProjectDialog()"
     >
-      <span class="line-clamp-1">
-        {{ task.project.title }}
-      </span>
+      <span class="line-clamp-1"> {{ task.project.title }} / {{ task.title }} </span>
       <div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
       <div class="resize-handle-right" mwlResizeHandle [resizeEdges]="{ right: true }"></div>
     </div>

@@ -31,7 +31,7 @@ export class ColorHelperService {
     const b = rgb.b;
     const sum = r + g + b;
     const perceivedLightness = sum / 255;
-    const thirdParam = perceivedLightness - 1;
+    const thirdParam = perceivedLightness - 2;
     return `hsl(0, 0%, calc(${thirdParam} * -10000000%))`;
   }
 }

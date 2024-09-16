@@ -3,7 +3,7 @@
     <p class="text-3xl !m-0">Gestionează angajații pentru {{ data.project?.title }}:{{ data.project?.name }}</p>
   </div>
   <div class="p-5" *ngIf="!isLoading">
-    <app-employee-project-form [project]="data.project"></app-employee-project-form>
+    <app-task-form [project]="data.project"></app-task-form>
   </div>
   <div *ngIf="isLoading" class="h-[400px] w-full flex justify-center items-center">
     <mat-spinner diameter="80"></mat-spinner>

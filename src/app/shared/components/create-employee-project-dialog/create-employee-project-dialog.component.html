@@ -3,13 +3,8 @@
     <p class="text-3xl !m-0">Asociați un proiect</p>
   </div>
   <div class="p-5">
-    <app-employee-project-form
-      [task]="data.task"
-      (close)="openDenyConfirmationDialog()"
-      (_submit)="createEmployeeProject($event)"
-      *ngIf="!isLoading"
-    >
-    </app-employee-project-form>
+    <app-task-form [task]="data.task" (close)="openDenyConfirmationDialog()" (_submit)="createEmployeeProject($event)" *ngIf="!isLoading">
+    </app-task-form>
     <div *ngIf="isLoading" class="h-[400px] w-full flex justify-center items-center">
       <mat-spinner diameter="80"></mat-spinner>
     </div>

@@ -13,6 +13,7 @@ import { MatMenu, MatMenuItem } from '@angular/material/menu';
 import { MatDialog } from '@angular/material/dialog';
 import { EditEmployeeProjectDialogComponent } from '../../../../../shared/components/edit-employee-project-dialog/edit-employee-project-dialog.component';
 import { ConfirmationDialogComponent } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ColorHelperService } from '../../../../../core/helpers/color-helper.service';
 
 @Component({
   selector: 'app-resizeable-project',
@@ -232,4 +233,6 @@ export class ResizeableProjectComponent implements OnInit {
   get canStretchLeft(): boolean {
     return parseInt(this.task.style.left) !== 0;
   }
+
+  protected readonly ColorHelperService = ColorHelperService;
 }
