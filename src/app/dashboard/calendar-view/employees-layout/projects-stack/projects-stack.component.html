@@ -1,7 +1,7 @@
-<div class="relative !z-40 w-[calc(200px+1.5rem)]">
+<div class="!z-40 w-[calc(200px+1.5rem)] absolute">
   <div class="bg-white border rounded" [class.absolute]="isVisible" cdkDrag>
-    <div class="w-full flex justify-between items-center pl-3">
-      <span class="font-medium text-md">Proiecte</span>
+    <div class="w-full flex justify-between items-center">
+      <span class="font-medium text-md px-3">Proiecte</span>
       <button mat-icon-button (click)="isVisible = !isVisible">
         <mat-icon>expand_more</mat-icon>
       </button>

@@ -30,6 +30,24 @@ $theme: mat.define-theme(
   scrollbar-width: none; /* Firefox */
 }
 
+.scrollbar-hide-single::-webkit-scrollbar {
+  display: none;
+}
+
+.scrollbar-hide-single *::-webkit-scrollbar {
+  display: block;
+}
+
+.scrollbar-hide-single {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
+}
+
+.scrollbar-hide-single * {
+  -ms-overflow-style: scrollbar;
+  scrollbar-width: auto;
+}
+
 html,
 body {
   height: 100%;
