@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, output, ViewChild } from '@angular/core';
-import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { DatePipe, NgForOf, NgIf, NgStyle } from '@angular/common';
 import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 import { ITask } from '../../../../../core/models/ITask';
@@ -42,6 +42,9 @@ export class ResizeableProjectComponent implements OnInit {
   @Input() task: ITask;
   @ViewChild('container') div: ElementRef;
   @Input() referenceDate: Date = new Date();
+  @Input() isGlobalDragDisabled = {
+    value: false,
+  };
   isDragDisabled = false;
   maxSpace = 998;
   cachedDateRange: { startDate: Date; endDate: Date } = { startDate: null, endDate: null };
@@ -161,17 +164,20 @@ export class ResizeableProjectComponent implements OnInit {
       left: `${event.rectangle.left}px`,
       width: `${event.rectangle.width}px`,
     };
-    this.isDragDisabled = false;
     this.sendResizeRequest();
   }
 
   sendResizeRequest(): void {
+    this.isDragDisabled = true;
     this.employeesCalendarController.resizeTask(this.task.id, this.createPayload()).subscribe({
-      next: () => {},
+      next: () => {
+        this.isDragDisabled = false;
+      },
       error: () => {
         this.matSnackBar.open('A apărut o eroare la redimensionarea proiectului.', 'Close', {
           duration: 3000,
         });
+        this.isDragDisabled = false;
         this.restoreDateInterval();
       },
     });
@@ -226,27 +232,6 @@ export class ResizeableProjectComponent implements OnInit {
       .subscribe((result) => {
         if (result) this._delete.emit(this.task);
       });
-  }
-
-  clipToSize(value: number): number {
-    if (value < 0) {
-      return Math.trunc((value - 200) / 200) * 200;
-    }
-    return Math.trunc(value / 200) * 200;
-  }
-
-  dragDrop(event: CdkDragDrop<ITask[]>): void {
-    //this.dragEnd(event as unknown as CdkDragEnd);
-  }
-
-  dragEnd(event: CdkDragEnd): void {
-    if (event.distance.x < 0) event.distance.x -= 60;
-    const left = this.clipToSize(event.distance.x);
-    if (left > 0) {
-      this.task.style.left = `${parseInt(this.task.style.left) + left}px`;
-    } else if (left < 0) {
-      this.task.style.left = `${parseInt(this.task.style.left) + left}px`;
-    }
   }
 
   get canStretchLeft(): boolean {

@@ -1,4 +1,4 @@
-<div class="flex flex-col w-full">
+<div class="flex flex-col w-full relative select-none">
   <div class="flex justify-between items-center p-3 pb-1 bg-gray-400 text-white rounded-t h-[40px] !z-30">
     <span class="text-xl font-medium !m-0 drop-shadow">{{ getWeekRange(referenceDate) }}</span>
   </div>
@@ -40,6 +40,7 @@
               (_edit)="getWeek()"
               (_delete)="deleteTask($event)"
               [referenceDate]="referenceDate"
+              [isGlobalDragDisabled]="isGlobalDragDisabled"
               [task]="task"
               *ngFor="let task of employee.tasks"
             ></app-resizeable-project>

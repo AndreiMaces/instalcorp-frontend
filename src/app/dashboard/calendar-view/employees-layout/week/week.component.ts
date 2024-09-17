@@ -22,8 +22,6 @@ import { MatTooltip } from '@angular/material/tooltip';
 import { ResizableModule } from 'angular-resizable-element';
 import { MatIcon } from '@angular/material/icon';
 import { TaskControllerService } from '../../../../core/api/controllers/task-controller.service';
-import { MatDialog } from '@angular/material/dialog';
-import { ApiService } from '../../../../core/api/api.service';
 import { Observable } from 'rxjs';
 import { IProject } from '../../../../core/models/IProject';
 
@@ -59,13 +57,14 @@ export class WeekComponent {
   isLoading = false;
   @Input() referenceDate: Date = new Date();
   @Input() reloadObservable: Observable<void>;
+  @Input() isGlobalDragDisabled = {
+    value: false,
+  };
 
   constructor(
     private employeesCalendarController: EmployeesCalendarController,
     private taskController: TaskControllerService,
     private snackBarService: MatSnackBar,
-    private dialog: MatDialog,
-    private apiService: ApiService,
   ) {}
 
   ngOnInit(): void {
@@ -90,9 +89,11 @@ export class WeekComponent {
   }
 
   getWeekSilent(): void {
+    this.isGlobalDragDisabled.value = true;
     this.employeesCalendarController.getWeek(this.referenceDate).subscribe({
       next: (employees) => {
         this.employees = employees;
+        this.isGlobalDragDisabled.value = false;
       },
     });
   }
@@ -107,6 +108,7 @@ export class WeekComponent {
     this.dragEnd(event as unknown as CdkDragEnd, movedProject as ITask & { style: any });
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.isGlobalDragDisabled.value = true;
       this.taskController
         .editTask(movedProject.id, {
           startDate: movedProject.startDate,
@@ -119,15 +121,16 @@ export class WeekComponent {
             this.reorder(event);
           },
           error: () => {
+            this.isGlobalDragDisabled.value = false;
             this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
               duration: 3000,
             });
           },
         });
-      this.reorder(event);
     } else {
       if (movedProject?.projectId) {
         transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+        this.isGlobalDragDisabled.value = true;
         this.taskController
           .editTask(movedProject.id, {
             startDate: movedProject.startDate,
@@ -143,10 +146,14 @@ export class WeekComponent {
               this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
                 duration: 3000,
               });
+              this.isGlobalDragDisabled.value = false;
             },
           });
       } else {
+        const containerClone = JSON.parse(JSON.stringify(event.previousContainer.data));
+
         copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+        event.previousContainer.data = containerClone;
         let newEmployeeProject = movedProject as ITask;
         newEmployeeProject.projectId = movedProject.id;
         newEmployeeProject.startDate = DateHelperService.getMonday(this.referenceDate);
@@ -162,6 +169,20 @@ export class WeekComponent {
           startDate: realMovedProject.startDate,
           endDate: realMovedProject.endDate,
         } as IProject;
+        this.isGlobalDragDisabled.value = true;
+
+        let left = event.dropPoint.x - (window.innerWidth - 1200) / 2 - 200;
+        left = this.clipToSize(left);
+        newEmployeeProject.style = {
+          left: `${left}px`,
+          width: '200px',
+        };
+
+        const daysFromMonday = Math.ceil(left / 200);
+        const newStartDate = DateHelperService.getMonday(new Date(newEmployeeProject.startDate));
+        newStartDate.setDate(newStartDate.getDate() + daysFromMonday);
+        newEmployeeProject.startDate = newStartDate;
+        newEmployeeProject.endDate = new Date(newEmployeeProject.startDate);
 
         this.taskController
           .createTask({
@@ -169,6 +190,7 @@ export class WeekComponent {
             endDate: newEmployeeProject.endDate,
             projectId: newEmployeeProject.projectId,
             employeeId: newEmployeeProject.employeeId,
+            color: newEmployeeProject.project.color,
           })
           .subscribe({
             next: (task: ITask) => {
@@ -176,6 +198,8 @@ export class WeekComponent {
               this.reorder(event);
             },
             error: () => {
+              this.isGlobalDragDisabled.value = false;
+
               this.snackBarService.open('A apărut o eroare la reordonarea sarcinilor.', 'Close', {
                 duration: 3000,
               });
@@ -208,11 +232,13 @@ export class WeekComponent {
   }
 
   reorder(event: CdkDragDrop<ITask[]>): void {
+    this.isGlobalDragDisabled.value = true;
     this.employeesCalendarController.reorderTasks(event.container.data[event.currentIndex].id, event.container.data).subscribe(
       () => {
         this.getWeekSilent();
       },
       () => {
+        this.isGlobalDragDisabled.value = false;
         this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
           duration: 3000,
         });

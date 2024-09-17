@@ -2,8 +2,7 @@
   class="w-full h-[24px] relative"
   cdkDragBoundary=".example-boundary"
   cdkDrag
-  (cdkDragDropped)="dragDrop($event)"
-  [cdkDragDisabled]="isDragDisabled"
+  [cdkDragDisabled]="isDragDisabled || isGlobalDragDisabled.value"
   #container
   [cdkContextMenuTriggerFor]="context_menu"
 >
@@ -28,7 +27,9 @@
           </div>
           <div class="h-[16px] flex justify-center items-center">
             <span
-              class="material-symbols-outlined !cursor-move scale-75"
+              class="material-symbols-outlined scale-75"
+              [class.opacity-50]="isDragDisabled || isGlobalDragDisabled.value"
+              [class.!cursor-move]="!isDragDisabled && !isGlobalDragDisabled.value"
               cdkDragHandle
               [style.color]="ColorHelperService.invertedColor(task.color)"
             >

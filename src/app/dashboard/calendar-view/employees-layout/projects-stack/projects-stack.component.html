@@ -25,12 +25,23 @@
           >
             <div
               *ngFor="let project of projectType.projects"
-              class="text-white pl-3 rounded-md text-sm cursor-move line-clamp-1 w-[200px]"
+              class="text-white pl-3 rounded-md text-sm w-[200px]"
               [style.background-color]="project.color"
+              [style.color]="ColorHelperService.invertedColor(project.color)"
+              [cdkDragDisabled]="isGlobalDragDisabled.value"
               cdkDrag
               matTooltip="{{ project.title }}"
             >
-              {{ project.title }}
+              <div class="flex items-center gap-2">
+                <div
+                  class="h-[16px] flex justify-center items-center cursor-move"
+                  [class.opacity-50]="isGlobalDragDisabled.value"
+                  [class.!cursor-move]="!isGlobalDragDisabled.value"
+                >
+                  <span class="material-symbols-outlined !cursor-move scale-75" cdkDragHandle> drag_pan </span>
+                </div>
+                <span class="line-clamp-1"> {{ project.title }} </span>
+              </div>
             </div>
           </div>
         </div>

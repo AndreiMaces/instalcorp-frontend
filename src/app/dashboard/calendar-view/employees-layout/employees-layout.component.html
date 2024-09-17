@@ -9,7 +9,12 @@
     </div>
   </div>
   <div class="flex-grow flex flex-col gap-3 pb-3 relative">
-    <app-projects-stack class="absolute right-[calc(200px+1.5rem)]"></app-projects-stack>
-    <app-week [referenceDate]="today" [reloadObservable]="$reloadObservable" class="max-h-screen"></app-week>
+    <app-projects-stack [isGlobalDragDisabled]="isGlobalDragDisabled" class="absolute right-[calc(200px+1.5rem)]"></app-projects-stack>
+    <app-week
+      [isGlobalDragDisabled]="isGlobalDragDisabled"
+      [referenceDate]="today"
+      [reloadObservable]="$reloadObservable"
+      class="max-h-screen"
+    ></app-week>
   </div>
 </div>

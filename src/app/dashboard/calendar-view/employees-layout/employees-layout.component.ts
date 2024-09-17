@@ -20,6 +20,9 @@ import { ProjectsStackComponent } from './projects-stack/projects-stack.componen
 export class EmployeesLayoutComponent {
   private _reloadSubject = new Subject<void>();
   public $reloadObservable = this._reloadSubject.asObservable();
+  isGlobalDragDisabled = {
+    value: false,
+  };
 
   constructor(public dialog: MatDialog) {}
 
