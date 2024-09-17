@@ -1,9 +1,9 @@
 {
   "schemaVersion": 2,
   "dockerfileLines": [
-    "FROM nginx:alpine AS production-stage",
-    "COPY dist/instalcorp-frontend/browser /usr/share/nginx/html",
-    "EXPOSE 80",
-    "CMD [\"nginx\", \"-g\", \"daemon off;\"]"
+    "FROM node:18 AS build-stage",
+    "COPY dist/instalcorp-frontend /usr/src/app",
+    "EXPOSE 5372",
+    "CMD [\"node\", \"server.mjs\",]"
   ]
 }
