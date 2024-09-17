@@ -2,7 +2,6 @@ name: Build & Deploy
 on:
   push:
     branches: [ "master" ]
-
   pull_request:
     branches: [ "master" ]
 
@@ -17,11 +16,13 @@ jobs:
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
+
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
+
       - run: npm install
       - run: npm run build
 
@@ -36,6 +37,8 @@ jobs:
 
       - name: Deploy App to CapRover
         uses: caprover/deploy-from-github@v1.0.1
+        env:
+          NODE_TLS_REJECT_UNAUTHORIZED: 0
         with:
           server: '${{ secrets.CAPROVER_SERVER }}'
           app: '${{ secrets.APP_NAME }}'
