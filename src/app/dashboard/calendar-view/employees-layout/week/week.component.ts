@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import {
   CdkDrag,
   CdkDragDrop,
+  CdkDragEnd,
   CdkDropList,
   CdkDropListGroup,
   copyArrayItem,
@@ -101,12 +102,30 @@ export class WeekComponent {
   }
 
   drop(event: CdkDragDrop<ITask[]>) {
+    const movedProject = event.previousContainer.data[event.previousIndex];
+    const currentEmployee = this.employees.find((employee) => employee.tasks === event.container.data);
+    this.dragEnd(event as unknown as CdkDragEnd, movedProject as ITask & { style: any });
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+      this.taskController
+        .editTask(movedProject.id, {
+          startDate: movedProject.startDate,
+          endDate: movedProject.endDate,
+          projectId: movedProject.projectId,
+          employeeId: currentEmployee.id,
+        })
+        .subscribe({
+          next: () => {
+            this.reorder(event);
+          },
+          error: () => {
+            this.snackBarService.open('A apărut o eroare la reordonarea proiectelor.', 'Close', {
+              duration: 3000,
+            });
+          },
+        });
       this.reorder(event);
     } else {
-      const currentEmployee = this.employees.find((employee) => employee.tasks === event.container.data);
-      const movedProject = event.previousContainer.data[event.previousIndex];
       if (movedProject?.projectId) {
         transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
         this.taskController
@@ -164,6 +183,28 @@ export class WeekComponent {
           });
       }
     }
+  }
+
+  clipToSize(value: number): number {
+    if (value < 0) {
+      return Math.trunc((value - 160) / 200) * 200;
+    }
+    return Math.trunc(value / 200) * 200;
+  }
+
+  dragEnd(event: CdkDragEnd, task: ITask & { style: any }): void {
+    let left: any = this.clipToSize(event.distance.x);
+    if (task?.style?.left) {
+      left = parseInt(task.style.left) + left;
+    }
+    const daysFromMonday = Math.ceil(left / 200);
+    const newStartDate = DateHelperService.getMonday(new Date(task.startDate));
+    newStartDate.setDate(newStartDate.getDate() + daysFromMonday);
+    task.startDate = newStartDate;
+    const newEndDate = new Date(task.endDate);
+    newEndDate.setDate(newEndDate.getDate() + this.clipToSize(event.distance.x) / 200);
+    task.endDate = newEndDate;
+    task.style = null;
   }
 
   reorder(event: CdkDragDrop<ITask[]>): void {

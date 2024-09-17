@@ -1,5 +1,5 @@
 import { Component, ElementRef, Input, OnInit, output, ViewChild } from '@angular/core';
-import { CdkDrag } from '@angular/cdk/drag-drop';
+import { CdkDrag, CdkDragDrop, CdkDragEnd, CdkDragHandle } from '@angular/cdk/drag-drop';
 import { DatePipe, NgForOf, NgIf, NgStyle } from '@angular/common';
 import { ResizableModule, ResizeEvent } from 'angular-resizable-element';
 import { ITask } from '../../../../../core/models/ITask';
@@ -32,24 +32,14 @@ import { ColorHelperService } from '../../../../../core/helpers/color-helper.ser
     MatIcon,
     MatMenuItem,
     MatMenu,
+    CdkDragHandle,
   ],
   templateUrl: './resizeable-project.component.html',
   styleUrl: './resizeable-project.component.scss',
   providers: [DatePipe],
 })
 export class ResizeableProjectComponent implements OnInit {
-  @Input({
-    transform: (value: ITask): ITask & { style: { left: string; width: string } } => {
-      return {
-        ...value,
-        style: {
-          left: '0px',
-          width: '200px',
-        },
-      } as unknown as ITask & { style: { left: string; width: string } };
-    },
-  })
-  task: ITask & { style: { left: string; width: string } };
+  @Input() task: ITask;
   @ViewChild('container') div: ElementRef;
   @Input() referenceDate: Date = new Date();
   isDragDisabled = false;
@@ -67,10 +57,18 @@ export class ResizeableProjectComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
-    this.initStyle();
+    if (!this.task.style) {
+      this.initStyle();
+    }
   }
 
-  initStyle(): any {
+  ngOnChanges(): void {
+    if (!this.task.style) {
+      this.initStyle();
+    }
+  }
+
+  initStyle(): void {
     this.task.style = {
       width: `${this.initWidth()}px`,
       left: `${this.initLeft()}px`,
@@ -228,6 +226,27 @@ export class ResizeableProjectComponent implements OnInit {
       .subscribe((result) => {
         if (result) this._delete.emit(this.task);
       });
+  }
+
+  clipToSize(value: number): number {
+    if (value < 0) {
+      return Math.trunc((value - 200) / 200) * 200;
+    }
+    return Math.trunc(value / 200) * 200;
+  }
+
+  dragDrop(event: CdkDragDrop<ITask[]>): void {
+    //this.dragEnd(event as unknown as CdkDragEnd);
+  }
+
+  dragEnd(event: CdkDragEnd): void {
+    if (event.distance.x < 0) event.distance.x -= 60;
+    const left = this.clipToSize(event.distance.x);
+    if (left > 0) {
+      this.task.style.left = `${parseInt(this.task.style.left) + left}px`;
+    } else if (left < 0) {
+      this.task.style.left = `${parseInt(this.task.style.left) + left}px`;
+    }
   }
 
   get canStretchLeft(): boolean {

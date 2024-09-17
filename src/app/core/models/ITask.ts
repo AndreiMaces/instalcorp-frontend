@@ -12,4 +12,5 @@ export interface ITask {
   order: number;
   title: string;
   color: string;
+  style?: any;
 }

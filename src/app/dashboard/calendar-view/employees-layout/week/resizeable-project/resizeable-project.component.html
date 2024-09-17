@@ -2,13 +2,14 @@
   class="w-full h-[24px] relative"
   cdkDragBoundary=".example-boundary"
   cdkDrag
+  (cdkDragDropped)="dragDrop($event)"
   [cdkDragDisabled]="isDragDisabled"
   #container
   [cdkContextMenuTriggerFor]="context_menu"
 >
   <div class="relative w-full h-full">
     <div
-      class="rectangle absolute box-border text-white pl-3 rounded-md text-sm cursor-move shadow"
+      class="absolute box-border text-white rounded-md text-sm shadow flex justify-between items-center"
       [style.background-color]="task.color"
       [style.color]="ColorHelperService.invertedColor(task.color)"
       [ngStyle]="task.style"
@@ -20,9 +21,29 @@
       *ngIf="task.projectId"
       (dblclick)="openEditEmployeeProjectDialog()"
     >
-      <span class="line-clamp-1"> {{ task.project.title }} / {{ task.title }} </span>
-      <div class="resize-handle-left" mwlResizeHandle [resizeEdges]="{ left: true }"></div>
-      <div class="resize-handle-right" mwlResizeHandle [resizeEdges]="{ right: true }"></div>
+      <div class="flex gap-2 items-center">
+        <div class="flex">
+          <div class="h-[16px] flex justify-center items-center">
+            <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ left: true }"> drag_indicator </mat-icon>
+          </div>
+          <div class="h-[16px] flex justify-center items-center">
+            <span
+              class="material-symbols-outlined !cursor-move scale-75"
+              cdkDragHandle
+              [style.color]="ColorHelperService.invertedColor(task.color)"
+            >
+              drag_pan
+            </span>
+          </div>
+        </div>
+        <div>
+          <span class="line-clamp-1"> {{ task.project.title }} / {{ task.title }} </span>
+        </div>
+      </div>
+
+      <div class="h-[16px] flex justify-center items-center">
+        <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ right: true }"> drag_indicator </mat-icon>
+      </div>
     </div>
   </div>
 </div>
