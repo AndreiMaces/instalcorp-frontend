@@ -1,17 +1,8 @@
 {
   "schemaVersion": 2,
-  "templateId": "node/18",
   "dockerfileLines": [
-    "FROM node:18 AS build-stage",
-    "WORKDIR /usr/dist",
-    "COPY package*.json ./",
-    "RUN npm install",
-    "COPY . .",
-    "RUN npm run build --prod",
-    
     "FROM nginx:alpine AS production-stage",
-    "COPY --from=build-stage /usr/dist/instalcorp-frontend /usr/share/nginx/html",
-    "COPY ./nginx.conf /etc/nginx/nginx.conf",
+    "COPY dist/instalcorp-frontend/browser /usr/share/nginx/html",
     "EXPOSE 80",
     "CMD [\"nginx\", \"-g\", \"daemon off;\"]"
   ]
