@@ -34,7 +34,7 @@ jobs:
             dist/
             captain-definition
           outPath: deploy.tar
-        run: zcat deploy.tar | wc -c
+      - run: zcat deploy.tar | wc -c
 
       - name: Deploy App to CapRover
         uses: caprover/deploy-from-github@main
