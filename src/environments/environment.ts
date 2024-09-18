@@ -1,3 +1,3 @@
 export const environment = {
-  server: 'https://dev.instalcorp-planner.macesandrei.com',
+  server: 'https://api-instalcorp-dev.macesandrei.com',
 };
