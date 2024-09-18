@@ -10,4 +10,4 @@ COPY . .
 EXPOSE 5372
 
 # Run the application
-CMD ["node", "/usr/src/app/instalcorp-frontend/server/server.mjs"]
+CMD ["node", "/instalcorp-frontend/server/server.mjs"]
