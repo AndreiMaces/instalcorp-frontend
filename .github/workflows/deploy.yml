@@ -33,6 +33,7 @@ jobs:
           files: |
             dist/
             captain-definition
+            Dockerfile
           outPath: deploy.tar
       - run: zcat deploy.tar | wc -c
 
