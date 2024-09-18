@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted
+    runs-on: ubuntu-latest
 
     strategy:
       matrix:
@@ -31,7 +31,7 @@ jobs:
           command: c
           cwd: "./"
           files: |
-            **/
+            dist/
             captain-definition
           outPath: deploy.tar
 
