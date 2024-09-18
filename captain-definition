@@ -1,9 +1,4 @@
 {
   "schemaVersion": 2,
-  "dockerfileLines": [
-    "FROM node:18 AS build-stage",
-    "COPY dist/instalcorp-frontend /usr/src/app",
-    "EXPOSE 5372",
-    "CMD [\"node\", \"server.mjs\",]"
-  ]
+  "dockerfilePath": "./Dockerfile"
 }
