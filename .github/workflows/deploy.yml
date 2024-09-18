@@ -11,7 +11,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [18.x]
+        node-version: [ 18.x ]
 
     steps:
       - name: Check out repository
@@ -31,7 +31,7 @@ jobs:
           command: c
           cwd: "./"
           files: |
-            dist/
+            **/
             captain-definition
           outPath: deploy.tar
 
