@@ -26,14 +26,14 @@ jobs:
       - run: npm install
       - run: npm run build
 
-      - uses: a7ul/tar-action@v1.1.0
+      - uses: a7ul/tar-action@master
         with:
           command: c
-          cwd: "./"
+          cwd: "./dist/"
           files: |
-            dist/
-            captain-definition
-          outPath: deploy.tar
+            .
+            ../captain-definition
+          outPath: ../deploy.tar
 
       - name: Deploy App to CapRover
         uses: caprover/deploy-from-github@main
