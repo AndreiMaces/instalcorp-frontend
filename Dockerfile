@@ -1,10 +1,10 @@
 # Production stage
 FROM node:18-alpine
 
-WORKDIR /usr/src/app
+WORKDIR /
 
 # Copy the built app from the build stage
-COPY /usr/src/app ./
+COPY . .
 
 # Expose any necessary port (e.g., 3000)
 EXPOSE 5372
