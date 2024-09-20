@@ -6,6 +6,7 @@ import { MatMenu, MatMenuItem } from '@angular/material/menu';
 import { IProjectType } from '../../../../core/models/IProjectType';
 import { MatDialog } from '@angular/material/dialog';
 import { ConfirmationDialogComponent } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
 
 @Component({
   selector: 'app-archived-project-type-row',
@@ -35,4 +36,6 @@ export class ArchivedProjectTypeComponent {
         if (result) this._restore.emit(this.projectType.id);
       });
   }
+
+  protected readonly ColorHelperService = ColorHelperService;
 }

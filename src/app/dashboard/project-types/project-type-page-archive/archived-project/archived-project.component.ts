@@ -9,6 +9,7 @@ import {
   ConfirmationDialogComponent,
   IConfirmationDialogData,
 } from '../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
+import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
 
 @Component({
   selector: 'app-archived-project',
@@ -36,4 +37,6 @@ export class ArchivedProjectComponent {
         if (res) this._restore.emit(this.project.id);
       });
   }
+
+  protected readonly ColorHelperService = ColorHelperService;
 }
