@@ -24,6 +24,10 @@ export class ProjectControllerService {
     return this.apiService.put(`${this._baseURL}/${projectId}`, newIssue);
   }
 
+  editProjectColor(projectId: number, color: string): Observable<IProject> {
+    return this.apiService.put(`${this._baseURL}/${projectId}/color`, { color });
+  }
+
   createProject(newIssue: Partial<IProject>): Observable<IProject> {
     return this.apiService.post<IProject>(`${this._baseURL}`, newIssue);
   }

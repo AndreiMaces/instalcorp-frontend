@@ -24,6 +24,7 @@ import { MatIcon } from '@angular/material/icon';
 import { TaskControllerService } from '../../../../core/api/controllers/task-controller.service';
 import { Observable } from 'rxjs';
 import { IProject } from '../../../../core/models/IProject';
+import { ActivatedRoute } from '@angular/router';
 
 export interface IDay {
   name: string;
@@ -65,11 +66,13 @@ export class WeekComponent {
     private employeesCalendarController: EmployeesCalendarController,
     private taskController: TaskControllerService,
     private snackBarService: MatSnackBar,
+    private route: ActivatedRoute,
   ) {}
 
   ngOnInit(): void {
     this.getWeek();
-    this.reloadObservable.subscribe(() => this.getWeek());
+    this.reloadObservable.subscribe(() => this.getWeekSilent());
+    this.route.queryParams.subscribe(() => this.getWeekSilent());
   }
 
   getWeek(): void {

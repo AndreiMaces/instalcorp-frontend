@@ -6,4 +6,6 @@ export interface IProjectType {
   color?: string;
   description?: string;
   projects?: IProject[];
+  createdAt?: Date;
+  editedAt?: Date;
 }

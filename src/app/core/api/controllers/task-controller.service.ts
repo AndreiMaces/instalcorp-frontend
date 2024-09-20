@@ -11,6 +11,10 @@ export class TaskControllerService {
 
   constructor(private apiService: ApiService) {}
 
+  getTask(taskId: number): Observable<ITask> {
+    return this.apiService.get<ITask>(`${this._baseURL}/${taskId}`);
+  }
+
   createTask(newTask: Partial<ITask>): Observable<ITask> {
     return this.apiService.post<ITask>(`${this._baseURL}`, newTask);
   }

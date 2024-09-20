@@ -18,7 +18,7 @@
       (resizeEnd)="onResizeEnd($event)"
       matTooltip="{{ task.project.title }} / {{ task.title }}"
       *ngIf="task.projectId"
-      (dblclick)="openEditEmployeeProjectDialog()"
+      (dblclick)="openTaskDialog()"
     >
       <div class="flex gap-2 items-center">
         <div class="flex">

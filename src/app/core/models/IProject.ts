@@ -19,4 +19,6 @@ export interface IProject {
   tasks?: ITask[];
   media: string[];
   isDeleted: boolean;
+  createdAt?: Date;
+  editedAt?: Date;
 }

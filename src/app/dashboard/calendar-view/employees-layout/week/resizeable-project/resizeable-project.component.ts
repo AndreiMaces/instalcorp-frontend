@@ -14,6 +14,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { EditEmployeeProjectDialogComponent } from '../../../../../shared/components/edit-employee-project-dialog/edit-employee-project-dialog.component';
 import { ConfirmationDialogComponent } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ColorHelperService } from '../../../../../core/helpers/color-helper.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-resizeable-project',
@@ -57,6 +58,7 @@ export class ResizeableProjectComponent implements OnInit {
     private matSnackBar: MatSnackBar,
     private dialog: MatDialog,
     private datePipe: DatePipe,
+    private router: Router,
   ) {}
 
   ngOnInit(): void {
@@ -196,6 +198,14 @@ export class ResizeableProjectComponent implements OnInit {
   restoreDateInterval(): void {
     this.task.startDate = new Date(this.cachedDateRange.startDate);
     this.task.endDate = new Date(this.cachedDateRange.endDate);
+  }
+
+  openTaskDialog(): void {
+    this.router.navigate([], {
+      queryParams: {
+        taskId: this.task.id,
+      },
+    });
   }
 
   openEditEmployeeProjectDialog(): void {

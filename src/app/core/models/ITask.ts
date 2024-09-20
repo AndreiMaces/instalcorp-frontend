@@ -13,4 +13,6 @@ export interface ITask {
   title: string;
   color: string;
   style?: any;
+  createdAt?: Date;
+  editedAt?: Date;
 }

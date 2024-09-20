@@ -6,4 +6,6 @@ export interface IEmployee {
   lastName: string;
   phone?: string;
   tasks?: ITask[];
+  createdAt?: Date;
+  editedAt?: Date;
 }
