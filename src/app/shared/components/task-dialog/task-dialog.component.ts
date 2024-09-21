@@ -100,6 +100,26 @@ export class TaskDialogComponent {
     });
   }
 
+  updateTaskDescription(evt: Event): void {
+    const description: string = (evt.target as HTMLInputElement).value;
+    const oldDescription: string = this.task.description;
+    this.task.description = description;
+    this.taskController
+      .editTask(this.task.id, {
+        employeeId: this.task.employee.id,
+        projectId: this.task.project.id,
+        description: description,
+      })
+      .subscribe({
+        next: () => {},
+        error: () => {
+          this.task.description = oldDescription;
+          this.matSnackBar.open('Eroare la actualizarea descrierii.', 'Close', { duration: 3000 });
+          this.isLoading = false;
+        },
+      });
+  }
+
   getEmployees(): void {
     this.isLoading = true;
     this.employeesController.getEmployees().subscribe({
@@ -120,7 +140,6 @@ export class TaskDialogComponent {
     this.projectController.getDropdown().subscribe({
       next: (projectTypes) => {
         this.projectTypes = projectTypes;
-        console.log(this.task.project);
         this.task.project = projectTypes
           ?.find((projectType) => projectType?.id === this?.task?.project?.type?.id)
           ?.projects?.find((project) => project.id === this.task?.project?.id);

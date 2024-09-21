@@ -5,6 +5,7 @@ export interface ITask {
   id?: number;
   employeeId: number;
   projectId: number;
+  description: string;
   project?: IProject;
   employee?: IEmployee;
   startDate: Date;

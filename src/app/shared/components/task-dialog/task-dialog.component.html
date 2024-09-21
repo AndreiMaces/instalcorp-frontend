@@ -13,10 +13,16 @@
     </div>
     <div class="flex flex-col gap-3" *ngIf="!isLoading">
       <div class="relative w-full">
-        <input type="text" class="text-3xl !m-0 w-full" [value]="task?.title" (blur)="updateTaskTitle($event)" />
+        <input
+          placeholder="Titlu sarcină"
+          type="text"
+          class="text-3xl !m-0 w-full"
+          [value]="task?.title"
+          (blur)="updateTaskTitle($event)"
+        />
       </div>
       <div class="grid grid-cols-5 gap-3 flex-grow">
-        <div class="col-span-3 border-r flex flex-col gap-3 h-full">
+        <div class="col-span-3 border-r flex flex-col gap-3 h-full pr-3">
           <div class="grid grid-cols-3 text-md">
             <div class="border-r pr-3 flex items-center">
               <mat-select [(ngModel)]="task.employee" class="line-clamp-1" (valueChange)="updateTaskEmployee($event)">
@@ -68,6 +74,7 @@
               <mat-date-range-picker #picker (closed)="updateTaskRange(dateRangeStart.value, dateRangeEnd.value)"></mat-date-range-picker>
             </div>
           </div>
+          <textarea [(ngModel)]="task.description" (change)="updateTaskDescription($event)" placeholder="Descriere"></textarea>
         </div>
         <div class="flex flex-col gap-2 h-full">
           <div class="flex flex-col justify-center gap-2">
