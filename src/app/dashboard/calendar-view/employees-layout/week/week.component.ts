@@ -56,7 +56,8 @@ export interface IDay {
 export class WeekComponent {
   employees: IEmployee[];
   isLoading = false;
-  @Input() referenceDate: Date = new Date();
+  @Input() referenceDateObservable: Observable<Date>;
+  referenceDate: Date = new Date();
   @Input() reloadObservable: Observable<void>;
   @Input() isGlobalDragDisabled = {
     value: false,
@@ -70,9 +71,16 @@ export class WeekComponent {
   ) {}
 
   ngOnInit(): void {
-    this.getWeek();
+    this.subscribeToReferenceDayObservable();
     this.reloadObservable.subscribe(() => this.getWeekSilent());
     this.route.queryParams.subscribe(() => this.getWeekSilent());
+  }
+
+  subscribeToReferenceDayObservable(): void {
+    this.referenceDateObservable.subscribe((date) => {
+      this.referenceDate = date;
+      this.getWeek();
+    });
   }
 
   getWeek(): void {

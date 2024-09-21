@@ -239,6 +239,7 @@ export class TaskDialogComponent {
       .editTask(this.task.id, {
         projectId: newProject.id,
         employeeId: this.task.employeeId,
+        color: newProject.color,
       })
       .subscribe({
         next: () => {},
@@ -253,9 +254,10 @@ export class TaskDialogComponent {
     const color = (evt.target as HTMLInputElement).value;
     const oldColor = this.task.project.color;
     this.task.project.color = color;
-    this.projectController.editProjectColor(this.task.projectId, color).subscribe({
+    this.projectController.editProjectColor(this.task.project.id, color).subscribe({
       next: () => {},
       error: () => {
+        this.task.project.color = oldColor;
         this.matSnackBar.open('Culoarea nu a putut fi actualizată.', 'Close', { duration: 3000 });
       },
     });

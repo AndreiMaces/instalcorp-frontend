@@ -26,7 +26,7 @@
               </mat-select>
             </div>
             <div class="border-r flex items-center justify-center px-3 gap-2">
-              <div class="relative flex items-center justify-center" *ngIf="task?.project?.color">
+              <div class="relative flex items-center justify-center gap-2" *ngIf="task?.project?.color">
                 <button
                   class="w-[15px] h-[15px] rounded-full"
                   [style.background-color]="task?.project?.color"
@@ -40,16 +40,13 @@
                   (change)="updateProjectColor($event)"
                 />
               </div>
-              <mat-select [(ngModel)]="task.project" (valueChange)="updateTaskProject($event)">
+              <mat-select [(ngModel)]="task.project" (valueChange)="updateTaskProject($event)" class="w-[100px] overflow-hidden">
                 <mat-optgroup [label]="projectType.title" *ngFor="let projectType of projectTypes">
                   <mat-option [value]="project" *ngFor="let project of projectType.projects">{{ project.title }} </mat-option>
                 </mat-optgroup>
               </mat-select>
             </div>
             <div class="flex items-center px-3">
-              <!--
-                            <span>{{ task?.startDate | date: "dd.MM.yyyy" }} - {{ task?.endDate | date: "dd.MM.yyyy" }}</span>
-              -->
               <mat-date-range-input [rangePicker]="picker">
                 <input
                   matStartDate

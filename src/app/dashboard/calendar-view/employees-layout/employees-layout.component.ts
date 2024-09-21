@@ -6,11 +6,30 @@ import { CreateEmployeeProjectDialogComponent } from '../../../shared/components
 import { MatDialog } from '@angular/material/dialog';
 import { MatIcon } from '@angular/material/icon';
 import { ProjectsStackComponent } from './projects-stack/projects-stack.component';
+import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
+import { MatDatepicker, MatDatepickerInput, MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
+import { MatInput, MatInputModule } from '@angular/material/input';
+import { FormsModule } from '@angular/forms';
 
 @Component({
   selector: 'app-employees-layout',
   standalone: true,
-  imports: [WeekComponent, MatButton, MatIcon, ProjectsStackComponent],
+  imports: [
+    WeekComponent,
+    MatButton,
+    MatIcon,
+    ProjectsStackComponent,
+    MatFormField,
+    MatDatepickerToggle,
+    MatInput,
+    MatDatepickerInput,
+    MatDatepicker,
+    MatLabel,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatDatepickerModule,
+  ],
   templateUrl: './employees-layout.component.html',
   styleUrl: './employees-layout.component.scss',
   host: {
@@ -23,8 +42,32 @@ export class EmployeesLayoutComponent {
   isGlobalDragDisabled = {
     value: false,
   };
+  private $referenceDate = new Subject<Date>();
+  public _referenceDateObservable = this.$referenceDate.asObservable();
+  private referenceDateValue: Date;
 
   constructor(public dialog: MatDialog) {}
+
+  ngOnInit(): void {
+    this.subscribeToReferenceDayObservable();
+    this.referenceDate = this.today;
+  }
+
+  subscribeToReferenceDayObservable(): void {
+    this.$referenceDate.subscribe((date) => {
+      this.referenceDateValue = date;
+    });
+  }
+
+  changeReferenceDateByEvt(evt: Event): void {
+    const newDate = new Date((evt.target as HTMLInputElement).value);
+    this.changeReferenceDate(newDate);
+  }
+
+  changeReferenceDate(date: Date): void {
+    this.referenceDate = date;
+    this._reloadSubject.next();
+  }
 
   openCreateEmployeeProjectDialog(): void {
     this.dialog
@@ -45,6 +88,14 @@ export class EmployeesLayoutComponent {
           this._reloadSubject.next();
         }
       });
+  }
+
+  get referenceDate(): Date {
+    return this.referenceDateValue;
+  }
+
+  set referenceDate(date: Date) {
+    this.$referenceDate.next(date);
   }
 
   get today(): Date {
