@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { MatIconButton } from '@angular/material/button';
+import { Component, ViewChild } from '@angular/core';
+import { MatButton, MatIconButton } from '@angular/material/button';
 import { MatIcon } from '@angular/material/icon';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { TaskControllerService } from '../../../core/api/controllers/task-controller.service';
@@ -22,6 +22,9 @@ import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
 import { IProject } from '../../../core/models/IProject';
 import { ActivatedRoute } from '@angular/router';
+import { QuillEditorComponent, QuillViewComponent, QuillViewHTMLComponent } from 'ngx-quill';
+import { ColorHelperService } from '../../../core/helpers/color-helper.service';
+import { EmployeeComponent } from '../../../dashboard/employees/employee/employee.component';
 
 @Component({
   selector: 'app-task-dialog',
@@ -54,6 +57,11 @@ import { ActivatedRoute } from '@angular/router';
     MatMenu,
     MatMenuItem,
     MatOptgroup,
+    QuillEditorComponent,
+    MatButton,
+    QuillViewComponent,
+    QuillViewHTMLComponent,
+    EmployeeComponent,
   ],
   host: {
     class: 'flex-grow h-full',
@@ -67,6 +75,9 @@ export class TaskDialogComponent {
   task: ITask;
   employees: IEmployee[];
   projectTypes: Partial<IProjectType>[];
+  isDescriptionOpen = false;
+  cachedDescription: string;
+  @ViewChild('quillEditorComponent') editor: QuillEditorComponent;
 
   constructor(
     private dialogRef: MatDialogRef<TaskDialogComponent>,
@@ -100,20 +111,38 @@ export class TaskDialogComponent {
     });
   }
 
-  updateTaskDescription(evt: Event): void {
-    const description: string = (evt.target as HTMLInputElement).value;
-    const oldDescription: string = this.task.description;
-    this.task.description = description;
+  saveDescription(): void {
+    this.toggleDescription();
+    this.updateTaskDescription();
+  }
+
+  closeDescription(): void {
+    this.toggleDescription();
+    this.task.description = this.cachedDescription;
+  }
+
+  openDescription(): void {
+    this.cachedDescription = this.task.description;
+    this.toggleDescription();
+  }
+
+  toggleDescription(): void {
+    this.cachedDescription = this.task.description;
+    this.isDescriptionOpen = !this.isDescriptionOpen;
+    if (this.isDescriptionOpen)
+      setTimeout(() => {
+        this.editor.quillEditor.focus();
+      }, 0);
+  }
+
+  updateTaskDescription(): void {
     this.taskController
       .editTask(this.task.id, {
-        employeeId: this.task.employee.id,
-        projectId: this.task.project.id,
-        description: description,
+        description: this.task.description,
       })
       .subscribe({
         next: () => {},
         error: () => {
-          this.task.description = oldDescription;
           this.matSnackBar.open('Eroare la actualizarea descrierii.', 'Close', { duration: 3000 });
           this.isLoading = false;
         },
@@ -140,9 +169,10 @@ export class TaskDialogComponent {
     this.projectController.getDropdown().subscribe({
       next: (projectTypes) => {
         this.projectTypes = projectTypes;
-        this.task.project = projectTypes
+        const selectedProject = projectTypes
           ?.find((projectType) => projectType?.id === this?.task?.project?.type?.id)
           ?.projects?.find((project) => project.id === this.task?.project?.id);
+        this.updateTaskProject(selectedProject);
         this.isLoading = false;
       },
       error: () => {
@@ -261,7 +291,18 @@ export class TaskDialogComponent {
         color: newProject.color,
       })
       .subscribe({
-        next: () => {},
+        next: () => {
+          this.projectController.getProject(this.task.project.id).subscribe({
+            next: (project) => {
+              this.task.project.tasks = project.tasks;
+              this.task.project.media = project.media;
+            },
+            error: () => {
+              this.task.project = oldProject;
+              this.matSnackBar.open('Eroare la actualizarea proiectului.', 'Close', { duration: 3000 });
+            },
+          });
+        },
         error: () => {
           this.task.project = oldProject;
           this.matSnackBar.open('Eroare la actualizarea proiectului.', 'Close', { duration: 3000 });
@@ -330,4 +371,6 @@ export class TaskDialogComponent {
   }
 
   protected readonly ValidationHelperService = ValidationHelperService;
+  protected readonly setTimeout = setTimeout;
+  protected readonly ColorHelperService = ColorHelperService;
 }
