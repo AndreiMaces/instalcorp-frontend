@@ -1,4 +1,4 @@
-export enum EProjectStatus {
+export enum EStatus {
   NOT_STARTED,
   IN_PROGRESS,
   FINISHED,

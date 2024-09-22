@@ -1,5 +1,6 @@
 import { IProject } from './IProject';
 import { IEmployee } from './IEmployee';
+import { EStatus } from '../../dashboard/project-types/shared/enums/EStatus';
 
 export interface ITask {
   id?: number;
@@ -14,6 +15,7 @@ export interface ITask {
   title: string;
   color: string;
   style?: any;
+  status?: EStatus;
   createdAt?: Date;
   editedAt?: Date;
 }

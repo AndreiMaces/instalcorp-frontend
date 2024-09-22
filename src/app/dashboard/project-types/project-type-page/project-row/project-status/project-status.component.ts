@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { EProjectStatus } from '../../../shared/enums/EProjectStatus';
+import { EStatus } from '../../../shared/enums/EStatus';
 import { NgIf } from '@angular/common';
 
 @Component({
@@ -10,6 +10,6 @@ import { NgIf } from '@angular/common';
   styleUrl: './project-status.component.scss',
 })
 export class ProjectStatusComponent {
-  @Input() status: EProjectStatus;
-  protected readonly EProjectStatus = EProjectStatus;
+  @Input() status: EStatus;
+  protected readonly EProjectStatus = EStatus;
 }

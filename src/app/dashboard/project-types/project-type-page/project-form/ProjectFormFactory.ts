@@ -1,5 +1,5 @@
 import { FormArray, FormControl, FormGroup, Validators } from '@angular/forms';
-import { EProjectStatus } from '../../shared/enums/EProjectStatus';
+import { EStatus } from '../../shared/enums/EStatus';
 import { IEmployeeIssueForm } from './employee-project-form/EmployeeIssueFormFactory';
 
 export interface ProjectForm {
@@ -10,7 +10,7 @@ export interface ProjectForm {
   endHour: FormControl<Date>;
   startDate: FormControl<Date>;
   endDate: FormControl<Date>;
-  status: FormControl<EProjectStatus>;
+  status: FormControl<EStatus>;
   typeId: FormControl<number>;
   employeeIssues?: FormArray<FormGroup<IEmployeeIssueForm>>;
   importance: FormControl<number>;
@@ -27,7 +27,7 @@ export class ProjectFormFactory {
       endHour: new FormControl<Date>(new Date()),
       startDate: new FormControl<Date>(new Date()),
       endDate: new FormControl<Date>(new Date()),
-      status: new FormControl<EProjectStatus>(EProjectStatus.NOT_STARTED),
+      status: new FormControl<EStatus>(EStatus.NOT_STARTED),
       typeId: new FormControl<number>(null, [Validators.required]),
       importance: new FormControl<number>(0, [Validators.required]),
       media: new FormArray<FormControl<string>>([]),

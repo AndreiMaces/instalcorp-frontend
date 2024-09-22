@@ -25,6 +25,8 @@ import { ActivatedRoute } from '@angular/router';
 import { QuillEditorComponent, QuillViewComponent, QuillViewHTMLComponent } from 'ngx-quill';
 import { ColorHelperService } from '../../../core/helpers/color-helper.service';
 import { EmployeeComponent } from '../../../dashboard/employees/employee/employee.component';
+import { EStatus } from '../../../dashboard/project-types/shared/enums/EStatus';
+import { TaskStatusComponent } from './task-status/task-status.component';
 
 @Component({
   selector: 'app-task-dialog',
@@ -62,6 +64,7 @@ import { EmployeeComponent } from '../../../dashboard/employees/employee/employe
     QuillViewComponent,
     QuillViewHTMLComponent,
     EmployeeComponent,
+    TaskStatusComponent,
   ],
   host: {
     class: 'flex-grow h-full',
@@ -373,4 +376,5 @@ export class TaskDialogComponent {
   protected readonly ValidationHelperService = ValidationHelperService;
   protected readonly setTimeout = setTimeout;
   protected readonly ColorHelperService = ColorHelperService;
+  protected readonly EStatus = EStatus;
 }

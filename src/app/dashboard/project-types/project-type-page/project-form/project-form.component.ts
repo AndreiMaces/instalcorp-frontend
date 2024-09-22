@@ -9,7 +9,7 @@ import { ValidationHelperService } from '../../../../core/helpers/validation-hel
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { IProjectType } from '../../../../core/models/IProjectType';
 import { MatOption, MatSelect } from '@angular/material/select';
-import { EProjectStatus } from '../../shared/enums/EProjectStatus';
+import { EStatus } from '../../shared/enums/EStatus';
 import { MatDatepickerModule, MatDatepickerToggle, MatDateRangeInput, MatDateRangePicker } from '@angular/material/datepicker';
 import { provideNativeDateAdapter } from '@angular/material/core';
 import { MatIcon } from '@angular/material/icon';
@@ -127,5 +127,5 @@ export class ProjectFormComponent {
   }
 
   protected readonly ValidationHelperService = ValidationHelperService;
-  protected readonly EProjectStatus = EProjectStatus;
+  protected readonly EProjectStatus = EStatus;
 }
