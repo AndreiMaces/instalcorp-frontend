@@ -24,7 +24,7 @@ export class ProjectsStackComponent {
   employees: IEmployee[];
   projectTypes: Partial<IProjectType>[];
   isLoading = false;
-  isVisible = false;
+  isVisible = true;
   @Input() isGlobalDragDisabled = {
     value: false,
   };

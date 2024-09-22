@@ -10,6 +10,7 @@ import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/fo
 import { MatDatepicker, MatDatepickerInput, MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
+import { CalendarLayoutHelperService } from '../../../core/helpers/calendar-layout-helper.service';
 
 @Component({
   selector: 'app-employees-layout',
@@ -105,4 +106,6 @@ export class EmployeesLayoutComponent {
   getNextWeek(index: number): Date {
     return new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + index * 7);
   }
+
+  protected readonly CalendarLayoutHelperService = CalendarLayoutHelperService;
 }

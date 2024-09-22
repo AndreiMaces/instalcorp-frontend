@@ -21,7 +21,10 @@
     </div>
   </div>
   <div class="flex-grow flex flex-col gap-3 pb-3 relative">
-    <app-projects-stack [isGlobalDragDisabled]="isGlobalDragDisabled" class="absolute right-[calc(200px+1.5rem)]"></app-projects-stack>
+    <div class="absolute right-0">
+      <app-projects-stack [isGlobalDragDisabled]="isGlobalDragDisabled"></app-projects-stack>
+    </div>
+
     <app-week
       [isGlobalDragDisabled]="isGlobalDragDisabled"
       [reloadObservable]="$reloadObservable"
