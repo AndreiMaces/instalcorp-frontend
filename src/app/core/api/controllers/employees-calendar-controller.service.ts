@@ -21,6 +21,9 @@ export class EmployeesCalendarController {
   }
 
   reorderTasks(employeeId: number, tasks: Partial<ITask>[]): Observable<ITask[]> {
-    return this.apiService.put<ITask[]>(`${this._baseURL}/employee/${employeeId}/tasks/reorder`, tasks);
+    const taskIds = tasks.map((task) => {
+      return { id: task.id };
+    });
+    return this.apiService.put<ITask[]>(`${this._baseURL}/employee/${employeeId}/tasks/reorder`, taskIds);
   }
 }

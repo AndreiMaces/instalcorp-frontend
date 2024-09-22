@@ -11,6 +11,7 @@ import { ActivatedRoute, Router, RouterLink, RouterOutlet } from '@angular/route
 import { MatFormField } from '@angular/material/form-field';
 import { MatDialog } from '@angular/material/dialog';
 import { TaskDialogComponent } from '../../shared/components/task-dialog/task-dialog.component';
+import { CalendarLayoutHelperService } from '../../core/helpers/calendar-layout-helper.service';
 
 @Component({
   selector: 'app-calendar-view',
@@ -74,4 +75,6 @@ export class CalendarViewComponent {
       }
     });
   }
+
+  protected readonly CalendarLayoutHelperService = CalendarLayoutHelperService;
 }

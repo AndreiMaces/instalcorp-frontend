@@ -11,6 +11,7 @@ import { MatIcon } from '@angular/material/icon';
 import { IEmployee } from '../../../../core/models/IEmployee';
 import { EmployeeControllerService } from '../../../../core/api/controllers/employee-controller.service';
 import { ColorHelperService } from '../../../../core/helpers/color-helper.service';
+import { CalendarLayoutHelperService } from '../../../../core/helpers/calendar-layout-helper.service';
 
 @Component({
   selector: 'app-projects-stack',
@@ -72,4 +73,5 @@ export class ProjectsStackComponent {
   }
 
   protected readonly ColorHelperService = ColorHelperService;
+  protected readonly CalendarLayoutHelperService = CalendarLayoutHelperService;
 }

@@ -25,6 +25,7 @@ import { TaskControllerService } from '../../../../core/api/controllers/task-con
 import { Observable } from 'rxjs';
 import { IProject } from '../../../../core/models/IProject';
 import { ActivatedRoute } from '@angular/router';
+import { CalendarLayoutHelperService } from '../../../../core/helpers/calendar-layout-helper.service';
 
 export interface IDay {
   name: string;
@@ -120,6 +121,9 @@ export class WeekComponent {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
       this.isGlobalDragDisabled.value = true;
+      if (movedProject.startDate > movedProject.endDate) {
+        movedProject.endDate = movedProject.startDate;
+      }
       this.taskController
         .editTask(movedProject.id, {
           startDate: movedProject.startDate,
@@ -182,14 +186,17 @@ export class WeekComponent {
         } as IProject;
         this.isGlobalDragDisabled.value = true;
 
-        let left = event.dropPoint.x - (window.innerWidth - 1200) / 2 - 200;
+        let left =
+          event.dropPoint.x -
+          (window.innerWidth - CalendarLayoutHelperService.layoutWidth) / 2 -
+          CalendarLayoutHelperService.layoutComponentWidth;
         left = this.clipToSize(left);
         newEmployeeProject.style = {
           left: `${left}px`,
-          width: '200px',
+          width: CalendarLayoutHelperService.layoutComponentWidth + 'px',
         };
 
-        const daysFromMonday = Math.ceil(left / 200);
+        const daysFromMonday = Math.ceil(left / CalendarLayoutHelperService.layoutComponentWidth);
         const newStartDate = DateHelperService.getMonday(new Date(newEmployeeProject.startDate));
         newStartDate.setDate(newStartDate.getDate() + daysFromMonday);
         newEmployeeProject.startDate = newStartDate;
@@ -222,9 +229,11 @@ export class WeekComponent {
 
   clipToSize(value: number): number {
     if (value < 0) {
-      return Math.trunc((value - 160) / 200) * 200;
+      return (
+        Math.trunc((value - 160) / CalendarLayoutHelperService.layoutComponentWidth) * CalendarLayoutHelperService.layoutComponentWidth
+      );
     }
-    return Math.trunc(value / 200) * 200;
+    return Math.trunc(value / CalendarLayoutHelperService.layoutComponentWidth) * CalendarLayoutHelperService.layoutComponentWidth;
   }
 
   dragEnd(event: CdkDragEnd, task: ITask & { style: any }): void {
@@ -232,12 +241,12 @@ export class WeekComponent {
     if (task?.style?.left) {
       left = parseInt(task.style.left) + left;
     }
-    const daysFromMonday = Math.ceil(left / 200);
+    const daysFromMonday = Math.ceil(left / CalendarLayoutHelperService.layoutComponentWidth);
     const newStartDate = DateHelperService.getMonday(new Date(task.startDate));
     newStartDate.setDate(newStartDate.getDate() + daysFromMonday);
     task.startDate = newStartDate;
     const newEndDate = new Date(task.endDate);
-    newEndDate.setDate(newEndDate.getDate() + this.clipToSize(event.distance.x) / 200);
+    newEndDate.setDate(newEndDate.getDate() + this.clipToSize(event.distance.x) / CalendarLayoutHelperService.layoutComponentWidth);
     task.endDate = newEndDate;
     task.style = null;
   }

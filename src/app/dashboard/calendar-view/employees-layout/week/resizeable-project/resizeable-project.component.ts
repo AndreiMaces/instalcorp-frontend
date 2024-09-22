@@ -15,6 +15,7 @@ import { EditEmployeeProjectDialogComponent } from '../../../../../shared/compon
 import { ConfirmationDialogComponent } from '../../../../../shared/components/confirmation-dialog/confirmation-dialog.component';
 import { ColorHelperService } from '../../../../../core/helpers/color-helper.service';
 import { Router } from '@angular/router';
+import { CalendarLayoutHelperService } from '../../../../../core/helpers/calendar-layout-helper.service';
 
 @Component({
   selector: 'app-resizeable-project',
@@ -47,7 +48,7 @@ export class ResizeableProjectComponent implements OnInit {
     value: false,
   };
   isDragDisabled = false;
-  maxSpace = 998;
+  maxSpace = CalendarLayoutHelperService.layoutComponentWidth * (CalendarLayoutHelperService.layoutComponents - 1) - 2;
   cachedDateRange: { startDate: Date; endDate: Date } = { startDate: null, endDate: null };
 
   _delete = output<ITask>();
@@ -87,7 +88,7 @@ export class ResizeableProjectComponent implements OnInit {
       startDate = monday;
     }
     const daysDifference = DateHelperService.dateDiffInDays(startDate, monday);
-    let left = daysDifference * 200;
+    let left = daysDifference * CalendarLayoutHelperService.layoutComponentWidth;
     if (left + this.initWidth() > this.maxSpace) {
       left = this.maxSpace - this.initWidth();
     }
@@ -107,15 +108,22 @@ export class ResizeableProjectComponent implements OnInit {
     }
     let daysDifference = DateHelperService.dateDiffInDays(monday, startDate) + DateHelperService.dateDiffInDays(endDate, friday);
     daysDifference = 4 - daysDifference;
-    let width = (daysDifference + 1) * 200;
+    let width = (daysDifference + 1) * CalendarLayoutHelperService.layoutComponentWidth;
     if (width > this.maxSpace) width = this.maxSpace;
     return width;
   }
 
   computeEvent(event: ResizeEvent): ResizeEvent {
-    event.rectangle.width = event.rectangle.width < 200 ? 200 : Math.trunc(event.rectangle.width / 200 + 1) * 200;
+    event.rectangle.width =
+      event.rectangle.width < CalendarLayoutHelperService.layoutComponentWidth
+        ? CalendarLayoutHelperService.layoutComponentWidth
+        : Math.trunc(event.rectangle.width / CalendarLayoutHelperService.layoutComponentWidth + 1) *
+          CalendarLayoutHelperService.layoutComponentWidth;
     if (event.rectangle.width > this.maxSpace) event.rectangle.width = this.maxSpace;
-    event.rectangle.left = event.rectangle.left - (window.innerWidth - this.div.nativeElement.clientWidth) / 2 - 91;
+    event.rectangle.left =
+      event.rectangle.left -
+      (window.innerWidth - this.div.nativeElement.clientWidth) / 2 -
+      (CalendarLayoutHelperService.layoutComponentWidth / 2 - 9);
 
     if ((event.edges.left as number) < 0) {
       if (!this.canStretchLeft) {
@@ -127,7 +135,11 @@ export class ResizeableProjectComponent implements OnInit {
       }
     }
 
-    event.rectangle.left = event.rectangle.left < 200 ? 0 : Math.trunc(event.rectangle.left / 200) * 200;
+    event.rectangle.left =
+      event.rectangle.left < CalendarLayoutHelperService.layoutComponentWidth
+        ? 0
+        : Math.trunc(event.rectangle.left / CalendarLayoutHelperService.layoutComponentWidth) *
+          CalendarLayoutHelperService.layoutComponentWidth;
 
     if (event.rectangle.left + event.rectangle.width > this.maxSpace) {
       event.rectangle.width = this.maxSpace - event.rectangle.left;
@@ -136,14 +148,22 @@ export class ResizeableProjectComponent implements OnInit {
   }
 
   computeStartDate(event: ResizeEvent): Date {
-    const leftDays = Math.trunc(Math.round((event.rectangle.left / 200) * 200) / 200);
+    const leftDays = Math.trunc(
+      Math.round(
+        (event.rectangle.left / CalendarLayoutHelperService.layoutComponentWidth) * CalendarLayoutHelperService.layoutComponentWidth,
+      ) / CalendarLayoutHelperService.layoutComponentWidth,
+    );
     const date = DateHelperService.getMonday(this.referenceDate);
     date.setDate(date.getDate() + leftDays);
     return date;
   }
 
   computeEndDate(event: ResizeEvent): Date {
-    const widthDays = Math.trunc((Math.round(event.rectangle.width / 200) * 200) / 200);
+    const widthDays = Math.trunc(
+      (Math.round(event.rectangle.width / CalendarLayoutHelperService.layoutComponentWidth) *
+        CalendarLayoutHelperService.layoutComponentWidth) /
+        CalendarLayoutHelperService.layoutComponentWidth,
+    );
     const date = this.computeStartDate(event);
     date.setDate(date.getDate() + widthDays - 1);
     return date;
