@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { WeekComponent } from './week/week.component';
 import { Subject } from 'rxjs';
 import { MatButton } from '@angular/material/button';
@@ -11,6 +11,7 @@ import { MatDatepicker, MatDatepickerInput, MatDatepickerModule, MatDatepickerTo
 import { MatInput, MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { CalendarLayoutHelperService } from '../../../core/helpers/calendar-layout-helper.service';
+import { NgIf } from '@angular/common';
 
 @Component({
   selector: 'app-employees-layout',
@@ -30,6 +31,7 @@ import { CalendarLayoutHelperService } from '../../../core/helpers/calendar-layo
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
+    NgIf,
   ],
   templateUrl: './employees-layout.component.html',
   styleUrl: './employees-layout.component.scss',
@@ -37,7 +39,7 @@ import { CalendarLayoutHelperService } from '../../../core/helpers/calendar-layo
     class: 'flex-grow',
   },
 })
-export class EmployeesLayoutComponent {
+export class EmployeesLayoutComponent implements OnInit {
   private _reloadSubject = new Subject<void>();
   public $reloadObservable = this._reloadSubject.asObservable();
   isGlobalDragDisabled = {
@@ -45,6 +47,10 @@ export class EmployeesLayoutComponent {
   };
   private $referenceDate = new Subject<Date>();
   public _referenceDateObservable = this.$referenceDate.asObservable();
+
+  private $referenceDateNextWeek = new Subject<Date>();
+  public _referenceDateNextWeekObservable = this.$referenceDate.asObservable();
+
   private referenceDateValue: Date;
 
   constructor(public dialog: MatDialog) {}
@@ -56,6 +62,9 @@ export class EmployeesLayoutComponent {
 
   subscribeToReferenceDayObservable(): void {
     this.$referenceDate.subscribe((date) => {
+      this.referenceDateValue = date;
+    });
+    this._referenceDateNextWeekObservable.subscribe((date) => {
       this.referenceDateValue = date;
     });
   }
@@ -95,16 +104,21 @@ export class EmployeesLayoutComponent {
     return this.referenceDateValue;
   }
 
+  get referenceDateNextWeek(): Date {
+    return this.getNextWeek(this.referenceDate);
+  }
+
   set referenceDate(date: Date) {
     this.$referenceDate.next(date);
+    this.$referenceDateNextWeek.next(date);
   }
 
   get today(): Date {
     return new Date();
   }
 
-  getNextWeek(index: number): Date {
-    return new Date(this.today.getFullYear(), this.today.getMonth(), this.today.getDate() + index * 7);
+  getNextWeek(date: Date): Date {
+    return new Date(date.getFullYear(), date.getMonth(), date.getDate() + 7);
   }
 
   protected readonly CalendarLayoutHelperService = CalendarLayoutHelperService;

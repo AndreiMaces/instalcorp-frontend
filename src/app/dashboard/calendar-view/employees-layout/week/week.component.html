@@ -22,7 +22,7 @@
         <div class="col-span-5 relative pt-8">
           <div
             cdkDropList
-            [id]="'list' + i"
+            [id]="'list' + i + listIndex"
             [cdkDropListData]="employee.tasks"
             [cdkDropListConnectedTo]="getLinkedLists()"
             (cdkDropListDropped)="drop($event)"

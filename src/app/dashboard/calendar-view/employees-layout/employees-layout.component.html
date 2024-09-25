@@ -24,12 +24,21 @@
     <div class="absolute right-0">
       <app-projects-stack [isGlobalDragDisabled]="isGlobalDragDisabled"></app-projects-stack>
     </div>
-
     <app-week
       [isGlobalDragDisabled]="isGlobalDragDisabled"
       [reloadObservable]="$reloadObservable"
       [referenceDateObservable]="_referenceDateObservable"
-      class="max-h-screen"
+      [referenceDate]="referenceDate"
+      [listIndex]="1"
+      [listIndexes]="[1, 2]"
+    ></app-week>
+    <app-week
+      [isGlobalDragDisabled]="isGlobalDragDisabled"
+      [reloadObservable]="$reloadObservable"
+      [referenceDateObservable]="_referenceDateNextWeekObservable"
+      [referenceDate]="referenceDateNextWeek"
+      [listIndex]="2"
+      [listIndexes]="[1, 2]"
     ></app-week>
   </div>
 </div>

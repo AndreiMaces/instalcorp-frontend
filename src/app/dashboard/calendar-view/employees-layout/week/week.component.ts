@@ -57,8 +57,10 @@ export interface IDay {
 export class WeekComponent {
   employees: IEmployee[];
   isLoading = false;
+  @Input() listIndex: number;
+  @Input() listIndexes: number[];
   @Input() referenceDateObservable: Observable<Date>;
-  referenceDate: Date = new Date();
+  @Input() referenceDate: Date;
   @Input() reloadObservable: Observable<void>;
   @Input() isGlobalDragDisabled = {
     value: false,
@@ -301,7 +303,11 @@ export class WeekComponent {
   }
 
   getLinkedLists(): string[] {
-    return this?.employees?.map((day, i) => 'list' + i);
+    let lists: string[] = [];
+    this.listIndexes.forEach((index) => {
+      lists = [...lists, ...this?.employees?.map((day, i) => 'list' + i + index)];
+    });
+    return lists;
   }
 
   getWeekRange(date: Date): string {
