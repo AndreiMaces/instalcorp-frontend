@@ -166,8 +166,8 @@ export class WeekComponent {
           });
       } else {
         const containerClone = JSON.parse(JSON.stringify(event.previousContainer.data));
-
         copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+
         event.previousContainer.data = containerClone;
         let newEmployeeProject = movedProject as ITask;
         newEmployeeProject.projectId = movedProject.id;
@@ -190,6 +190,8 @@ export class WeekComponent {
           event.dropPoint.x -
           (window.innerWidth - CalendarLayoutHelperService.layoutWidth) / 2 -
           CalendarLayoutHelperService.layoutComponentWidth;
+        left = Math.max(left, 0);
+        left = Math.min(left, CalendarLayoutHelperService.layoutWidth - CalendarLayoutHelperService.layoutComponentWidth * 2);
         left = this.clipToSize(left);
         newEmployeeProject.style = {
           left: `${left}px`,
@@ -236,19 +238,36 @@ export class WeekComponent {
     return Math.trunc(value / CalendarLayoutHelperService.layoutComponentWidth) * CalendarLayoutHelperService.layoutComponentWidth;
   }
 
+  calculateLeft(event: CdkDragEnd): number {
+    let left =
+      event.dropPoint.x -
+      (window.innerWidth - CalendarLayoutHelperService.layoutWidth) / 2 -
+      CalendarLayoutHelperService.layoutComponentWidth;
+    left = Math.max(left, 0);
+    left = Math.min(left, CalendarLayoutHelperService.layoutWidth - CalendarLayoutHelperService.layoutComponentWidth * 2);
+    left = this.clipToSize(left);
+    return left;
+  }
+
   dragEnd(event: CdkDragEnd, task: ITask & { style: any }): void {
-    let left: any = this.clipToSize(event.distance.x);
-    if (task?.style?.left) {
-      left = parseInt(task.style.left) + left;
-    }
+    let left = this.calculateLeft(event);
     const daysFromMonday = Math.ceil(left / CalendarLayoutHelperService.layoutComponentWidth);
-    const newStartDate = DateHelperService.getMonday(new Date(task.startDate));
+    let newStartDate = new Date(task.startDate);
+    if (newStartDate < DateHelperService.getMonday(this.referenceDate)) {
+      newStartDate = DateHelperService.getMonday(this.referenceDate);
+    } else {
+      newStartDate = DateHelperService.getMonday(newStartDate);
+    }
     newStartDate.setDate(newStartDate.getDate() + daysFromMonday);
+    const daysDifference = Math.floor((newStartDate.getTime() - new Date(task.startDate).getTime()) / (1000 * 60 * 60 * 24));
     task.startDate = newStartDate;
-    const newEndDate = new Date(task.endDate);
-    newEndDate.setDate(newEndDate.getDate() + this.clipToSize(event.distance.x) / CalendarLayoutHelperService.layoutComponentWidth);
+    let newEndDate = new Date(task.endDate);
+    newEndDate.setDate(newEndDate.getDate() + daysDifference);
     task.endDate = newEndDate;
-    task.style = null;
+    task.style = {
+      ...task.style,
+      left: `${left}px`,
+    };
   }
 
   reorder(event: CdkDragDrop<ITask[]>): void {
