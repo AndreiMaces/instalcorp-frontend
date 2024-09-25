@@ -1,0 +1,65 @@
+<div class="flex flex-col gap-2 w-full py-8">
+  <div class="flex gap-2 justify-center items-center w-full">
+    <input
+      placeholder="Titlu sarcină"
+      type="text"
+      class="text-3xl w-full !mb-0 mt-5"
+      [value]="task?.project?.title"
+      (blur)="updateProjectTitle($event)"
+    />
+    <app-task-dialog-project-status [task]="task"></app-task-dialog-project-status>
+  </div>
+
+  <div class="flex flex-col gap-3">
+    <div class="flex flex-col gap-3 w-full">
+      <div class="flex justify-between items-center w-full gap-5 border-b py-3">
+        <p class="text-2xl !m-0">Fișiere</p>
+      </div>
+      <app-task-dialog-project-files [task]="task"></app-task-dialog-project-files>
+    </div>
+
+    <div class="flex flex-col gap-2">
+      <p class="text-2xl border-b py-3">Sarcini</p>
+      <div class="flex flex-wrap gap-5 flex-grow w-full">
+        <div class="-m-1.5 overflow-x-auto flex-grow w-full">
+          <div class="p-1.5 min-w-full inline-block align-middle">
+            <div class="overflow-hidden">
+              <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+                <thead>
+                  <tr>
+                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                      Titlu sarcină
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                      Nume angajat
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                      Interval de timp
+                    </th>
+                    <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500"></th>
+                  </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                  <tr *ngFor="let projectTask of task?.project?.tasks">
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                      {{ projectTask.title }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                      {{ projectTask.employee.firstName }}
+                      {{ projectTask.employee.lastName }}
+                    </td>
+                    <td class="px-6 py-4 whitespace-nowrap text-sm">
+                      {{ projectTask.startDate | date: "dd.MM.yyyy" }}
+                      -
+                      {{ projectTask.endDate | date: "dd.MM.yyyy" }}
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

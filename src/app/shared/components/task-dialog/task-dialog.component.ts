@@ -20,13 +20,13 @@ import { MatOptgroup, MatOption } from '@angular/material/core';
 import { MatSelect } from '@angular/material/select';
 import { MatMenu, MatMenuItem, MatMenuTrigger } from '@angular/material/menu';
 import { ConfirmationDialogComponent } from '../confirmation-dialog/confirmation-dialog.component';
-import { IProject } from '../../../core/models/IProject';
 import { ActivatedRoute } from '@angular/router';
 import { QuillEditorComponent, QuillViewComponent, QuillViewHTMLComponent } from 'ngx-quill';
 import { ColorHelperService } from '../../../core/helpers/color-helper.service';
 import { EmployeeComponent } from '../../../dashboard/employees/employee/employee.component';
 import { EStatus } from '../../../dashboard/project-types/shared/enums/EStatus';
 import { TaskStatusComponent } from './task-status/task-status.component';
+import { TaskDialogProjectComponent } from './task-dialog-project/task-dialog-project.component';
 
 @Component({
   selector: 'app-task-dialog',
@@ -65,6 +65,7 @@ import { TaskStatusComponent } from './task-status/task-status.component';
     QuillViewHTMLComponent,
     EmployeeComponent,
     TaskStatusComponent,
+    TaskDialogProjectComponent,
   ],
   host: {
     class: 'flex-grow h-full',
@@ -175,7 +176,7 @@ export class TaskDialogComponent {
         const selectedProject = projectTypes
           ?.find((projectType) => projectType?.id === this?.task?.project?.type?.id)
           ?.projects?.find((project) => project.id === this.task?.project?.id);
-        this.updateTaskProject(selectedProject);
+        if (selectedProject) this.updateTaskProject(selectedProject.id);
         this.isLoading = false;
       },
       error: () => {
@@ -284,21 +285,19 @@ export class TaskDialogComponent {
       });
   }
 
-  updateTaskProject(newProject: IProject) {
+  updateTaskProject(newProjectId: number) {
     const oldProject = this.task.project;
-    this.task.project = newProject;
+    this.task.project.id = newProjectId;
     this.taskController
       .editTask(this.task.id, {
-        projectId: newProject.id,
+        projectId: newProjectId,
         employeeId: this.task.employeeId,
-        color: newProject.color,
       })
       .subscribe({
         next: () => {
           this.projectController.getProject(this.task.project.id).subscribe({
             next: (project) => {
-              this.task.project.tasks = project.tasks;
-              this.task.project.media = project.media;
+              this.task.project = project;
             },
             error: () => {
               this.task.project = oldProject;

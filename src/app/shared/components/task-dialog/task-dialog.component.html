@@ -46,9 +46,9 @@
                   (change)="updateProjectColor($event)"
                 />
               </div>
-              <mat-select [(ngModel)]="task.project" (valueChange)="updateTaskProject($event)" class="w-[100px] overflow-hidden">
+              <mat-select [(ngModel)]="task.project.id" (valueChange)="updateTaskProject($event)" class="w-[100px] overflow-hidden">
                 <mat-optgroup [label]="projectType.title" *ngFor="let projectType of projectTypes">
-                  <mat-option [value]="project" *ngFor="let project of projectType.projects">{{ project.title }} </mat-option>
+                  <mat-option [value]="project.id" *ngFor="let project of projectType.projects">{{ project.title }} </mat-option>
                 </mat-optgroup>
               </mat-select>
             </div>
@@ -93,78 +93,7 @@
             <quill-view-html *ngIf="!isDescriptionOpen" [content]="task?.description ?? 'Descriere...'" theme="snow"></quill-view-html>
             <button mat-flat-button color="primary" (click)="openDescription()" *ngIf="!isDescriptionOpen">Editează descriere</button>
           </div>
-          <div class="flex flex-col gap-2 w-full py-8">
-            <p class="text-4xl !mb-0 mt-5">{{ task.project.title }}</p>
-            <div class="flex flex-col gap-3">
-              <div class="flex flex-col gap-3 w-full">
-                <div class="flex justify-between items-center w-full gap-5 border-b py-3">
-                  <p class="text-2xl !m-0">Fișiere</p>
-                </div>
-                <div *ngIf="task.project?.media?.length === 0" class="flex-grow flex items-center justify-center text-sm">
-                  <p>Nu există fișiere.</p>
-                </div>
-                <div *ngFor="let url of task.project.media" class="flex flex-col gap-5 text-sm">
-                  <a [href]="'//' + url" target="_blank" class="text-blue-600 hover:text-blue-900 underline">{{ url }}</a>
-                </div>
-              </div>
-
-              <div class="flex flex-col gap-2">
-                <p class="text-2xl border-b py-3">Sarcini</p>
-                <div class="flex flex-wrap gap-5 flex-grow w-full">
-                  <div class="-m-1.5 overflow-x-auto flex-grow w-full">
-                    <div class="p-1.5 min-w-full inline-block align-middle">
-                      <div class="overflow-hidden">
-                        <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
-                          <thead>
-                            <tr>
-                              <th
-                                scope="col"
-                                class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500"
-                              >
-                                Titlu sarcină
-                              </th>
-                              <th
-                                scope="col"
-                                class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500"
-                              >
-                                Nume angajat
-                              </th>
-                              <th
-                                scope="col"
-                                class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500"
-                              >
-                                Interval de timp
-                              </th>
-                              <th
-                                scope="col"
-                                class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500"
-                              ></th>
-                            </tr>
-                          </thead>
-                          <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
-                            <tr *ngFor="let projectTask of task?.project?.tasks">
-                              <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                {{ projectTask.title }}
-                              </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                {{ projectTask.employee.firstName }}
-                                {{ projectTask.employee.lastName }}
-                              </td>
-                              <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                {{ projectTask.startDate | date: "dd.MM.yyyy" }}
-                                -
-                                {{ projectTask.endDate | date: "dd.MM.yyyy" }}
-                              </td>
-                            </tr>
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <app-task-dialog-project [task]="task"></app-task-dialog-project>
         </div>
         <div class="flex flex-col gap-2 h-full">
           <div>

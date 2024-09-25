@@ -1,0 +1,24 @@
+<div class="w-full min-h-[200px] border rounded-xl flex flex-col">
+  <div class="p-5 border-b flex items-center">
+    <input type="file" #fileInput (change)="onFileSelected($event)" [style.display]="'none'" multiple />
+    <button type="button" mat-flat-button color="primary" (click)="fileInput.click()">
+      {{ task?.project?.media?.length > 0 ? "Încarcă alt fișier" : "Încarcă fișier" }}
+    </button>
+  </div>
+  <div class="flex-grow w-full flex justify-center items-center h-[200px]" *ngIf="isLoading">
+    <mat-spinner diameter="80"></mat-spinner>
+  </div>
+  <div *ngIf="!isLoading" class="flex-grow flex">
+    <div class="flex flex-col items-center justify-center flex-grow" *ngIf="task?.project?.media?.length === 0">
+      Nu există fișiere încărcate
+    </div>
+    <div class="flex flex-col items-center justify-center flex-grow" *ngIf="task?.project?.media?.length > 0">
+      <div *ngFor="let control of task?.project?.media; let i = index" class="flex w-full justify-between items-center px-5 py-2 border-b">
+        <a [href]="'//' + control" target="_blank" class="text-blue-600 hover:text-blue-900 underline">{{ control }}</a>
+        <button type="button" mat-icon-button color="warn" (click)="task?.project?.media.splice(i, 1); updateProjectFiles()">
+          <mat-icon>delete</mat-icon>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

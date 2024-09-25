@@ -1,0 +1,29 @@
+<div class="relative">
+  <div
+    class="w-[150px] text-gray-50 shadow rounded-3xl flex justify-between items-center text-xs pl-5"
+    [class]="{
+      'bg-gray-500': task?.project?.status === EStatus.NOT_STARTED,
+      'bg-yellow-500': task?.project?.status === EStatus.RECURRING,
+      'bg-green-500': task?.project?.status === EStatus.FINISHED,
+      'bg-red-500': task?.project?.status === EStatus.CLOSED,
+      'bg-blue-500': task?.project?.status === EStatus.IN_PROGRESS,
+    }"
+  >
+    <span *ngIf="task?.project?.status === EStatus.NOT_STARTED">Neînceput</span>
+    <span *ngIf="task?.project?.status === EStatus.RECURRING">În revenire</span>
+    <span *ngIf="task?.project?.status === EStatus.FINISHED">Terminat</span>
+    <span *ngIf="task?.project?.status === EStatus.CLOSED">Închis</span>
+    <span *ngIf="task?.project?.status === EStatus.IN_PROGRESS">În progres</span>
+
+    <button mat-icon-button (click)="selectElem.open()" class="scale-75">
+      <mat-icon class="text-white">keyboard_arrow_down</mat-icon>
+    </button>
+  </div>
+  <mat-select [(ngModel)]="task.project.status" #selectElem class="absolute bottom-0 -z-10" (valueChange)="openConfirmationDialog($event)">
+    <mat-option [value]="EStatus.NOT_STARTED">Neînceput</mat-option>
+    <mat-option [value]="EStatus.RECURRING">În revenire</mat-option>
+    <mat-option [value]="EStatus.FINISHED">Terminat</mat-option>
+    <mat-option [value]="EStatus.CLOSED">Închis</mat-option>
+    <mat-option [value]="EStatus.IN_PROGRESS">În progres</mat-option>
+  </mat-select>
+</div>

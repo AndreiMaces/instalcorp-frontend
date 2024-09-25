@@ -3,6 +3,7 @@ import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
 import { IProject } from '../../models/IProject';
 import { IProjectType } from '../../models/IProjectType';
+import { EStatus } from '../../../dashboard/project-types/shared/enums/EStatus';
 
 @Injectable({
   providedIn: 'root',
@@ -14,6 +15,10 @@ export class ProjectControllerService {
 
   getProject(projectId: number): Observable<IProject> {
     return this.apiService.get<IProject>(`${this._baseURL}/${projectId}`);
+  }
+
+  changeStatus(projectId: number, newStatus: EStatus): Observable<IProject> {
+    return this.apiService.put<IProject>(`${this._baseURL}/${projectId}/status`, { status: newStatus });
   }
 
   removeProject(projectId: number): Observable<IProject> {
