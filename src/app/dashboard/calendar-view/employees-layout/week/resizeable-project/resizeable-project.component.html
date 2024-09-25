@@ -2,7 +2,8 @@
   class="w-full h-[24px] relative"
   cdkDragBoundary=".example-boundary"
   cdkDrag
-  [cdkDragDisabled]="isDragDisabled || isGlobalDragDisabled.value"
+  [cdkDragDisabled]="isDragDisabled || isGlobalDragDisabled.value || isFinished"
+  [class.opacity-50]="isFinished"
   #container
   [cdkContextMenuTriggerFor]="context_menu"
 >
@@ -22,10 +23,10 @@
     >
       <div class="flex gap-2 items-center">
         <div class="flex">
-          <div class="h-[16px] flex justify-center items-center">
+          <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
             <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ left: true }"> drag_indicator </mat-icon>
           </div>
-          <div class="h-[16px] flex justify-center items-center">
+          <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
             <span
               class="material-symbols-outlined scale-75"
               [class.opacity-50]="isDragDisabled || isGlobalDragDisabled.value"
@@ -36,13 +37,20 @@
               drag_pan
             </span>
           </div>
+          <div
+            class="flex justify-center items-center rounded-l-md h-[20px] translate-x-[-1px] border"
+            [style.background-color]="ColorHelperService.invertedColor(task.color)"
+            *ngIf="isFinished"
+          >
+            <mat-icon class="scale-[68%] text-green-500">done</mat-icon>
+          </div>
         </div>
         <div>
           <span class="line-clamp-1"> {{ task.project.title }} / {{ task.title }} </span>
         </div>
       </div>
 
-      <div class="h-[16px] flex justify-center items-center">
+      <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
         <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ right: true }"> drag_indicator </mat-icon>
       </div>
     </div>

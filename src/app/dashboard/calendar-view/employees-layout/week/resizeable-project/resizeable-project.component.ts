@@ -16,6 +16,7 @@ import { ConfirmationDialogComponent } from '../../../../../shared/components/co
 import { ColorHelperService } from '../../../../../core/helpers/color-helper.service';
 import { Router } from '@angular/router';
 import { CalendarLayoutHelperService } from '../../../../../core/helpers/calendar-layout-helper.service';
+import { EStatus } from '../../../../project-types/shared/enums/EStatus';
 
 @Component({
   selector: 'app-resizeable-project',
@@ -262,6 +263,14 @@ export class ResizeableProjectComponent implements OnInit {
       .subscribe((result) => {
         if (result) this._delete.emit(this.task);
       });
+  }
+
+  getIsFinished(): boolean {
+    return this.isFinished;
+  }
+
+  get isFinished(): boolean {
+    return this.task.status === EStatus.FINISHED;
   }
 
   get canStretchLeft(): boolean {
