@@ -33,6 +33,7 @@ import { EmployeeComponent } from '../../../dashboard/employees/employee/employe
 import { EStatus } from '../../../dashboard/project-types/shared/enums/EStatus';
 import { TaskStatusComponent } from './task-status/task-status.component';
 import { TaskDialogProjectComponent } from './task-dialog-project/task-dialog-project.component';
+import { SplitAreaComponent, SplitComponent } from 'angular-split';
 
 @Component({
   selector: 'app-task-dialog',
@@ -73,6 +74,8 @@ import { TaskDialogProjectComponent } from './task-dialog-project/task-dialog-pr
     TaskStatusComponent,
     TaskDialogProjectComponent,
     MatExpansionModule,
+    SplitAreaComponent,
+    SplitComponent,
   ],
   host: {
     class: 'flex-grow h-full',
