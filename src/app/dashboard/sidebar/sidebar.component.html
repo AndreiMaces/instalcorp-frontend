@@ -12,25 +12,37 @@
   <a
     routerLink="calendar"
     (click)="toggleSidebar()"
-    class="p-3 flex items-center border-b hover:bg-[#eee] transition-all cursor-pointer"
+    class="p-3 flex items-center justify-between gap-2 border-b hover:bg-[#eee] transition-all cursor-pointer"
     matRipple
   >
-    Calendar
+    <span>Calendar</span>
+    <mat-icon class="text-md">date_range</mat-icon>
   </a>
   <a
     routerLink="project-types"
     (click)="toggleSidebar()"
-    class="p-3 flex items-center border-b hover:bg-[#eee] transition-all cursor-pointer"
+    class="p-3 flex items-center justify-between gap-2 border-b hover:bg-[#eee] transition-all cursor-pointer"
     matRipple
   >
-    Proiecte
+    <span>Proiecte</span>
+    <mat-icon class="text-md">bookmark</mat-icon>
   </a>
   <a
     routerLink="employees"
     (click)="toggleSidebar()"
-    class="p-3 flex items-center border-b hover:bg-[#eee] transition-all cursor-pointer"
+    class="p-3 flex items-center justify-between gap-2 border-b hover:bg-[#eee] transition-all cursor-pointer"
     matRipple
   >
-    Angajați
+    <span> Angajați </span>
+    <mat-icon class="text-md">groups</mat-icon>
+  </a>
+  <a
+    routerLink="free-days"
+    (click)="toggleSidebar()"
+    class="p-3 flex items-center justify-between gap-2 border-b hover:bg-[#eee] transition-all cursor-pointer"
+    matRipple
+  >
+    <span>Zile libere</span>
+    <mat-icon class="text-md">hotel</mat-icon>
   </a>
 </div>

@@ -1,0 +1,53 @@
+<div class="w-full h-full p-5">
+  <div class="flex flex-col gap-5 h-full max-w-[1200px] mx-auto">
+    <div>
+      <app-bradcrumbs-menu></app-bradcrumbs-menu>
+    </div>
+    <div class="flex justify-between items-center py-3 border-b">
+      <h2 class="text-xl font-bold !m-0">Zile libere (de la stat)</h2>
+      <div class="flex gap-5 items-center">
+        <button mat-flat-button (click)="openCreateFreeDayDialog()" color="primary">
+          Adaugă zi liberă
+          <mat-icon class="ml-2">add</mat-icon>
+        </button>
+      </div>
+    </div>
+    <div *ngIf="isLoading" class="flex justify-center items-center w-full h-full">
+      <mat-spinner diameter="80"></mat-spinner>
+    </div>
+    <div *ngIf="!isLoading" class="flex flex-wrap gap-5 flex-grow">
+      <div class="-m-1.5 overflow-x-auto flex-grow w-full" *ngIf="freeDays?.length > 0">
+        <div class="p-1.5 min-w-full inline-block align-middle">
+          <div class="overflow-hidden">
+            <table class="min-w-full divide-y divide-gray-200 dark:divide-neutral-700">
+              <thead>
+                <tr>
+                  <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">Titlu</th>
+                  <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                    Data de început
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-start text-xs font-medium text-gray-500 uppercase dark:text-neutral-500">
+                    Data de sfârșit
+                  </th>
+                  <th scope="col" class="px-6 py-3 text-end text-xs font-medium text-gray-500 uppercase dark:text-neutral-500"></th>
+                </tr>
+              </thead>
+              <tbody class="divide-y divide-gray-200 dark:divide-neutral-700">
+                <tr
+                  *ngFor="let freeDay of freeDays"
+                  app-free-day-row
+                  [freeDay]="freeDay"
+                  (_edit)="getFreeDays()"
+                  (_delete)="deleteFreeDay($event)"
+                ></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="freeDays?.length === 0" class="flex justify-center items-center w-full h-[400px]">
+        <p class="text-md text-gray-500 !m-0">Nu există zile libere înregistrate.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
+  {{ freeDay.title }}
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+  {{ freeDay.startDate | date: "dd/MM/yyyy" }}
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-sm">
+  {{ freeDay.endDate | date: "dd/MM/yyyy" }}
+</td>
+<td class="px-6 py-4 whitespace-nowrap text-end text-sm font-medium flex items-center justify-end gap-5">
+  <button mat-icon-button [matMenuTriggerFor]="appMenu">
+    <mat-icon>more_vert</mat-icon>
+  </button>
+  <mat-menu #appMenu="matMenu">
+    <button mat-menu-item (click)="openEditDialog()">
+      <mat-icon>edit</mat-icon>
+      <span>Editează</span>
+    </button>
+    <button mat-menu-item (click)="openDeleteDialog()">
+      <mat-icon>delete</mat-icon>
+      <span>Șterge</span>
+    </button>
+  </mat-menu>
+</td>

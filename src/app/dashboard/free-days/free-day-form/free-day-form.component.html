@@ -1,0 +1,28 @@
+<form [formGroup]="freeDayForm" (ngSubmit)="onSubmit()" class="flex flex-col gap-3">
+  <mat-form-field>
+    <mat-label>Titlu</mat-label>
+    <input type="text" matInput [formControl]="freeDayForm.controls.title" />
+    <mat-error *ngIf="ValidationHelperService.isInvalid(freeDayForm.controls.title)"
+      >{{ ValidationHelperService.getErrorMessage(freeDayForm.controls.title) }}
+    </mat-error>
+  </mat-form-field>
+  <mat-form-field class="flex-grow" appearance="outline">
+    <mat-label>Introduceți o perioadă de timp</mat-label>
+    <mat-date-range-input [rangePicker]="picker">
+      <input matStartDate placeholder="Data început" [formControl]="freeDayForm.controls.startDate" />
+      <input matEndDate placeholder="Data sfârșit" [formControl]="freeDayForm.controls.endDate" />
+    </mat-date-range-input>
+    <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-date-range-picker #picker></mat-date-range-picker>
+    <mat-error *ngIf="ValidationHelperService.isInvalid(freeDayForm.controls.startDate)">
+      {{ ValidationHelperService.getErrorMessage(freeDayForm.controls.startDate) }}
+    </mat-error>
+    <mat-error *ngIf="ValidationHelperService.isInvalid(freeDayForm.controls.endDate)">
+      {{ ValidationHelperService.getErrorMessage(freeDayForm.controls.endDate) }}
+    </mat-error>
+  </mat-form-field>
+  <div class="p-5 border-t flex justify-end gap-5">
+    <button mat-flat-button>Salvează</button>
+    <button mat-flat-button color="warn" (click)="close.emit()" type="button">Anulează</button>
+  </div>
+</form>

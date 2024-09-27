@@ -36,7 +36,7 @@ export class EditEmployeeDialogComponent {
       },
       error: () => {
         this.isLoading = false;
-        this.snackBarService.open('A apărut o eroare la editarea tipului de proiect.', 'Close', {
+        this.snackBarService.open('A apărut o eroare la editarea angajatului.', 'Close', {
           duration: 3000,
         });
       },

@@ -29,6 +29,13 @@ const routes: Routes = [
         },
         loadChildren: () => import('./employees/employees.module').then((m) => m.EmployeesModule),
       },
+      {
+        path: 'free-days',
+        data: {
+          breadcrumb: 'Zile libere',
+        },
+        loadChildren: () => import('./free-days/free-days.module').then((m) => m.FreeDaysModule),
+      },
     ],
   },
 ];
