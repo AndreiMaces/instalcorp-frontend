@@ -21,59 +21,8 @@
           (blur)="updateTaskTitle($event)"
         />
       </div>
-      <div class="grid grid-cols-5 gap-3 flex-grow pb-12">
-        <div class="col-span-3 border-r flex flex-col gap-3 h-full pr-3">
-          <div class="grid grid-cols-3 text-md">
-            <div class="border-r pr-3 flex items-center">
-              <mat-select [(ngModel)]="task.employee" class="line-clamp-1" (valueChange)="updateTaskEmployee($event)">
-                <mat-option *ngFor="let employee of employees" [value]="employee">
-                  {{ employee.firstName }} {{ employee.lastName }}
-                </mat-option>
-              </mat-select>
-            </div>
-            <div class="border-r flex items-center justify-center px-3 gap-2">
-              <div class="relative flex items-center justify-center gap-2" *ngIf="task?.project?.color">
-                <button
-                  class="w-[15px] h-[15px] rounded-full"
-                  [style.background-color]="task?.project?.color"
-                  (click)="projectColor.showPicker()"
-                ></button>
-                <input
-                  #projectColor
-                  type="color"
-                  class="absolute w-[15px] h-[15px] overflow-hidden rounded-full opacity-0"
-                  [(ngModel)]="task.project.color"
-                  (change)="updateProjectColor($event)"
-                />
-              </div>
-              <mat-select [(ngModel)]="task.project.id" (valueChange)="updateTaskProject($event)" class="w-[100px] overflow-hidden">
-                <mat-optgroup [label]="projectType.title" *ngFor="let projectType of projectTypes">
-                  <mat-option [value]="project.id" *ngFor="let project of projectType.projects">{{ project.title }} </mat-option>
-                </mat-optgroup>
-              </mat-select>
-            </div>
-            <div class="flex items-center px-3">
-              <mat-date-range-input [rangePicker]="picker">
-                <input
-                  matStartDate
-                  placeholder="Data început"
-                  [(ngModel)]="task.startDate"
-                  (focus)="picker.open()"
-                  (change)="updateTaskStartDate($event)"
-                  #dateRangeStart
-                />
-                <input
-                  matEndDate
-                  placeholder="Data sfârșit"
-                  [(ngModel)]="task.endDate"
-                  (focus)="picker.open()"
-                  #dateRangeEnd
-                  (change)="updateTaskEndDate($event)"
-                />
-              </mat-date-range-input>
-              <mat-date-range-picker #picker (closed)="updateTaskRange(dateRangeStart.value, dateRangeEnd.value)"></mat-date-range-picker>
-            </div>
-          </div>
+      <div class="flex gap-3 flex-grow pb-12">
+        <div class="flex-grow border-r flex flex-col gap-3 h-full pr-3">
           <div class="flex flex-col">
             <p class="text-xl">Descriere</p>
             <div class="flex flex-col gap-3" [style.display]="!isDescriptionOpen ? 'none' : 'flex'">
@@ -95,10 +44,76 @@
           </div>
           <app-task-dialog-project [task]="task"></app-task-dialog-project>
         </div>
-        <div class="flex flex-col gap-2 h-full">
+        <div class="flex flex-col gap-2 h-full w-full w-[400px]">
           <div>
             <app-task-status [task]="task"></app-task-status>
           </div>
+          <mat-expansion-panel class="rounded-md border" expanded>
+            <mat-expansion-panel-header>
+              <mat-panel-title>Detalii</mat-panel-title>
+            </mat-expansion-panel-header>
+            <div class="grid grid-cols-3 gap-3 content-center text-md w-full">
+              <div class="col-span-1 flex flex-col gap-3">
+                <p class="text-gray-500 !m-0">Angajat</p>
+                <p class="text-gray-500 !m-0">Project</p>
+                <p class="text-gray-500 !m-0">Interval</p>
+              </div>
+              <div class="col-span-2 flex flex-col gap-3">
+                <div class="flex items-center">
+                  <mat-select [(ngModel)]="task.employee" class="line-clamp-1" (valueChange)="updateTaskEmployee($event)">
+                    <mat-option *ngFor="let employee of employees" [value]="employee">
+                      {{ employee.firstName }} {{ employee.lastName }}
+                    </mat-option>
+                  </mat-select>
+                </div>
+                <div class="flex items-center justify-center gap-2">
+                  <div class="relative flex items-center justify-center gap-2" *ngIf="task?.project?.color">
+                    <button
+                      class="w-[15px] h-[15px] rounded-full"
+                      [style.background-color]="task?.project?.color"
+                      (click)="projectColor.showPicker()"
+                    ></button>
+                    <input
+                      #projectColor
+                      type="color"
+                      class="absolute w-[15px] h-[15px] overflow-hidden rounded-full opacity-0"
+                      [(ngModel)]="task.project.color"
+                      (change)="updateProjectColor($event)"
+                    />
+                  </div>
+                  <mat-select [(ngModel)]="task.project.id" (valueChange)="updateTaskProject($event)" class="w-[100px] overflow-hidden">
+                    <mat-optgroup [label]="projectType.title" *ngFor="let projectType of projectTypes">
+                      <mat-option [value]="project.id" *ngFor="let project of projectType.projects">{{ project.title }} </mat-option>
+                    </mat-optgroup>
+                  </mat-select>
+                </div>
+                <div class="flex items-center">
+                  <mat-date-range-input [rangePicker]="picker">
+                    <input
+                      matStartDate
+                      placeholder="Data început"
+                      [(ngModel)]="task.startDate"
+                      (focus)="picker.open()"
+                      (change)="updateTaskStartDate($event)"
+                      #dateRangeStart
+                    />
+                    <input
+                      matEndDate
+                      placeholder="Data sfârșit"
+                      [(ngModel)]="task.endDate"
+                      (focus)="picker.open()"
+                      #dateRangeEnd
+                      (change)="updateTaskEndDate($event)"
+                    />
+                  </mat-date-range-input>
+                  <mat-date-range-picker
+                    #picker
+                    (closed)="updateTaskRange(dateRangeStart.value, dateRangeEnd.value)"
+                  ></mat-date-range-picker>
+                </div>
+              </div>
+            </div>
+          </mat-expansion-panel>
           <div class="flex flex-col justify-center gap-2">
             <p class="text-gray-500 text-xs !m-0">Creat la data de {{ task?.createdAt | date: "dd.MM.yyyy hh:mm" }}</p>
             <p class="text-gray-500 text-xs">Editat la data de {{ task?.editedAt | date: "dd.MM.yyyy hh:mm" }}</p>

@@ -6,7 +6,13 @@ import { TaskControllerService } from '../../../core/api/controllers/task-contro
 import { ITask } from '../../../core/models/ITask';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { MatError, MatFormField, MatLabel, MatSuffix } from '@angular/material/form-field';
-import { MatAccordion, MatExpansionPanel, MatExpansionPanelHeader, MatExpansionPanelTitle } from '@angular/material/expansion';
+import {
+  MatAccordion,
+  MatExpansionModule,
+  MatExpansionPanel,
+  MatExpansionPanelHeader,
+  MatExpansionPanelTitle,
+} from '@angular/material/expansion';
 import { DatePipe, NgForOf, NgIf } from '@angular/common';
 import { MatProgressSpinner } from '@angular/material/progress-spinner';
 import { ValidationHelperService } from '../../../core/helpers/validation-helper.service';
@@ -66,6 +72,7 @@ import { TaskDialogProjectComponent } from './task-dialog-project/task-dialog-pr
     EmployeeComponent,
     TaskStatusComponent,
     TaskDialogProjectComponent,
+    MatExpansionModule,
   ],
   host: {
     class: 'flex-grow h-full',
