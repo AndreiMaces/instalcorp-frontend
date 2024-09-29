@@ -29,6 +29,7 @@ export class ProjectsStackComponent {
   @Input() isGlobalDragDisabled = {
     value: false,
   };
+  @Input() listIndexes: number[];
 
   constructor(
     private projectsController: ProjectControllerService,
@@ -72,7 +73,11 @@ export class ProjectsStackComponent {
   }
 
   getLinkedLists(): string[] {
-    return this?.employees?.map((day, i) => 'list' + i);
+    let lists: string[] = [];
+    this.listIndexes.forEach((index) => {
+      lists = [...lists, ...this?.employees?.map((day, i) => 'list' + i + index)];
+    });
+    return lists;
   }
 
   protected readonly ColorHelperService = ColorHelperService;

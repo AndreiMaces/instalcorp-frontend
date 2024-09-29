@@ -27,7 +27,25 @@ export class EditFreeDayComponent {
     @Inject(MAT_DIALOG_DATA) public data: { freeDay: IFreeDay },
   ) {}
 
-  editEmployee(newFreeDay: Partial<IFreeDay>): void {
+  openEditConfirmationDialog(newFreeDay: Partial<IFreeDay>): void {
+    this.dialog
+      .open(ConfirmationDialogComponent, {
+        maxWidth: '100%',
+        width: '800px',
+        disableClose: true,
+        data: {
+          title: 'Atenție!!!',
+          message:
+            '<span class="text-red-500 underline">Toate sarcinile care conțin intervalul înregistrat vor fi divizate în două, șterse sau modificate după caz.</span> <span>Doriți să continuați?</span>',
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this.editFreeDay(newFreeDay);
+      });
+  }
+
+  editFreeDay(newFreeDay: Partial<IFreeDay>): void {
     this.isLoading = true;
     this.freeDayController.updateFreeDay(this.data.freeDay.id, this.createPayload(newFreeDay)).subscribe({
       next: () => {

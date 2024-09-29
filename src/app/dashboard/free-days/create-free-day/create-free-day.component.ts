@@ -26,6 +26,24 @@ export class CreateFreeDayComponent {
     private snackBarService: MatSnackBar,
   ) {}
 
+  openCreateConfirmationDialog(newFreeDay: Partial<IFreeDay>): void {
+    this.dialog
+      .open(ConfirmationDialogComponent, {
+        maxWidth: '100%',
+        width: '800px',
+        disableClose: true,
+        data: {
+          title: 'Atenție!!!',
+          message:
+            '<span class="text-red-500 underline">Toate sarcinile care conțin intervalul înregistrat vor fi divizate în două, șterse sau modificate după caz.</span> <span>Doriți să continuați?</span>',
+        },
+      })
+      .afterClosed()
+      .subscribe((result) => {
+        if (result) this.createFreeDay(newFreeDay);
+      });
+  }
+
   openDenyConfirmationDialog(): void {
     this.dialog
       .open(ConfirmationDialogComponent, {

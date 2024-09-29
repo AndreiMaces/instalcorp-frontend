@@ -149,12 +149,9 @@ export class ResizeableProjectComponent implements OnInit {
   }
 
   computeStartDate(event: ResizeEvent): Date {
-    const leftDays = Math.trunc(
-      Math.round(
-        (event.rectangle.left / CalendarLayoutHelperService.layoutComponentWidth) * CalendarLayoutHelperService.layoutComponentWidth,
-      ) / CalendarLayoutHelperService.layoutComponentWidth,
-    );
+    const leftDays = Math.round(event.rectangle.left / CalendarLayoutHelperService.layoutComponentWidth);
     const date = DateHelperService.getMonday(this.referenceDate);
+    console.log(leftDays, date);
     date.setDate(date.getDate() + leftDays);
     return date;
   }
@@ -166,6 +163,8 @@ export class ResizeableProjectComponent implements OnInit {
         CalendarLayoutHelperService.layoutComponentWidth,
     );
     const date = this.computeStartDate(event);
+    console.log(widthDays, date);
+
     date.setDate(date.getDate() + widthDays - 1);
     return date;
   }

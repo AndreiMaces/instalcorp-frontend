@@ -61,7 +61,11 @@ export class FreeDayFormComponent {
   }
 
   createPayload(): Partial<IFreeDay> {
-    return this.freeDayForm.value;
+    return {
+      title: this.freeDayForm.controls.title.value,
+      startDate: this.freeDayForm.controls.startDate.value,
+      endDate: this.freeDayForm.controls.endDate.value,
+    };
   }
 
   protected readonly ValidationHelperService = ValidationHelperService;

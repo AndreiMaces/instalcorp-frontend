@@ -5,7 +5,7 @@
   <div class="p-5">
     <app-free-day-form
       (close)="openDenyConfirmationDialog()"
-      (_submit)="editEmployee($event)"
+      (_submit)="openEditConfirmationDialog($event)"
       [freeDay]="data.freeDay"
       *ngIf="!isLoading"
     ></app-free-day-form>
