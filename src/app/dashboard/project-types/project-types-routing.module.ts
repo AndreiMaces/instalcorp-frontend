@@ -26,6 +26,7 @@ const routes: Routes = [
       },
       {
         path: 'archive',
+        data: { breadcrumb: 'Arhivă' },
         component: ProjectTypePageArchiveComponent,
       },
       {
