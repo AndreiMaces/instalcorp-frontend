@@ -1,4 +1,5 @@
 name: Build & Deploy
+
 on:
   push:
     branches: [ "prod", "master" ]
@@ -11,32 +12,32 @@ jobs:
 
     strategy:
       matrix:
-        environment: [ production, development ]  # Define both environments here
-
+        environment: [ production, development ]
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
       - name: Set environment-specific variables
+        id: set-vars
         run: |
           if [[ "${{ matrix.environment }}" == "production" ]]; then
-            export APP_NAME="${{ secrets.CAPROVER_PROD_NAME }}"
-            export CAPROVER_SERVER="${{ secrets.CAPROVER_SERVER }}"
-            export APP_TOKEN="${{ secrets.CAPROVER_PROD_TOKEN }}"
+            echo "APP_NAME=${{ secrets.CAPROVER_PROD_NAME }}" >> $GITHUB_ENV
+            echo "APP_TOKEN=${{ secrets.CAPROVER_PROD_TOKEN }}" >> $GITHUB_ENV
           else
-            export APP_NAME="${{ secrets.CAPROVER_DEV_NAME }}"
-            export CAPROVER_SERVER="${{ secrets.CAPROVER_SERVER }}"
-            export APP_TOKEN="${{ secrets.CAPROVER_DEV_TOKEN }}"
+            echo "APP_NAME=${{ secrets.CAPROVER_DEV_NAME }}" >> $GITHUB_ENV
+            echo "APP_TOKEN=${{ secrets.CAPROVER_DEV_TOKEN }}" >> $GITHUB_ENV
           fi
+          echo "CAPROVER_SERVER=${{ secrets.CAPROVER_SERVER }}" >> $GITHUB_ENV
 
-      - name: Use Node.js ${{ matrix.node-version }}
+      - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: '18.x'
           cache: "npm"
 
       - run: npm install
+
       - run: npm run build
 
       - uses: a7ul/tar-action@v1.1.0
@@ -48,11 +49,12 @@ jobs:
             captain-definition
             Dockerfile
           outPath: deploy.tar
-      - run: zcat deploy.tar | wc -c
+
+      - run: cat deploy.tar | wc -c
 
       - name: Deploy App to CapRover
         uses: caprover/deploy-from-github@main
         with:
-          server: $CAPROVER_SERVER
-          app: $APP_NAME
-          token: $APP_TOKEN
+          server: ${{ env.CAPROVER_SERVER }}
+          app: ${{ env.APP_NAME }}
+          token: ${{ env.APP_TOKEN }}
