@@ -7,28 +7,21 @@ on:
     branches: [ "prod", "master" ]
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        environment: [ production, development ]
+    # Run this job only if it's the production environment and the branch is 'prod'
+    if: github.ref == 'refs/heads/prod'
 
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
 
-      - name: Set environment-specific variables
-        id: set-vars
+      - name: Set Production Environment Variables
         run: |
-          if [[ "${{ matrix.environment }}" == "production" ]]; then
-            echo "APP_NAME=${{ secrets.CAPROVER_PROD_NAME }}" >> $GITHUB_ENV
-            echo "APP_TOKEN=${{ secrets.CAPROVER_PROD_TOKEN }}" >> $GITHUB_ENV
-          else
-            echo "APP_NAME=${{ secrets.CAPROVER_DEV_NAME }}" >> $GITHUB_ENV
-            echo "APP_TOKEN=${{ secrets.CAPROVER_DEV_TOKEN }}" >> $GITHUB_ENV
-          fi
+          echo "APP_NAME=${{ secrets.CAPROVER_PROD_NAME }}" >> $GITHUB_ENV
           echo "CAPROVER_SERVER=${{ secrets.CAPROVER_SERVER }}" >> $GITHUB_ENV
+          echo "APP_TOKEN=${{ secrets.CAPROVER_PROD_TOKEN }}" >> $GITHUB_ENV
 
       - name: Setup Node.js
         uses: actions/setup-node@v3
@@ -37,7 +30,6 @@ jobs:
           cache: "npm"
 
       - run: npm install
-
       - run: npm run build
 
       - uses: a7ul/tar-action@v1.1.0
@@ -52,7 +44,51 @@ jobs:
 
       - run: cat deploy.tar | wc -c
 
-      - name: Deploy App to CapRover
+      - name: Deploy to CapRover
+        uses: caprover/deploy-from-github@main
+        with:
+          server: ${{ env.CAPROVER_SERVER }}
+          app: ${{ env.APP_NAME }}
+          token: ${{ env.APP_TOKEN }}
+
+  deploy-dev:
+    runs-on: ubuntu-latest
+
+    # Run this job only if it's the development environment and the branch is 'master'
+    if: github.ref == 'refs/heads/master'
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set Development Environment Variables
+        run: |
+          echo "APP_NAME=${{ secrets.CAPROVER_DEV_NAME }}" >> $GITHUB_ENV
+          echo "CAPROVER_SERVER=${{ secrets.CAPROVER_SERVER }}" >> $GITHUB_ENV
+          echo "APP_TOKEN=${{ secrets.CAPROVER_DEV_TOKEN }}" >> $GITHUB_ENV
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18.x'
+          cache: "npm"
+
+      - run: npm install
+      - run: npm run build
+
+      - uses: a7ul/tar-action@v1.1.0
+        with:
+          command: c
+          cwd: "./"
+          files: |
+            dist/
+            captain-definition
+            Dockerfile
+          outPath: deploy.tar
+
+      - run: cat deploy.tar | wc -c
+
+      - name: Deploy to CapRover
         uses: caprover/deploy-from-github@main
         with:
           server: ${{ env.CAPROVER_SERVER }}
