@@ -72,7 +72,7 @@
               ]
             }
           },
-          "defaultConfiguration": "production"
+          "defaultConfiguration": "development"
         },
         "serve": {
           "builder": "@angular-devkit/build-angular:dev-server",
@@ -82,9 +82,12 @@
             },
             "development": {
               "buildTarget": "instalcorp-frontend:build:development"
+            },
+            "local": {
+              "buildTarget": "instalcorp-frontend:build"
             }
           },
-          "defaultConfiguration": "development"
+          "defaultConfiguration": "local"
         },
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n"

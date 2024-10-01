@@ -1,3 +1,3 @@
 export const environment = {
-  server: 'https://api-instalcorp-dev.macesandrei.com',
+  server: 'http://localhost:3000',
 };
