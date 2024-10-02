@@ -29,7 +29,7 @@ export class ProjectsStackComponent {
   @Input() isGlobalDragDisabled = {
     value: false,
   };
-  @Input() listIndexes: number[];
+  @Input() listIndexes: number[] = [];
 
   constructor(
     private projectsController: ProjectControllerService,
@@ -74,7 +74,7 @@ export class ProjectsStackComponent {
 
   getLinkedLists(): string[] {
     let lists: string[] = [];
-    this.listIndexes.forEach((index) => {
+    this?.listIndexes?.forEach((index) => {
       lists = [...lists, ...this?.employees?.map((day, i) => 'list' + i + index)];
     });
     return lists;

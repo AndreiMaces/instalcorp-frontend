@@ -3,6 +3,12 @@ import { ApiService } from '../api.service';
 import { Observable } from 'rxjs';
 import { IEmployee } from '../../models/IEmployee';
 import { ITask } from '../../models/ITask';
+import { IFreeDay } from '../../models/IFreeDay';
+
+export interface IGetWeek {
+  employees: IEmployee[];
+  freeDays: IFreeDay[];
+}
 
 @Injectable({
   providedIn: 'root',
@@ -12,8 +18,8 @@ export class EmployeesCalendarController {
 
   constructor(private apiService: ApiService) {}
 
-  getWeek(date: Date): Observable<IEmployee[]> {
-    return this.apiService.get<IEmployee[]>(`${this._baseURL}/week`, { date: date.toISOString() });
+  getWeek(date: Date): Observable<IGetWeek> {
+    return this.apiService.get<IGetWeek>(`${this._baseURL}/week`, { date: date.toISOString() });
   }
 
   resizeTask(taskId: number, task: Partial<ITask>): Observable<ITask> {

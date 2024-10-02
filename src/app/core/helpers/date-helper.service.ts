@@ -17,10 +17,16 @@ export class DateHelperService {
     return new Date(monday.setDate(monday.getDate() + 4));
   }
 
-  public static getWeekDayDate(date: Date, day: number): string {
+  public static getWeekDayDateString(date: Date, day: number): string {
     const monday = this.getMonday(date);
     monday.setDate(monday.getDate() + day - 1);
     return monday.getDate() < 10 ? `0${monday.getDate()}` : `${monday.getDate()}`;
+  }
+
+  public static getWeekDayDate(date: Date, day: number): Date {
+    const monday = this.getMonday(date);
+    monday.setDate(monday.getDate() + day - 1);
+    return monday;
   }
 
   public static dateDiffInDays(a: Date, b: Date) {

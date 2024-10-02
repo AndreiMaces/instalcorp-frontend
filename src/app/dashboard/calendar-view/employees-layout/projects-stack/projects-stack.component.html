@@ -19,12 +19,12 @@
             class="flex flex-col gap-1"
             cdkDropList
             [id]="'stack' + i"
-            [cdkDropListData]="projectType.projects"
+            [cdkDropListData]="projectType?.projects"
             [cdkDropListConnectedTo]="getLinkedLists()"
             [cdkDropListSortingDisabled]="true"
           >
             <div
-              *ngFor="let project of projectType.projects"
+              *ngFor="let project of projectType?.projects"
               class="text-white pl-3 rounded-md text-sm"
               [style.width]="CalendarLayoutHelperService.layoutComponentWidth + 'px'"
               [style.background-color]="project.color"

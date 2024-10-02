@@ -22,7 +22,7 @@
       (dblclick)="openTaskDialog()"
     >
       <div class="flex gap-2 items-center">
-        <div class="flex">
+        <div class="flex z-50">
           <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
             <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ left: true }"> drag_indicator </mat-icon>
           </div>
@@ -50,7 +50,7 @@
         </div>
       </div>
 
-      <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
+      <div class="h-[16px] flex justify-center items-center z-50" *ngIf="!isFinished">
         <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ right: true }"> drag_indicator </mat-icon>
       </div>
     </div>

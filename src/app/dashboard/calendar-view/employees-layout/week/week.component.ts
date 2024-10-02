@@ -26,6 +26,7 @@ import { Observable } from 'rxjs';
 import { IProject } from '../../../../core/models/IProject';
 import { ActivatedRoute } from '@angular/router';
 import { CalendarLayoutHelperService } from '../../../../core/helpers/calendar-layout-helper.service';
+import { IFreeDay } from '../../../../core/models/IFreeDay';
 
 export interface IDay {
   name: string;
@@ -56,6 +57,7 @@ export interface IDay {
 })
 export class WeekComponent {
   employees: IEmployee[];
+  freeDays: IFreeDay[];
   isLoading = false;
   @Input() listIndex: number;
   @Input() listIndexes: number[];
@@ -65,6 +67,7 @@ export class WeekComponent {
   @Input() isGlobalDragDisabled = {
     value: false,
   };
+  openedTaskId: number;
 
   constructor(
     private employeesCalendarController: EmployeesCalendarController,
@@ -74,23 +77,36 @@ export class WeekComponent {
   ) {}
 
   ngOnInit(): void {
+    this.getWeek();
+    this.openedTaskId = this.route.snapshot.queryParams['taskId'];
     this.subscribeToReferenceDayObservable();
-    this.reloadObservable.subscribe(() => this.getWeekSilent());
-    this.route.queryParams.subscribe(() => this.getWeekSilent());
+    this.reloadObservable.subscribe(() => {
+      console.log('reload');
+      this.getWeekSilent();
+    });
+    this.route.queryParams.subscribe((params) => {
+      if (params['taskId'] !== this.openedTaskId) {
+        this.openedTaskId = params['taskId'];
+        this.getWeekSilent();
+      }
+    });
   }
 
   subscribeToReferenceDayObservable(): void {
     this.referenceDateObservable.subscribe((date) => {
+      console.log('date');
       this.referenceDate = date;
       this.getWeek();
     });
   }
 
   getWeek(): void {
+    console.log('normal');
     this.isLoading = true;
     this.employeesCalendarController.getWeek(this.referenceDate).subscribe({
-      next: (employees) => {
-        this.employees = employees;
+      next: (res) => {
+        this.employees = res.employees;
+        this.freeDays = res.freeDays;
         this.isLoading = false;
       },
       error: () => {
@@ -103,17 +119,19 @@ export class WeekComponent {
   }
 
   getWeekSilent(): void {
+    console.log('silent');
     this.isGlobalDragDisabled.value = true;
     this.employeesCalendarController.getWeek(this.referenceDate).subscribe({
-      next: (employees) => {
-        this.employees = employees;
+      next: (res) => {
+        this.employees = res.employees;
+        this.freeDays = res.freeDays;
         this.isGlobalDragDisabled.value = false;
       },
     });
   }
 
   getWeekDayDate(day: number): string {
-    return DateHelperService.getWeekDayDate(this.referenceDate, day);
+    return DateHelperService.getWeekDayDateString(this.referenceDate, day);
   }
 
   drop(event: CdkDragDrop<ITask[]>) {
@@ -312,5 +330,19 @@ export class WeekComponent {
 
   getWeekRange(date: Date): string {
     return DateHelperService.getWeekRange(date);
+  }
+
+  isDayAvailable(day: number): boolean {
+    const freeDay = this.getFreeDay(day);
+    return !freeDay;
+  }
+
+  getFreeDay(day: number): IFreeDay {
+    const date = DateHelperService.getWeekDayDate(this.referenceDate, day);
+    date.setHours(0, 0, 0, 0);
+    const freeDay = this.freeDays.find((freeDay) => {
+      return new Date(freeDay.startDate) <= date && date <= new Date(freeDay.endDate);
+    });
+    return freeDay;
   }
 }
