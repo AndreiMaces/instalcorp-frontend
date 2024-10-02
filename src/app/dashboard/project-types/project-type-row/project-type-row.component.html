@@ -1,6 +1,6 @@
 <a
   [cdkContextMenuTriggerFor]="context_menu"
-  [routerLink]="'/dashboard/project-types/' + projectType.id + '/' + projectType.title"
+  [routerLink]="'/dashboard/project-types/' + projectType.id + '/' + (projectType.title | encodeURI)"
   class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl hover:brightness-[80%] transition-all cursor-pointer"
   [style.background-color]="projectType.color ?? 'white'"
   [style.color]="ColorHelperService.invertedColor(projectType.color)"

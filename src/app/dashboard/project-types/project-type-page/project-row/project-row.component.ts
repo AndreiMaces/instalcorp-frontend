@@ -15,6 +15,7 @@ import { ColorHelperService } from '../../../../core/helpers/color-helper.servic
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
 import { ProjectImportanceComponent } from './project-importance/project-importance.component';
 import { HandleEmployeesComponent } from '../handle-employees-dialog/handle-employees.component';
+import { EncodeURIPipe } from '../../../../shared/pipes/encode-uri.pipe';
 
 @Component({
   selector: 'app-project-row',
@@ -31,6 +32,7 @@ import { HandleEmployeesComponent } from '../handle-employees-dialog/handle-empl
     CdkMenuItem,
     CdkContextMenuTrigger,
     ProjectImportanceComponent,
+    EncodeURIPipe,
   ],
   templateUrl: './project-row.component.html',
   styleUrl: './project-row.component.scss',

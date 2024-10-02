@@ -1,6 +1,6 @@
 <a
   [cdkContextMenuTriggerFor]="context_menu"
-  [routerLink]="project?.id + '/' + project?.title"
+  [routerLink]="project?.id + '/' + (project?.title | encodeURI)"
   class="flex items-center justify-between gap-3 w-full px-5 py-2 shadow rounded-2xl hover:brightness-[80%] transition-all cursor-pointer"
   [style]="'background-image: linear-gradient(to right, white 40% ,' + project?.color + ' 0%);'"
 >

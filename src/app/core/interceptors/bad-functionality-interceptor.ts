@@ -12,11 +12,11 @@ export function badFunctionalityInterceptor(req: HttpRequest<unknown>, next: Htt
         router.navigateByUrl('maintenance', {
           skipLocationChange: true,
         });
-      } else if (error.status === 404) {
+      } /* else if (error.status === 404) {
         router.navigateByUrl('not-found', {
           skipLocationChange: true,
         });
-      } else {
+      }*/ else {
         // go to next error handler
         throw error;
       }

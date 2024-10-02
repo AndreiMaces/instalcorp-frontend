@@ -16,6 +16,7 @@ import { ConfirmationDialogComponent } from '../../../shared/components/confirma
 import { RouterLink } from '@angular/router';
 import { ColorHelperService } from '../../../core/helpers/color-helper.service';
 import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
+import { EncodeURIPipe } from '../../../shared/pipes/encode-uri.pipe';
 
 @Component({
   selector: 'app-project-type-row',
@@ -36,9 +37,11 @@ import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from '@angular/cdk/menu';
     CdkContextMenuTrigger,
     CdkMenu,
     CdkMenuItem,
+    EncodeURIPipe,
   ],
   templateUrl: './project-type-row.component.html',
   styleUrl: './project-type-row.component.scss',
+  providers: [EncodeURIPipe],
 })
 export class ProjectTypeRowComponent {
   @Input() projectType: IProjectType;
