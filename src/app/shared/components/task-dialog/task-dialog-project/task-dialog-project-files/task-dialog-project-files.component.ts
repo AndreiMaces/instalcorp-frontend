@@ -37,7 +37,6 @@ export class TaskDialogProjectFilesComponent {
     this.projectController.editIProject(this.task.project.id, { media: this.task.project.media }).subscribe({
       next: () => {},
       error: (err: { message: string }) => {
-        console.log(err);
         if (err.message.includes('format')) {
         } else
           this.snackBarService.open('Eroare la actualizarea proiectului.', 'Close', {

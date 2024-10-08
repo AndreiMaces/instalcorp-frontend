@@ -81,7 +81,6 @@ export class WeekComponent {
     this.openedTaskId = this.route.snapshot.queryParams['taskId'];
     this.subscribeToReferenceDayObservable();
     this.reloadObservable.subscribe(() => {
-      console.log('reload');
       this.getWeekSilent();
     });
     this.route.queryParams.subscribe((params) => {
@@ -94,14 +93,12 @@ export class WeekComponent {
 
   subscribeToReferenceDayObservable(): void {
     this.referenceDateObservable.subscribe((date) => {
-      console.log('date');
       this.referenceDate = date;
       this.getWeek();
     });
   }
 
   getWeek(): void {
-    console.log('normal');
     this.isLoading = true;
     this.employeesCalendarController.getWeek(this.referenceDate).subscribe({
       next: (res) => {
@@ -119,7 +116,6 @@ export class WeekComponent {
   }
 
   getWeekSilent(): void {
-    console.log('silent');
     this.isGlobalDragDisabled.value = true;
     this.employeesCalendarController.getWeek(this.referenceDate).subscribe({
       next: (res) => {

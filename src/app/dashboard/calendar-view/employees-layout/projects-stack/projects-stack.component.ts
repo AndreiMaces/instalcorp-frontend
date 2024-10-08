@@ -74,9 +74,12 @@ export class ProjectsStackComponent {
 
   getLinkedLists(): string[] {
     let lists: string[] = [];
-    this?.listIndexes?.forEach((index) => {
-      lists = [...lists, ...this?.employees?.map((day, i) => 'list' + i + index)];
-    });
+    if (this.listIndexes && this.employees && this.listIndexes.length > 0 && this.employees.length > 0) {
+      this?.listIndexes?.forEach((index) => {
+        lists = [...lists, ...this?.employees?.map((day, i) => 'list' + i + index)];
+      });
+    }
+
     return lists;
   }
 

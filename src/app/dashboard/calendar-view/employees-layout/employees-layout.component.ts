@@ -71,6 +71,7 @@ export class EmployeesLayoutComponent implements OnInit {
 
   changeReferenceDateByEvt(evt: Event): void {
     const newDate = new Date((evt.target as HTMLInputElement).value);
+    newDate.setDate(newDate.getDate() + 1);
     this.changeReferenceDate(newDate);
   }
 

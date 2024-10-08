@@ -7,7 +7,6 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class EncodeURIPipe implements PipeTransform {
   transform(value: string): string {
     let newValue = encodeURIComponent(value);
-    console.log(newValue);
     return newValue;
   }
 }
