@@ -1,6 +1,6 @@
 <div class="flex flex-col">
   <div class="p-5 border-b">
-    <p class="text-3xl !m-0">Gestionează angajații pentru {{ data.project?.title }}:{{ data.project?.name }}</p>
+    <p class="text-3xl !m-0">Gestionează angajații pentru {{ data.project?.title }}</p>
   </div>
   <div class="p-5" *ngIf="!isLoading">
     <app-task-form [project]="data.project"></app-task-form>

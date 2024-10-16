@@ -1,5 +1,5 @@
 <div
-  class="w-full h-[24px] relative"
+  class="h-[24px] relative"
   cdkDragBoundary=".example-boundary"
   cdkDrag
   [cdkDragDisabled]="isDragDisabled || isGlobalDragDisabled.value || isFinished"
@@ -7,7 +7,7 @@
   #container
   [cdkContextMenuTriggerFor]="context_menu"
 >
-  <div class="relative w-full h-full">
+  <div class="relative h-full">
     <div
       class="absolute box-border text-white rounded-md text-sm shadow flex justify-between items-center"
       [style.background-color]="task.color"
@@ -24,7 +24,9 @@
       <div class="flex gap-2 items-center">
         <div class="flex z-50">
           <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
-            <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ left: true }"> drag_indicator </mat-icon>
+            <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ left: true }">
+              drag_indicator
+            </mat-icon>
           </div>
           <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
             <span
@@ -51,7 +53,8 @@
       </div>
 
       <div class="h-[16px] flex justify-center items-center z-50" *ngIf="!isFinished">
-        <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ right: true }"> drag_indicator </mat-icon>
+        <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ right: true }"> drag_indicator
+        </mat-icon>
       </div>
     </div>
   </div>
