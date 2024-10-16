@@ -150,7 +150,6 @@ export class WeekComponent {
   }
 
   dropOnDifferentEmployee(event: CdkDragDrop<ITask[]>): void {
-    console.log("dropOnDifferentEmployee");
     const movedProject = event.previousContainer.data[event.previousIndex];
     const currentEmployee = this.employees.find((employee) => employee.tasks === event.container.data);
     transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
@@ -180,7 +179,6 @@ export class WeekComponent {
   }
 
   dropOnSameEmployee(event: CdkDragDrop<ITask[]>): void {
-    console.log("dropOnSameEmployee");
     const movedProject = event.previousContainer.data[event.previousIndex];
     const currentEmployee = this.employees.find((employee) => employee.tasks === event.container.data);
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
@@ -209,7 +207,6 @@ export class WeekComponent {
   }
 
   createTaskFromProjectsStack(event: CdkDragDrop<ITask[]>): void {
-    console.log("createTaskFromProjectsStack");
 
     const movedProject = event.previousContainer.data[event.previousIndex];
     const currentEmployee = this.employees.find((employee) => employee.tasks === event.container.data);
