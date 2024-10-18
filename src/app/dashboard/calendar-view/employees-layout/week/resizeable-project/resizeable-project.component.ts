@@ -86,7 +86,6 @@ export class ResizeableProjectComponent implements OnInit {
     this.mouseX = Math.ceil(this.mouseX / CalendarLayoutHelperService.layoutComponentWidth) * CalendarLayoutHelperService.layoutComponentWidth;
     this.mouseX = Math.max(0, this.mouseX);
     this.mouseX = Math.min(this.mouseX, CalendarLayoutHelperService.layoutWidth - CalendarLayoutHelperService.layoutComponentWidth * 2);
-    console.log(this.mouseX);
   }
 
   initStyle(): void {
@@ -109,7 +108,6 @@ export class ResizeableProjectComponent implements OnInit {
 
   onResizeEnd(event: ResizeEvent): void {
     this.updateDateInterval(event);
-    console.log(this.task);
     CalendarLayoutHelperService.computeTaskStyle(this.task, this.tasks, this.referenceDate);
     this.sendResizeRequest();
   }
