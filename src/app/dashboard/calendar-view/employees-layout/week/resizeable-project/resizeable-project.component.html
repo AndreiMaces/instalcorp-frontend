@@ -1,5 +1,5 @@
 <div
-  class="h-[24px] relative"
+  class="h-[24px] relative w-full"
   cdkDragBoundary=".example-boundary"
   cdkDrag
   [cdkDragDisabled]="isDragDisabled || isGlobalDragDisabled.value || isFinished"
@@ -7,28 +7,27 @@
   #container
   [cdkContextMenuTriggerFor]="context_menu"
 >
-  <div class="relative h-full">
-    <div
-      class="absolute box-border text-white rounded-md text-sm shadow flex justify-between items-center"
-      [style.background-color]="task.color"
-      [style.color]="ColorHelperService.invertedColor(task.color)"
-      [ngStyle]="task.style"
-      mwlResizable
-      [enableGhostResize]="true"
-      (resizeStart)="isDragDisabled = true"
-      (resizeEnd)="onResizeEnd($event)"
-      matTooltip="{{ task.project.title }} / {{ task.title }}"
-      *ngIf="task.projectId"
-      (dblclick)="openTaskDialog()"
-    >
-      <div class="flex gap-2 items-center">
-        <div class="flex z-50">
-          <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
-            <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ left: true }">
-              drag_indicator
-            </mat-icon>
-          </div>
-          <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
+
+  <div
+    class="absolute box-border text-white rounded-md text-sm shadow flex items-center gap-2"
+    [style.background-color]="task.color"
+    [style.color]="ColorHelperService.invertedColor(task.color)"
+    [style.width]="task.style.width"
+    mwlResizable
+    [enableGhostResize]="true"
+    (resizeStart)="isDragDisabled = true"
+    (resizeEnd)="onResizeEnd($event)"
+    matTooltip="{{ task.project.title }} / {{ task.title }}"
+    *ngIf="task.projectId"
+    (dblclick)="openTaskDialog()"
+  >
+    <div class="flex z-50">
+      <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
+        <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ left: true }">
+          drag_indicator
+        </mat-icon>
+      </div>
+      <div class="h-[16px] flex justify-center items-center" *ngIf="!isFinished">
             <span
               class="material-symbols-outlined scale-75"
               [class.opacity-50]="isDragDisabled || isGlobalDragDisabled.value"
@@ -38,20 +37,18 @@
             >
               drag_pan
             </span>
-          </div>
-          <div
-            class="flex justify-center items-center rounded-l-md h-[20px] translate-x-[-1px] border"
-            [style.background-color]="ColorHelperService.invertedColor(task.color)"
-            *ngIf="isFinished"
-          >
-            <mat-icon class="scale-[68%] text-green-500">done</mat-icon>
-          </div>
-        </div>
-        <div>
-          <span class="line-clamp-1"> {{ task.project.title }} / {{ task.title }} </span>
-        </div>
       </div>
-
+      <div
+        class="flex justify-center items-center rounded-l-md h-[20px] translate-x-[-1px] border"
+        [style.background-color]="ColorHelperService.invertedColor(task.color)"
+        *ngIf="isFinished"
+      >
+        <mat-icon class="scale-[68%] text-green-500">done</mat-icon>
+      </div>
+    </div>
+    <div class="flex items-center justify-between gap-2 flex-grow">
+      <span class="line-clamp-1" [style.max-width]="parseInt(task.style.width) - 100 + 'px'"> {{ task.project.title }}
+        / {{ task.title }} </span>
       <div class="h-[16px] flex justify-center items-center z-50" *ngIf="!isFinished">
         <mat-icon class="cursor-col-resize scale-75" mwlResizeHandle [resizeEdges]="{ right: true }"> drag_indicator
         </mat-icon>

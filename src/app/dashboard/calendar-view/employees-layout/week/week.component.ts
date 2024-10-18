@@ -104,6 +104,7 @@ export class WeekComponent {
       next: (res) => {
         this.employees = res.employees;
         this.freeDays = res.freeDays;
+        this.computeTasksStyles();
         this.isLoading = false;
       },
       error: () => {
@@ -121,9 +122,23 @@ export class WeekComponent {
       next: (res) => {
         this.employees = res.employees;
         this.freeDays = res.freeDays;
+        this.computeTasksStyles();
         this.isGlobalDragDisabled.value = false;
       }
     });
+  }
+
+  computeTasksStyles(): void {
+    this.employees.forEach((employee) => {
+      employee.tasks.forEach((task, index) => {
+        task.order = index;
+        this.computeTaskStyle(task, employee.tasks);
+      });
+    });
+  }
+
+  computeTaskStyle(task: ITask, tasks: ITask[]): void {
+    CalendarLayoutHelperService.computeTaskStyle(task, tasks, this.referenceDate);
   }
 
   getWeekDayDate(day: number): string {
@@ -133,6 +148,7 @@ export class WeekComponent {
 
   drop(event: CdkDragDrop<ITask[]>): void {
     CalendarLayoutHelperService.dragEnd(event, this.referenceDate);
+    this.computeTasksStyles();
     if (this.droppedOnSameEmployee(event)) {
       this.dropOnSameEmployee(event);
       return;
@@ -153,6 +169,7 @@ export class WeekComponent {
     const movedProject = event.previousContainer.data[event.previousIndex];
     const currentEmployee = this.employees.find((employee) => employee.tasks === event.container.data);
     transferArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+    this.computeTasksStyles();
     this.isGlobalDragDisabled.value = true;
     this.taskController
       .editTask(movedProject.id, {
@@ -182,6 +199,7 @@ export class WeekComponent {
     const movedProject = event.previousContainer.data[event.previousIndex];
     const currentEmployee = this.employees.find((employee) => employee.tasks === event.container.data);
     moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
+    this.computeTasksStyles();
     this.isGlobalDragDisabled.value = true;
     if (movedProject.startDate > movedProject.endDate) {
       movedProject.endDate = movedProject.startDate;
@@ -214,6 +232,7 @@ export class WeekComponent {
     // Create the new task in memory
     const containerClone = JSON.parse(JSON.stringify(event.previousContainer.data));
     copyArrayItem(event.previousContainer.data, event.container.data, event.previousIndex, event.currentIndex);
+    this.computeTasksStyles();
     event.previousContainer.data = containerClone;
 
     // Compute the new task information
@@ -298,4 +317,6 @@ export class WeekComponent {
       return new Date(freeDay.startDate) <= date && date <= new Date(freeDay.endDate);
     });
   }
+
+  protected readonly CalendarLayoutHelperService = CalendarLayoutHelperService;
 }

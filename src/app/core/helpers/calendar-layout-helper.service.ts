@@ -12,8 +12,9 @@ export interface ITaskStyle {
   providedIn: "root"
 })
 export class CalendarLayoutHelperService {
-  private static _layoutWidth = 1000;
+  private static _layoutWidth = 1200;
   private static _layoutComponents = 6;
+  public static layoutComponentHeight = 24;
 
   public static dragEnd(event: CdkDragDrop<ITask[]>, referenceDate: Date): void {
     const task = event.previousContainer.data[event.previousIndex];
@@ -36,7 +37,6 @@ export class CalendarLayoutHelperService {
       left: `${left}px`
     };
   }
-
 
   public static clipToSize(value: number): number {
     if (value < 0) {
@@ -70,8 +70,103 @@ export class CalendarLayoutHelperService {
     };
   }
 
+  public static computeTasksTop(tasks: ITask[], initialTop: number): void {
+    if (tasks.length === 0) return;
+
+    let top = initialTop;
+    let index = 0;
+
+    while (index < tasks.length) {
+      const task = tasks[index];
+      const taskStartTime = CalendarLayoutHelperService.resetTimeToStartOfDay(new Date(task.startDate)).getTime();
+      const taskEndTime = CalendarLayoutHelperService.resetTimeToEndOfDay(new Date(task.endDate)).getTime();
+
+      if (index === 0) {
+        CalendarLayoutHelperService.setTaskTopPosition(task, top);
+        index++;
+        continue;
+      }
+
+      const lowerIntersecting = tasks
+        .filter(t => t.order < task.order)
+        .some(t => CalendarLayoutHelperService.areDatesIntersecting(t, taskStartTime, taskEndTime));
+
+      if (lowerIntersecting) {
+        top += CalendarLayoutHelperService.layoutComponentHeight;
+        CalendarLayoutHelperService.setTaskTopPosition(task, top);
+        CalendarLayoutHelperService.computeTasksTop(tasks.slice(index), top);
+        return;
+      } else {
+        CalendarLayoutHelperService.setTaskTopPosition(task, top);
+        index++;
+      }
+    }
+  }
+
+  public static resetTimeToStartOfDay(date: Date): Date {
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }
+
+  public static resetTimeToEndOfDay(date: Date): Date {
+    date.setHours(23, 59, 59, 999);
+    return date;
+  }
+
+  public static areDatesIntersecting(lowerTask: any, taskStartTime: number, taskEndTime: number): boolean {
+    const lowerTaskStartTime = CalendarLayoutHelperService.resetTimeToStartOfDay(new Date(lowerTask.startDate)).getTime();
+    const lowerTaskEndTime = CalendarLayoutHelperService.resetTimeToEndOfDay(new Date(lowerTask.endDate)).getTime();
+    return taskStartTime <= lowerTaskEndTime && taskEndTime >= lowerTaskStartTime;
+  }
+
+  public static setTaskTopPosition(task: any, top: number): void {
+    task.style = {
+      ...task.style,
+      top: `${top}px`
+    };
+  }
+
+  public static computeStartDate(left: number): Date {
+    left = Math.min(left, CalendarLayoutHelperService.layoutWidth - CalendarLayoutHelperService.layoutComponentWidth * 2);
+    const daysDifference = Math.floor(left / CalendarLayoutHelperService.layoutComponentWidth);
+    const date = DateHelperService.getMonday(new Date());
+    date.setDate(date.getDate() + daysDifference);
+    return date;
+  }
+
+  public static computeEndDate(left: number, width: number): Date {
+    const daysDifference = Math.floor(width / CalendarLayoutHelperService.layoutComponentWidth);
+    const date = CalendarLayoutHelperService.computeStartDate(left);
+    date.setDate(date.getDate() + daysDifference - 1);
+    return date;
+  }
+
+  public static computeTaskStyle(task: ITask, tasks: ITask[], referenceDate: Date): void {
+    const daysDifference = DateHelperService.dateDiffInDays(DateHelperService.getMonday(referenceDate), new Date(task.startDate));
+    const left = daysDifference * CalendarLayoutHelperService.layoutComponentWidth;
+
+    const differenceBetweenEndDateAndStartDate = DateHelperService.dateDiffInDays(new Date(task.endDate), new Date(task.startDate)) + 1;
+    let width = differenceBetweenEndDateAndStartDate * CalendarLayoutHelperService.layoutComponentWidth;
+
+    const maxSpace = CalendarLayoutHelperService.layoutComponentWidth * (CalendarLayoutHelperService.layoutComponents - 1) - 2;
+    if (width > maxSpace) {
+      width = maxSpace;
+    }
+
+    task.style = {
+      left: `${left}px`,
+      width: `${width}px`
+    };
+    CalendarLayoutHelperService.computeTasksTop(tasks, 0);
+  }
+
+  public static getLayoutHeight(tasks: ITask[]): number {
+    CalendarLayoutHelperService.computeTasksTop(tasks, 0);
+    return Math.max(...tasks.map(task => parseInt(task.style.top) + CalendarLayoutHelperService.layoutComponentHeight * 2));
+  }
+
   public static get layoutComponentWidth(): number {
-    return CalendarLayoutHelperService._layoutWidth / CalendarLayoutHelperService._layoutComponents;
+    return CalendarLayoutHelperService._layoutWidth / CalendarLayoutHelperService._layoutComponents - 1;
   }
 
   public static get layoutWidth(): number {
