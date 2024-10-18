@@ -6,6 +6,7 @@
     <app-free-day-form
       (close)="openDenyConfirmationDialog()"
       (_submit)="openCreateConfirmationDialog($event)"
+      [day]="data.day"
       *ngIf="!isLoading"
     ></app-free-day-form>
     <div *ngIf="isLoading" class="h-[400px] w-full flex justify-center items-center">

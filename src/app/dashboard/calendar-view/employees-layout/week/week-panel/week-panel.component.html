@@ -1,0 +1,39 @@
+<div class="w-full h-full flex justify-end border-r p-2 relative" [class.inactive-panel]="!isDayAvailable(index)"
+     [matTooltip]="getFreeDay(index)?.title" [cdkContextMenuTriggerFor]="context_menu1"
+>
+  {{ getWeekDayDate(index) }}
+  <ng-template #context_menu1>
+    <div
+      class="flex flex-col py-2 bg-[#EFEDF1] rounded-sm text-sm [box-shadow:0_3px_6px_rgba(0,0,0,0.16),_0_3px_6px_rgba(0,0,0,0.23)]"
+      cdkMenu
+    >
+      <button
+        *ngIf="isDayAvailable(index)"
+        (click)="openCreateFreeDayDialog(index)"
+        cdkMenuItem
+        class="w-full p-3 hover:bg-[#DEDCE0] flex items-center gap-2 outline-0 font-medium"
+      >
+        <mat-icon class="text-[#44474E]">add</mat-icon>
+        <span>Adaugă zi liberă</span>
+      </button>
+      <button
+        *ngIf="!isDayAvailable(index)"
+        (click)="openEditFreeDayDialog(getFreeDay(index))"
+        cdkMenuItem
+        class="w-full p-3 hover:bg-[#DEDCE0] flex items-center gap-2 outline-0 font-medium"
+      >
+        <mat-icon class="text-[#44474E]">edit</mat-icon>
+        <span>Editează zi liberă</span>
+      </button>
+      <button
+        *ngIf="!isDayAvailable(index)"
+        (click)="openDeleteFreeDayDialog(getFreeDay(index))"
+        cdkMenuItem
+        class="w-full p-3 hover:bg-[#DEDCE0] flex items-center gap-2 outline-0 font-medium"
+      >
+        <mat-icon class="text-[#44474E]">delete</mat-icon>
+        <span>Șterge zi liberă</span>
+      </button>
+    </div>
+  </ng-template>
+</div>

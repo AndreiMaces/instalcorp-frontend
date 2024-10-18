@@ -26,6 +26,14 @@ import { ActivatedRoute } from "@angular/router";
 import { CalendarLayoutHelperService } from "../../../../core/helpers/calendar-layout-helper.service";
 import { IFreeDay } from "../../../../core/models/IFreeDay";
 import { TaskAssemblerHelperService } from "../../../../core/helpers/task-assembler-helper.service";
+import { CdkContextMenuTrigger, CdkMenu, CdkMenuItem } from "@angular/cdk/menu";
+import {
+  ConfirmationDialogComponent
+} from "../../../../shared/components/confirmation-dialog/confirmation-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
+import { FreeDayControllerService } from "../../../../core/api/controllers/free-day-controller.service";
+import { EditFreeDayComponent } from "../../../free-days/edit-free-day/edit-free-day.component";
+import { WeekPanelComponent } from "./week-panel/week-panel.component";
 
 export interface IDay {
   name: string;
@@ -49,7 +57,11 @@ export interface IDay {
     MatTooltip,
     ResizableModule,
     MatIcon,
-    JsonPipe
+    JsonPipe,
+    CdkContextMenuTrigger,
+    CdkMenu,
+    CdkMenuItem,
+    WeekPanelComponent
   ],
   templateUrl: "./week.component.html",
   styleUrl: "./week.component.scss"
@@ -72,7 +84,9 @@ export class WeekComponent {
     private employeesCalendarController: EmployeesCalendarController,
     private taskController: TaskControllerService,
     private snackBarService: MatSnackBar,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private dialog: MatDialog,
+    private freeDayController: FreeDayControllerService
   ) {
   }
 
@@ -316,6 +330,54 @@ export class WeekComponent {
     return this.freeDays.find((freeDay) => {
       return new Date(freeDay.startDate) <= date && date <= new Date(freeDay.endDate);
     });
+  }
+
+
+  openDeleteFreeDayDialog(freeDay: IFreeDay): void {
+    this.dialog
+      .open(ConfirmationDialogComponent, {
+        data: {
+          message: "Sigur vrei sa stergi această zi liberă?"
+        }
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.deleteFreeDay(freeDay.id);
+        }
+      });
+  }
+
+  deleteFreeDay(freeDayId: number): void {
+    this.freeDayController.removeFreeDay(freeDayId).subscribe({
+      next: () => {
+        this.getWeekSilent();
+      },
+      error: () => {
+        this.snackBarService.open("A apărut o eroare la încărcarea zilelor libere.");
+        this.isLoading = false;
+      }
+    });
+  }
+
+
+  openEditFreeDayDialog(freeDay: IFreeDay): void {
+    this.dialog
+      .open(EditFreeDayComponent, {
+        data: {
+          freeDay: freeDay
+        },
+        width: "500px",
+        maxWidth: "100%",
+        maxHeight: "90vh",
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) {
+          this.getWeekSilent();
+        }
+      });
   }
 
   protected readonly CalendarLayoutHelperService = CalendarLayoutHelperService;

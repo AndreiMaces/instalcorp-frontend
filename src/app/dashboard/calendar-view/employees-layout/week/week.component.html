@@ -31,27 +31,15 @@
             class="!z-20 !min-h-[30px]"
             [style.height]="CalendarLayoutHelperService.getLayoutHeight(employee.tasks) + 'px'"
           >
-            <div class="grid grid-cols-5 [&>*]:border-r [&>*]:p-2 absolute inset-0 text-xs text-slate-400">
-              <div class="w-full flex justify-end" [class.inactive-panel]="!isDayAvailable(1)"
-                   [matTooltip]="getFreeDay(1)?.title">
-                {{ getWeekDayDate(1) }}
-              </div>
-              <div class="w-full flex justify-end" [class.inactive-panel]="!isDayAvailable(2)"
-                   [matTooltip]="getFreeDay(2)?.title">
-                {{ getWeekDayDate(2) }}
-              </div>
-              <div class="w-full flex justify-end" [class.inactive-panel]="!isDayAvailable(3)"
-                   [matTooltip]="getFreeDay(3)?.title">
-                {{ getWeekDayDate(3) }}
-              </div>
-              <div class="w-full flex justify-end" [class.inactive-panel]="!isDayAvailable(4)"
-                   [matTooltip]="getFreeDay(4)?.title">
-                {{ getWeekDayDate(4) }}
-              </div>
-              <div class="w-full flex justify-end" [class.inactive-panel]="!isDayAvailable(5)"
-                   [matTooltip]="getFreeDay(5)?.title">
-                {{ getWeekDayDate(5) }}
-              </div>
+            <div class="grid grid-cols-5 absolute inset-0 text-xs text-slate-400">
+              <div
+                app-week-panel
+                (reload)="getWeekSilent()"
+                [freeDays]="freeDays"
+                [referenceDate]="referenceDate"
+                *ngFor="let index of [1, 2, 3, 4, 5]"
+                [index]="index"
+              ></div>
             </div>
             <div class="relative">
               <div class="absolute" app-resizeable-project [style]="task?.style"
@@ -62,8 +50,6 @@
                    [task]="task"
                    [tasks]="employee.tasks"
               >
-
-
               </div>
             </div>
           </div>

@@ -149,8 +149,9 @@ export class CalendarLayoutHelperService {
     let width = differenceBetweenEndDateAndStartDate * CalendarLayoutHelperService.layoutComponentWidth;
 
     const maxSpace = CalendarLayoutHelperService.layoutComponentWidth * (CalendarLayoutHelperService.layoutComponents - 1) - 2;
-    if (width > maxSpace) {
-      width = maxSpace;
+
+    if (width + left > maxSpace) {
+      width = maxSpace - left;
     }
 
     task.style = {

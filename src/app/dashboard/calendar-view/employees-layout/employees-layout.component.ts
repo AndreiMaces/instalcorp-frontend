@@ -1,20 +1,28 @@
-import { Component, OnInit } from '@angular/core';
-import { WeekComponent } from './week/week.component';
-import { Subject } from 'rxjs';
-import { MatButton } from '@angular/material/button';
-import { CreateEmployeeProjectDialogComponent } from '../../../shared/components/create-employee-project-dialog/create-employee-project-dialog.component';
-import { MatDialog } from '@angular/material/dialog';
-import { MatIcon } from '@angular/material/icon';
-import { ProjectsStackComponent } from './projects-stack/projects-stack.component';
-import { MatFormField, MatFormFieldModule, MatLabel } from '@angular/material/form-field';
-import { MatDatepicker, MatDatepickerInput, MatDatepickerModule, MatDatepickerToggle } from '@angular/material/datepicker';
-import { MatInput, MatInputModule } from '@angular/material/input';
-import { FormsModule } from '@angular/forms';
-import { CalendarLayoutHelperService } from '../../../core/helpers/calendar-layout-helper.service';
-import { NgIf } from '@angular/common';
+import { Component, OnInit } from "@angular/core";
+import { WeekComponent } from "./week/week.component";
+import { Subject } from "rxjs";
+import { MatButton } from "@angular/material/button";
+import {
+  CreateEmployeeProjectDialogComponent
+} from "../../../shared/components/create-employee-project-dialog/create-employee-project-dialog.component";
+import { MatDialog } from "@angular/material/dialog";
+import { MatIcon } from "@angular/material/icon";
+import { ProjectsStackComponent } from "./projects-stack/projects-stack.component";
+import { MatFormField, MatFormFieldModule, MatLabel } from "@angular/material/form-field";
+import {
+  MatDatepicker,
+  MatDatepickerInput,
+  MatDatepickerModule,
+  MatDatepickerToggle
+} from "@angular/material/datepicker";
+import { MatInput, MatInputModule } from "@angular/material/input";
+import { FormsModule } from "@angular/forms";
+import { CalendarLayoutHelperService } from "../../../core/helpers/calendar-layout-helper.service";
+import { NgIf } from "@angular/common";
+import { CreateFreeDayComponent } from "../../free-days/create-free-day/create-free-day.component";
 
 @Component({
-  selector: 'app-employees-layout',
+  selector: "app-employees-layout",
   standalone: true,
   imports: [
     WeekComponent,
@@ -31,19 +39,19 @@ import { NgIf } from '@angular/common';
     MatFormFieldModule,
     MatInputModule,
     MatDatepickerModule,
-    NgIf,
+    NgIf
   ],
-  templateUrl: './employees-layout.component.html',
-  styleUrl: './employees-layout.component.scss',
+  templateUrl: "./employees-layout.component.html",
+  styleUrl: "./employees-layout.component.scss",
   host: {
-    class: 'flex-grow',
-  },
+    class: "flex-grow"
+  }
 })
 export class EmployeesLayoutComponent implements OnInit {
   private _reloadSubject = new Subject<void>();
   public $reloadObservable = this._reloadSubject.asObservable();
   isGlobalDragDisabled = {
-    value: false,
+    value: false
   };
   private $referenceDate = new Subject<Date>();
   public _referenceDateObservable = this.$referenceDate.asObservable();
@@ -53,7 +61,8 @@ export class EmployeesLayoutComponent implements OnInit {
 
   private referenceDateValue: Date;
 
-  constructor(public dialog: MatDialog) {}
+  constructor(public dialog: MatDialog) {
+  }
 
   ngOnInit(): void {
     this.subscribeToReferenceDayObservable();
@@ -83,21 +92,36 @@ export class EmployeesLayoutComponent implements OnInit {
   openCreateEmployeeProjectDialog(): void {
     this.dialog
       .open(CreateEmployeeProjectDialogComponent, {
-        width: '500px',
-        maxHeight: '90vh',
+        width: "500px",
+        maxHeight: "90vh",
         disableClose: true,
         data: {
           task: {
             startDate: new Date(),
-            endDate: new Date(),
-          },
-        },
+            endDate: new Date()
+          }
+        }
       })
       .afterClosed()
       .subscribe((res) => {
         if (res) {
           this._reloadSubject.next();
         }
+      });
+  }
+
+
+  openCreateFreeDayDialog(): void {
+    this.dialog
+      .open(CreateFreeDayComponent, {
+        width: "500px",
+        maxHeight: "90vh",
+        maxWidth: "100%",
+        disableClose: true
+      })
+      .afterClosed()
+      .subscribe((res) => {
+        if (res) this._reloadSubject.next();
       });
   }
 
